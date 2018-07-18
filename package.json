@@ -1,0 +1,15 @@
+{
+  "name": "marmolistaselpilar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "scss": "node-sass --include-path sass public/materialize/sass/materialize.scss public/css/materialize.css"
+  },
+  "author": "David Corral & Yassine Bouissef",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "node-sass": "^4.9.2"
+  }
+}
