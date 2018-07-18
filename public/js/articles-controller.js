@@ -1,30 +1,14 @@
 angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($scope, $http, $location, $q) {
-    $scope.inputs = [];
-    $scope.alerts = [];
-    $scope.event = '{ "id": 1, "eventTypeName": "Temperature", "value": 28.9 }';
-    $scope.epl = '@NAME("Count-5") SELECT count(*) from Temperature#length_batch(5)';
-    $scope.lol = "TEST";
 
-    $scope.addEvent = function () {
-        let event = {
-            value: $scope.event,
-            type: 'Event'
-        };
-        $scope.inputs.push(event);
-        postInput(event);
-    };
+    $scope.nuevaEncimera = {};
 
-    $scope.addEPL = function () {
-        let epl = {
-            value: $scope.epl,
-            type: 'EPL'
-        };
-        $scope.inputs.push(epl);
-        postInput(epl);
+    $scope.crearEncimera = function () {
+        console.log("Creando nueva encimera", $scope.nuevaEncimera);
     };
 
     function refresh() {
         console.log("Refreshing");
+        $scope.nuevaEncimera = {};
     }
 
     function postInput(input) {

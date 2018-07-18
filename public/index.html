@@ -11,18 +11,20 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
 <body>
-<nav>
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo"><img src="img/logo.png"></a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="articulos.html">Artículos</a></li>
-            <li><a href="clientes.html">Clientes</a></li>
-            <li><a href="proveedores.html">Proveedores</a></li>
-        </ul>
-    </div>
-</nav>
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img src="img/logo.png"></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li class="active"><a href="#">Inicio</a></li>
+                <li><a href="articulos.html">Artículos</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="proveedores.html">Proveedores</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
 
 <ul class="sidenav" id="mobile-demo">
     <li class="active"><a href="#">Inicio</a></li>
@@ -38,7 +40,7 @@
 </div>
 </body>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('.sidenav').sidenav();
     });
 </script>

@@ -4,9 +4,9 @@
         Marmolistas El Pilar - Artículos
     </title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <link href="/css/materialize.css" rel="stylesheet" type="text/css"/>
     <link href="./css/styles.css" rel="stylesheet"/>
-    <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="/bower_components/angular/angular.min.js" type="text/javascript"></script>
     <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
     <script src="/js/app.js" type="text/javascript"></script>
@@ -15,18 +15,20 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
 <body ng-controller="ArticlesCtrl">
-<nav>
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo"><img class="logo" src="img/logo.png"></a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="index.html">Inicio</a></li>
-            <li class="active"><a href="#">Artículos</a></li>
-            <li><a href="clientes.html">Clientes</a></li>
-            <li><a href="proveedores.html">Proveedores</a></li>
-        </ul>
-    </div>
-</nav>
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img class="logo" src="img/logo.png"></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="index.html">Inicio</a></li>
+                <li class="active"><a href="#">Artículos</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="proveedores.html">Proveedores</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
 
 <ul class="sidenav" id="mobile-demo">
     <li><a href="index.html">Inicio</a></li>
@@ -36,14 +38,127 @@
 </ul>
 
 <div class="row">
-    <h3 class="center">Artículos</h3>
-    <div class="col s6">6-columns (one-half)</div>
-    <div class="col s6">6-columns (one-half)</div>
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5>Crear Artículo</h5></span>
+                <p>Pulsa en la pestaña para crear una encimera u otro artículo.</p>
+            </div>
+            <div class="card-tabs">
+                <ul class="tabs tabs-fixed-width">
+                    <li class="tab"><a class="active" href="#encimeras">Encimeras</a></li>
+                    <li class="tab"><a href="#otros">Otros</a></li>
+                </ul>
+            </div>
+            <div class="card-content">
+                <div id="encimeras">
+                    <div class="row">
+                        <form class="col s12" name="addEncimera" ng-submit="crearEncimera()">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="codigo" ng-model="nuevaEncimera.codigo" type="text" class="validate">
+                                    <label for="codigo">Código</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="nombre" ng-model="nuevaEncimera.nombre" type="text" class="validate">
+                                    <label for="nombre">Nombre</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="iva" ng-model="nuevaEncimera.iva" type="number" class="validate">
+                                    <label for="iva">IVA</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="precio_costo" ng-model="nuevaEncimera.precio_costo" type="number"
+                                           class="validate">
+                                    <label for="precio_costo">Precio Costo</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="tarifa_general" ng-model="nuevaEncimera.tarifa_general" type="number"
+                                           class="validate">
+                                    <label for="tarifa_general">Tarifa General</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="tarifa_encimera" ng-model="nuevaEncimera.tarifa_encimera" type="number"
+                                           class="validate">
+                                    <label for="tarifa_encimera">Tarifa Encimera</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="tarifa_contratista" ng-model="nuevaEncimera.tarifa_contratista"
+                                           type="number" class="validate">
+                                    <label for="tarifa_contratista">Tarifa Contratista</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="tarifa_publico" ng-model="nuevaEncimera.tarifa_publico" type="number"
+                                           class="validate">
+                                    <label for="tarifa_publico">Tarifa Público</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="unidad" ng-model="nuevaEncimera.unidad" type="text" class="validate">
+                                    <label for="unidad">Unidad</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="dimension" ng-model="nuevaEncimera.dimension" type="text"
+                                           class="validate">
+                                    <label for="dimension">Dimensión</label>
+                                </div>
+                            </div>
+                            <div class="center">
+                                <button class="btn-large waves-effect waves-light" type="submit" name="action">AÑADIR
+                                    <i class="material-icons right">add</i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="otros">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5>Filtrar Artículos</h5></span>
+                <div class="row">
+                    <div class="col s6">
+                        <div class="input-field">
+                            <i class="material-icons prefix">filter_1</i>
+                            <input id="search_code" type="text" class="validate">
+                            <label for="search_code">Código</label>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="input-field">
+                            <i class="material-icons prefix">font_download</i>
+                            <input id="search_name" type="text" class="validate">
+                            <label for="search_name">Nombre</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Articles -->
+        <ul class="collapsible">
+            <li>
+                <div class="collapsible-header"><h5>Artículos</h5></div>
+                <div class="collapsible-body"><< LISTA DE ARTÍCULOS >></div>
+            </li>
+        </ul>
+    </div>
 </div>
 </body>
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
+        $('.tabs').tabs();
+        $('.collapsible').collapsible();
     });
 </script>
 </html>
