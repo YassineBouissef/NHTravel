@@ -1,14 +1,45 @@
 angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($scope, $http, $location, $q) {
 
-    $scope.nuevaEncimera = {};
+    let index = -1;
+    $scope.articulos = [];
 
-    $scope.crearEncimera = function () {
-        console.log("Creando nueva encimera", $scope.nuevaEncimera);
+    $scope.guardarArticulo = function () {
+        if ($scope.accion === "Añadir") {
+            console.log("Creando artículo", $scope.nuevoArticulo);
+            $scope.articulos.push($scope.nuevoArticulo);
+        } else if ($scope.accion === "Editar") {
+            console.log("Guardando artículo", $scope.nuevoArticulo);
+            $scope.articulos[index] = $scope.nuevoArticulo;
+        }
+        refresh();
+    };
+
+    function limpiarFormulario() {
+        $("form#addArticuloForm label").each(function () {
+            $(this).toggleClass('active');
+        });
+        $("form#addArticuloForm :input").each(function () {
+            $(this).toggleClass('valid' || 'invalid');
+        });
+    }
+
+
+    $scope.editarArticulo = function (i) {
+        index = i;
+        $scope.accion = "Editar";
+        $scope.icono_accion = "edit";
+        $scope.clase_boton = "btn-large waves-effect waves-light orange";
+        $scope.nuevoArticulo = $scope.articulos[i];
+        console.log("Editando articulo", $scope.nuevoArticulo);
     };
 
     function refresh() {
         console.log("Refreshing");
-        $scope.nuevaEncimera = {};
+        limpiarFormulario();
+        $scope.nuevoArticulo = {};
+        $scope.accion = "Añadir";
+        $scope.icono_accion = "add";
+        $scope.clase_boton = "btn-large waves-effect waves-light green";
     }
 
     function postInput(input) {
@@ -35,4 +66,5 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
     };
 
     refresh();
-});
+})
+;
