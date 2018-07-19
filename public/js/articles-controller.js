@@ -11,15 +11,25 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             console.log("Guardando artículo", $scope.nuevoArticulo);
             $scope.articulos[index] = $scope.nuevoArticulo;
         }
+        toggleFormulario();
         refresh();
     };
 
-    function limpiarFormulario() {
+    function toggleFormulario() {
         $("form#addArticuloForm label").each(function () {
             $(this).toggleClass('active');
         });
         $("form#addArticuloForm :input").each(function () {
             $(this).toggleClass('valid' || 'invalid');
+        });
+    }
+
+    function limpiarFormulario() {
+        $("form#addArticuloForm label").each(function () {
+            $(this).removeClass('active');
+        });
+        $("form#addArticuloForm :input").each(function () {
+            $(this).removeClass('valid' || 'invalid');
         });
     }
 
@@ -31,6 +41,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         $scope.clase_boton = "btn-large waves-effect waves-light orange";
         $scope.nuevoArticulo = $scope.articulos[i];
         console.log("Editando articulo", $scope.nuevoArticulo);
+        toggleFormulario();
     };
 
     function refresh() {
@@ -65,6 +76,14 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         refresh();
     };
 
-    refresh();
+    function init() {
+        console.log("Starting Articles controller");
+        $scope.nuevoArticulo = {};
+        $scope.accion = "Añadir";
+        $scope.icono_accion = "add";
+        $scope.clase_boton = "btn-large waves-effect waves-light green";
+    }
+
+    init();
 })
 ;
