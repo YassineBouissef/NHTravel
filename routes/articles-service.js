@@ -7,7 +7,7 @@ const Articles = function () {
 };
 
 Articles.prototype.connectDb = function (callback) {
-    MongoClient.connect(process.env.MONGODB_URL, { useNewUrlParser: true }, function (err, database) {
+    MongoClient.connect(process.env.MONGODB_URL, {useNewUrlParser: true}, function (err, database) {
         if (err) {
             callback(err);
         }
@@ -30,11 +30,12 @@ Articles.prototype.getAll = function (callback) {
     return db.find({}).toArray(callback);
 };
 
-Articles.prototype.queryName = function(name, callback) {
+Articles.prototype.queryName = function (name, callback) {
     return db.find({name: new RegExp(name, 'i')}).toArray(callback);
 };
 
 Articles.prototype.update = function (_id, updatedArticle, callback) {
+    delete updatedArticle._id;
     return db.update({_id: ObjectId(_id)}, updatedArticle, {}, callback);
 };
 

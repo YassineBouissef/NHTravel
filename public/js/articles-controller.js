@@ -1,7 +1,8 @@
 angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($scope, $http, $location, $q) {
 
     let index = -1;
-    $scope.articles = [
+    $scope.articles = [];
+    /*$scope.articles = [
         {
             "codigo": "1A3",
             "nombre": "Encimera",
@@ -25,19 +26,20 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             "tarifa_publico": 58,
             "unidad": "M2",
             "dimension": "45 * 45"
-        }];
+        }];*/
 
     $scope.saveArticle = function () {
         if ($scope.action === "Añadir") {
             console.log("Creating article", $scope.newArticle);
-            $scope.articles.push($scope.newArticle);
+            //$scope.articles.push($scope.newArticle);
             postArticle($scope.newArticle);
         } else if ($scope.action === "Editar") {
             console.log("Updating article", $scope.newArticle);
-            $scope.articles[index] = $scope.newArticle;
+            //$scope.articles[index] = $scope.newArticle;
+            updateArticle($scope.newArticle);
         }
         toggleForm();
-        refresh();
+        //refresh();
     };
 
     function toggleForm() {
@@ -83,8 +85,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         let r = confirm("¿Está seguro de eliminar este artículo?\n" +
             "Codigo: " + $scope.articles[i].codigo + " | Nombre: " + $scope.articles[i].nombre);
         if (r) {
-            $scope.articles.splice(i, 1);
-            console.log("Article deleted");
+            deleteArticle($scope.articles[i]);
         } else {
             console.log("Article not deleted");
         }
@@ -113,9 +114,13 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
     };
 
     function getArticles() {
-        $http.get("/articles")
+        $http.get("/api/v1/articles")
             .then(function (response) {
+                console.log('Articles retrieved');
+                $scope.articles = response.data;
             }, function (error) {
+                console.log('Error retrieving articles', error);
+                alert("Ups! Ha ocurrido un error al recuperar los artículos, inténtalo de nuevo en unos minutos.");
             });
     }
 
@@ -123,27 +128,38 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         $http.post("/api/v1/articles", article)
             .then(function (response) {
                 console.log('Article added', response);
+                refresh();
             }, function (error) {
                 console.log('Error adding article', error);
+                alert("Ups! Ha ocurrido un error al añadir el artículo, inténtalo de nuevo en unos minutos.");
             });
     }
 
     function updateArticle(article) {
-        $http.put("/articles/" + article._id, article)
+        $http.put("/api/v1/articles/" + article._id, article)
             .then(function (response) {
+                console.log('Article updated', response);
+                refresh();
             }, function (error) {
+                console.log('Error updating article', error);
+                alert("Ups! Ha ocurrido un error al editar el artículo, inténtalo de nuevo en unos minutos.");
             });
     }
 
     function deleteArticle(article) {
-        $http.delete("/articles/" + article._id)
+        $http.delete("/api/v1/articles/" + article._id)
             .then(function (response) {
+                console.log('Article deleted', response);
+                refresh();
             }, function (error) {
+                console.log('Error updating article', error);
+                alert("Ups! Ha ocurrido un error al eliminar el artículo, inténtalo de nuevo en unos minutos.");
             });
     }
 
     function refresh() {
         console.log("Refreshing");
+        getArticles();
         clearForm();
         clearFilter();
         $scope.newArticle = {};
@@ -158,6 +174,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
 
     function init() {
         console.log("Starting Articles controller");
+        getArticles();
         $scope.newArticle = {};
         $scope.action = "Añadir";
         $scope.icon_action = "add";
