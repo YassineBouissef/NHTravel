@@ -102,9 +102,8 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <select ng-model="newArticle.grupo">
-                                    <option value="-1" selected>Sin Grupo</option>
-                                    <option ng-repeat="group in groups" value="{{group._id}}">{{group.nombre}}</option>
+                                <select ng-model="newArticle.grupo" id="grupo">
+                                    <option ng-repeat="group in groups" value="{{group._id}}" ng-selected="group.selected == true">{{group.nombre}}</option>
                                 </select>
                                 <label>Grupo (Encimeras)</label>
                             </div>
@@ -159,9 +158,9 @@
                                 </div>
                                 <div class="col s6 right-align">
                                     <a href="#!"><i class="material-icons orange-text"
-                                                    ng-click="editArticle($index)">edit</i>
+                                                    ng-click="editArticle($index)" onclick="event.stopPropagation();">edit</i>
                                         <i class="material-icons red-text"
-                                           ng-click="removeArticle($index)">delete</i></a>
+                                           ng-click="removeArticle($index)" onclick="event.stopPropagation();">delete</i></a>
                                 </div>
                             </div>
                             <div class="collapsible-body">

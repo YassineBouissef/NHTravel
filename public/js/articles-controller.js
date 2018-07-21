@@ -4,6 +4,11 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
     $scope.articles = [];
     $scope.groups = [
         {
+            _id: "0",
+            nombre: "Sin Grupo",
+            selected: true
+        },
+        {
             _id: "5g533fc815249c4010458d15",
             nombre: "Grupo 1"
         },
@@ -57,6 +62,8 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         $scope.icon_action = "edit";
         $scope.class_button = "btn-large waves-effect waves-light orange";
         $scope.newArticle = $scope.articles[i];
+        $('#grupo').find('option[value="' + $scope.newArticle.grupo + '"]').prop('selected', true);
+        $("#grupo").formSelect();
         console.log("Editing article", $scope.newArticle);
         toggleForm();
     };
@@ -143,7 +150,10 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         getArticles();
         clearForm();
         clearFilter();
+        $('#grupo').find('option[value="0"]').prop('selected', true);
+        $("#grupo").formSelect();
         $scope.newArticle = {};
+        $scope.newArticle.grupo = $scope.groups[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
