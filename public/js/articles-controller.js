@@ -2,44 +2,25 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
 
     let index = -1;
     $scope.articles = [];
-    /*$scope.articles = [
+    $scope.groups = [
         {
-            "codigo": "1A3",
-            "nombre": "Encimera",
-            "iva": 21,
-            "precio_costo": 125,
-            "tarifa_general": 120,
-            "tarifa_encimera": 125,
-            "tarifa_contratista": 120,
-            "tarifa_publico": 120,
-            "unidad": "M2",
-            "dimension": "50 * 50"
+            _id: "5g533fc815249c4010458d15",
+            nombre: "Grupo 1"
         },
         {
-            "codigo": "BF13",
-            "nombre": "Encimera",
-            "iva": 21,
-            "precio_costo": 25,
-            "tarifa_general": 12,
-            "tarifa_encimera": 58,
-            "tarifa_contratista": 65,
-            "tarifa_publico": 58,
-            "unidad": "M2",
-            "dimension": "45 * 45"
-        }];*/
+            _id: "5g573fc815249c4010458d15",
+            nombre: "Grupo 2"
+        }];
 
     $scope.saveArticle = function () {
         if ($scope.action === "Añadir") {
             console.log("Creating article", $scope.newArticle);
-            //$scope.articles.push($scope.newArticle);
             postArticle($scope.newArticle);
         } else if ($scope.action === "Editar") {
             console.log("Updating article", $scope.newArticle);
-            //$scope.articles[index] = $scope.newArticle;
             updateArticle($scope.newArticle);
         }
         toggleForm();
-        //refresh();
     };
 
     function toggleForm() {

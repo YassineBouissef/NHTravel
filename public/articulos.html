@@ -100,6 +100,15 @@
                                 <label for="dimension">Dimensión</label>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <select ng-model="newArticle.grupo">
+                                    <option value="-1" selected>Sin Grupo</option>
+                                    <option ng-repeat="group in groups" value="{{group._id}}">{{group.nombre}}</option>
+                                </select>
+                                <label>Grupo (Encimeras)</label>
+                            </div>
+                        </div>
                         <div class="center">
                             <button ng-class="class_button" type="submit" name="action">
                                 {{action}}
@@ -208,7 +217,7 @@
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
-        $('.tabs').tabs();
+        $('select').formSelect();
         $('.collapsible').collapsible();
     });
 </script>
