@@ -23,6 +23,7 @@
             <ul class="right hide-on-med-and-down">
                 <li><a href="index.html">Inicio</a></li>
                 <li class="active"><a href="#">Artículos</a></li>
+                <li><a href="grupos.html">Grupos</a></li>
                 <li><a href="clientes.html">Clientes</a></li>
                 <li><a href="proveedores.html">Proveedores</a></li>
             </ul>
@@ -33,10 +34,10 @@
 <ul class="sidenav" id="mobile-demo">
     <li><a href="index.html">Inicio</a></li>
     <li class="active"><a href="#">Artículos</a></li>
+    <li><a href="grupos.html">Grupos</a></li>
     <li><a href="clientes.html">Clientes</a></li>
     <li><a href="proveedores.html">Proveedores</a></li>
 </ul>
-
 <div class="row">
     <div class="col s6">
         <div class="card">
@@ -103,7 +104,9 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <select ng-model="newArticle.grupo" id="grupo">
-                                    <option ng-repeat="group in groups" value="{{group._id}}" ng-selected="group.selected == true">{{group.nombre}}</option>
+                                    <option ng-repeat="group in groups" value="{{group._id}}"
+                                            ng-selected="group.selected == true">{{group.nombre}}
+                                    </option>
                                 </select>
                                 <label>Grupo (Encimeras)</label>
                             </div>
@@ -124,92 +127,97 @@
         </div>
     </div>
     <div class="col s6">
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title"><h5>Filtrar Artículos</h5></span>
-                <div class="row">
-                    <div class="col s6">
-                        <div class="input-field">
-                            <i class="material-icons prefix">filter_1</i>
-                            <input id="search_code" type="text" class="validate" ng-model="filter_codigo">
-                            <label id="label_code" for="search_code">Código</label>
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title"><h5>Filtrar Artículos</h5></span>
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">filter_1</i>
+                                <input id="search_code" type="text" class="validate" ng-model="filter_codigo">
+                                <label id="label_code" for="search_code">Código</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col s6">
-                        <div class="input-field">
-                            <i class="material-icons prefix">font_download</i>
-                            <input id="search_name" type="text" class="validate" ng-model="filter_nombre">
-                            <label id="lavel_name" for="search_name">Nombre</label>
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">font_download</i>
+                                <input id="search_name" type="text" class="validate" ng-model="filter_nombre">
+                                <label id="label_name" for="search_name">Nombre</label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Articles -->
-        <ul class="collapsible">
-            <li>
-                <div class="collapsible-header"><h5>Artículos</h5></div>
-                <div class="collapsible-body">
-                    <ul class="collapsible">
-                        <li ng-repeat="articulo in articles | filter:filterArticle track by $index">
-                            <div class="collapsible-header articles row articles">
-                                <div class="col s6 left-align">
-                                    <b>{{articulo.codigo}} - {{articulo.nombre}}</b>
-                                </div>
-                                <div class="col s6 right-align">
-                                    <a href="#!"><i class="material-icons orange-text"
-                                                    ng-click="editArticle($index)" onclick="event.stopPropagation();">edit</i>
-                                        <i class="material-icons red-text"
-                                           ng-click="removeArticle($index)" onclick="event.stopPropagation();">delete</i></a>
-                                </div>
-                            </div>
-                            <div class="collapsible-body">
-                                <div class="row">
-                                    <div class="row">
-                                        <div class="col s4">
-                                            <b>Código:</b> {{articulo.codigo}}
-                                        </div>
-                                        <div class="col s4">
-                                            <b>Nombre:</b> {{articulo.nombre}}
-                                        </div>
+        <!-- Articles-->
+        <div class="col s12">
+            <ul class="collapsible">
+                <li class="active">
+                    <div class="collapsible-header"><h5>Artículos</h5></div>
+                    <div class="collapsible-body">
+                        <ul class="collapsible">
+                            <li ng-repeat="articulo in articles | filter:filterArticle track by $index">
+                                <div class="collapsible-header articles row articles">
+                                    <div class="col s6 left-align">
+                                        <b>{{articulo.codigo}} - {{articulo.nombre}}</b>
                                     </div>
-                                    <div class="row">
-                                        <div class="col s4">
-                                            <b>Unidad:</b> {{articulo.unidad}}
-                                        </div>
-                                        <div class="col s4">
-                                            <b>Dimensión:</b> {{articulo.dimension}}
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col s4">
-                                            <b>T. General:</b> {{articulo.tarifa_general}}
-                                        </div>
-                                        <div class="col s4">
-                                            <b>T. Encimera:</b> {{articulo.tarifa_encimera}}
-                                        </div>
-                                        <div class="col s4">
-                                            <b>T. Contratista:</b> {{articulo.tarifa_contratista}}
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col s4">
-                                            <b>T. Público:</b> {{articulo.tarifa_publico}}
-                                        </div>
-                                        <div class="col s4">
-                                            <b>IVA:</b> {{articulo.iva}}
-                                        </div>
-                                        <div class="col s4">
-                                            <b>Precio Costo:</b> {{articulo.precio_costo}}
-                                        </div>
+                                    <div class="col s6 right-align">
+                                        <a href="#!"><i class="material-icons orange-text"
+                                                        ng-click="editArticle($index)"
+                                                        onclick="event.stopPropagation();">edit</i>
+                                            <i class="material-icons red-text"
+                                               ng-click="removeArticle($index)" onclick="event.stopPropagation();">delete</i></a>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Código:</b> {{articulo.codigo}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Nombre:</b> {{articulo.nombre}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Unidad:</b> {{articulo.unidad}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Dimensión:</b> {{articulo.dimension}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>T. General:</b> {{articulo.tarifa_general}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. Encimera:</b> {{articulo.tarifa_encimera}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. Contratista:</b> {{articulo.tarifa_contratista}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>T. Público:</b> {{articulo.tarifa_publico}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>IVA:</b> {{articulo.iva}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Precio Costo:</b> {{articulo.precio_costo}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 </body>
