@@ -1,7 +1,7 @@
 angular.module("MarmolistasElPilarApp").controller("GroupsCtrl", function ($scope, $http, $location, $q) {
 
     let index = -1;
-    $scope.group = [];
+    $scope.groups = [];
 
     $scope.saveGroup = function () {
         if ($scope.action === "Añadir") {
@@ -44,7 +44,7 @@ angular.module("MarmolistasElPilarApp").controller("GroupsCtrl", function ($scop
         $scope.action = "Editar";
         $scope.icon_action = "edit";
         $scope.class_button = "btn-large waves-effect waves-light orange";
-        $scope.newGroup = $scope.group[i];
+        $scope.newGroup = $scope.groups[i];
         $('#grupo').find('option[value="' + $scope.newGroup.grupo + '"]').prop('selected', true);
         $("#grupo").formSelect();
         console.log("Editing group", $scope.newGroup);
@@ -52,11 +52,11 @@ angular.module("MarmolistasElPilarApp").controller("GroupsCtrl", function ($scop
     };
 
     $scope.removeGroup = function (i) {
-        console.log("Deleting group", $scope.group[i]);
+        console.log("Deleting group", $scope.groups[i]);
         let r = confirm("¿Está seguro de eliminar este grupo?\n" +
-           " Nombre: " + $scope.group[i].nombre);
+           " Nombre: " + $scope.groups[i].nombre);
         if (r) {
-            deleteGroup($scope.group[i]);
+            deleteGroup($scope.groups[i]);
         } else {
             console.log("Group not deleted");
         }
@@ -81,7 +81,7 @@ angular.module("MarmolistasElPilarApp").controller("GroupsCtrl", function ($scop
         $http.get("/api/v1/groups")
             .then(function (response) {
                 console.log('Groups retrieved');
-                $scope.group = response.data;
+                $scope.groups = response.data;
             }, function (error) {
                 console.log('Error retrieving groups', error);
                 alert("Ups! Ha ocurrido un error al recuperar los grupos, inténtalo de nuevo en unos minutos.");
@@ -89,7 +89,7 @@ angular.module("MarmolistasElPilarApp").controller("GroupsCtrl", function ($scop
     }
 
     function postGroup(g) {
-        $http.post("/api/v1/groups", group)
+        $http.post("/api/v1/groups", g)
             .then(function (response) {
                 console.log('Group added', response);
                 refresh();
@@ -100,7 +100,7 @@ angular.module("MarmolistasElPilarApp").controller("GroupsCtrl", function ($scop
     }
 
     function updateGroup(g) {
-        $http.put("/api/v1/groups/" + group._id, group)
+        $http.put("/api/v1/groups/" + g._id, g)
             .then(function (response) {
                 console.log('Group updated', response);
                 refresh();
@@ -111,7 +111,7 @@ angular.module("MarmolistasElPilarApp").controller("GroupsCtrl", function ($scop
     }
 
     function deleteGroup(g) {
-        $http.delete("/api/v1/groups/" + group._id)
+        $http.delete("/api/v1/groups/" + g._id)
             .then(function (response) {
                 console.log('Group deleted', response);
                 refresh();
