@@ -2,17 +2,17 @@
 
 const express = require('express');
 const router = express.Router();
-const groupsService = require('./groups-service');
+const providersService = require('./providers-service');
 
 
 router.get('/', function (req, res) {
-    groupsService.getAll((err, groups) => {
+    providersService.getAll((err, providers) => {
             if (err) {
                 res.send({
                     msg: err
                 }).sendStatus(500);
-            } else if (groups !== null) {
-                res.status(200).send(groups);
+            } else if (providers !== null) {
+                res.status(200).send(providers);
             } else {
                 res.send({
                     msg: err
@@ -24,13 +24,13 @@ router.get('/', function (req, res) {
 
 router.get('/:_id', function (req, res) {
     let _id = req.params._id;
-    groupsService.get(_id, (err, group) => {
+    providersService.get(_id, (err, provider) => {
             if (err) {
                 res.send({
                     msg: err
                 }).sendStatus(500);
-            } else if (group != null) {
-                res.status(200).send(group);
+            } else if (provider != null) {
+                res.status(200).send(provider);
             } else {
                 res.send({
                     msg: err
@@ -42,16 +42,16 @@ router.get('/:_id', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    let group = req.body;
-    groupsService.add(group, (err, group) => {
+    let provider = req.body;
+    providersService.add(provider, (err, provider) => {
             if (err) {
                 return res.send({
                     msg: err
                 }).sendStatus(500);
             }
-            if (group !== null) {
+            if (provider !== null) {
                 return res.send({
-                    msg: 'Nuevo grupo agregado'
+                    msg: 'Nuevo proveedor agregado'
                 });
             }
             else {
@@ -65,8 +65,8 @@ router.post('/', function (req, res) {
 
 router.put('/:_id', function (req, res) {
     const _id = req.params._id;
-    const updatedGroup = req.body;
-    groupsService.update(_id, updatedGroup, (err, numUpdates) => {
+    const updatedProvider = req.body;
+    providersService.update(_id, updatedProvider, (err, numUpdates) => {
         if (err || numUpdates === 0) {
             res.statusCode = 404;
             res.send({
@@ -76,7 +76,7 @@ router.put('/:_id', function (req, res) {
         else {
             res.statusCode = 200;
             return res.send({
-                msg: 'Grupo actualizado'
+                msg: 'Proveedor actualizado'
             });
         }
     });
@@ -85,7 +85,7 @@ router.put('/:_id', function (req, res) {
 router.delete('/:_id', function (req, res) {
     let _id = req.params._id;
 
-    groupsService.remove(_id, (err, numRemoved) => {
+    providersService.remove(_id, (err, numRemoved) => {
         if (err) {
             res.status(404).send({
                 msg: err

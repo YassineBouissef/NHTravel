@@ -27,6 +27,12 @@ const articles = require('./routes/articles');
 const groupsService = require('./routes/groups-service');
 const groups = require('./routes/groups');
 
+const clientsService = require('./routes/clients-service');
+const clients = require('./routes/clients');
+
+const providersService = require('./routes/providers-service');
+const providers = require('./routes/providers');
+
 /*************/
 
 const server = http.createServer(app);
