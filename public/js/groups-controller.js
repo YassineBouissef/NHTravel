@@ -54,7 +54,7 @@ angular.module("MarmolistasElPilarApp").controller("GroupsCtrl", function ($scop
     $scope.removeGroup = function (i) {
         console.log("Deleting group", $scope.groups[i]);
         let r = confirm("¿Está seguro de eliminar este grupo?\n" +
-           " Nombre: " + $scope.groups[i].nombre);
+            " Nombre: " + $scope.groups[i].nombre);
         if (r) {
             deleteGroup($scope.groups[i]);
         } else {
