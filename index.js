@@ -18,6 +18,8 @@ app.get('/', function (req, res) {
 });
 
 app.use('/', express.static(__dirname + "/public/"));
+app.use('/articulos', express.static(path.join(__dirname + '/public/articulos.html')));
+app.use('/facturas/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
 
 /** ROUTERS **/
 

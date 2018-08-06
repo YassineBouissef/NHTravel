@@ -1,0 +1,178 @@
+<html ng-app="MarmolistasElPilarApp">
+<head>
+    <title>
+        Marmolistas El Pilar
+    </title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <link href="/css/materialize.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="/bower_components/angular/angular.min.js" type="text/javascript"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
+    <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
+    <script src="/js/app.js" type="text/javascript"></script>
+    <script src="/js/bills-controller.js" type="text/javascript"></script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+</head>
+<body ng-controller="BillsCtrl">
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img class="logo" src="/img/logo.png"></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="#">Artículos</a></li>
+                <li><a href="grupos.html">Grupos</a></li>
+                <li class="active"><a href="clientes.html">Clientes</a></li>
+                <li><a href="proveedores.html">Proveedores</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="index.html">Inicio</a></li>
+    <li class="active"><a href="#">Artículos</a></li>
+    <li><a href="grupos.html">Grupos</a></li>
+    <li><a href="clientes.html">Clientes</a></li>
+    <li><a href="proveedores.html">Proveedores</a></li>
+</ul>
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <h5>Creando A/P/F/FP para el cliente XXX </h5>
+                <button>A</button>
+                <button>P</button>
+                <button>F</button>
+                <button>FP</button>
+            </div>
+        </div>
+    </div>
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5>Lista de Artículos</h5></span>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>DESCRIPCIÓN</th>
+                        <th>UNIDADES</th>
+                        <th>MEDIDAS</th>
+                        <th>CANTIDAD</th>
+                        <th>PRECIO</th>
+                        <th>DESCUENTO</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in items track by $index">
+                        <td>{{item.articulo.nombre}}</td>
+                        <td>{{item.unidades}}</td>
+                        <td>{{item.articulo.medidas}}</td>
+                        <td>{{item.cantidad}}</td>
+                        <td>{{item.articulo.tarifa_general}}</td>
+                        <td>{{item.descuento}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s6">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title"><h5>Agregar Artículos</h5></span>
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">filter_1</i>
+                                <input id="search_code" type="text" class="validate" ng-model="filter_codigo">
+                                <label id="label_code" for="search_code">Código</label>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">font_download</i>
+                                <input id="search_name" type="text" class="validate" ng-model="filter_nombre">
+                                <label id="label_name" for="search_name">Nombre</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="collapsible">
+                            <li ng-repeat="articulo in articles | filter:filterArticle track by $index">
+                                <div class="collapsible-header item row item">
+                                    <div class="col s6 left-align">
+                                        <b>{{articulo.codigo}} - {{articulo.nombre}}</b>
+                                    </div>
+                                    <div class="col s6 right-align">
+                                        <a href="#!"><i class="material-icons green-text"
+                                                        ng-click="addArticle($index)"
+                                                        onclick="event.stopPropagation();">add_box</i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Código:</b> {{articulo.codigo}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Nombre:</b> {{articulo.nombre}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Unidad:</b> {{articulo.unidad}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Dimensión:</b> {{articulo.dimension}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>T. General:</b> {{articulo.tarifa_general}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. Encimera:</b> {{articulo.tarifa_encimera}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. Contratista:</b> {{articulo.tarifa_contratista}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>T. Público:</b> {{articulo.tarifa_publico}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>IVA:</b> {{articulo.iva}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Precio Costo:</b> {{articulo.precio_costo}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+        $('.collapsible').collapsible();
+    });
+</script>
+</html>
