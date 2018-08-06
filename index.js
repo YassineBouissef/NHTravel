@@ -24,19 +24,33 @@ app.use('/', express.static(__dirname + "/public/"));
 const articlesService = require('./routes/articles-service');
 const articles = require('./routes/articles');
 
+const groupsService = require('./routes/groups-service');
+const groups = require('./routes/groups');
+
 /*************/
 
 const server = http.createServer(app);
 
 app.use(baseAPI + '/articles', articles);
+app.use(baseAPI + '/groups', groups);
 
-articlesService.connectDb(function (err) {
+
+groupsService.connectDb(function (err){
     if (err) {
-        console.log("Could not connect with MongoDB - articlesService");
-        process.exit(1);
+            console.log("Could not connect with MongoDB - groupsService");
+            process.exit(1);
     }
 
-    server.listen(PORT, function () {
-        console.log('Server with GUI up and running on localhost:' + PORT);
-    });
+    articlesService.connectDb(function (err) {
+        if (err) {
+            console.log("Could not connect with MongoDB - articlesService");
+            process.exit(1);
+        }
+
+        server.listen(PORT, function () {
+            console.log('Server with GUI up and running on localhost:' + PORT);
+        });
 });
+
+})
+

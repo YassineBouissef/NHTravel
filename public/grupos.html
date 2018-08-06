@@ -1,0 +1,176 @@
+<html ng-app="MarmolistasElPilarApp">
+<head>
+    <title>
+        Marmolistas El Pilar - Grupos
+    </title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <link href="/css/materialize.css" rel="stylesheet" type="text/css"/>
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <script src="/bower_components/angular/angular.min.js" type="text/javascript"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
+    <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
+    <script src="/js/app.js" type="text/javascript"></script>
+    <script src="/js/groups-controller.js" type="text/javascript"></script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+</head>
+
+<body ng-controller="GroupsCtrl">
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img class="logo" src="img/logo.png"></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="articulos.html">Artículos</a></li>
+                <li class="active"><a href="#">Grupos</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="proveedores.html">Proveedores</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="articulos.html">Artículos</a></li>
+    <li class="active"><a href="#">Grupos</a></li>
+    <li><a href="clientes.html">Clientes</a></li>
+    <li><a href="proveedores.html">Proveedores</a></li>
+</ul>
+
+<div class="row">
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5>{{action}} Grupo</h5></span>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <form name="addGrupoForm" id="addGrupoForm" class="col s12" ng-submit="saveGroup()">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="nombre" ng-model="newGroup.nombre" type="text" class="validate">
+                                <label for="nombre">Nombre</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="precio_costo" ng-model="newGroup.precio_costo" type="number"
+                                       class="validate">
+                                <label for="precio_costo">Precio Costo</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="M2_pieza" ng-model="newGroup.M2_pieza" type="number"
+                                       class="validate">
+                                <label for="M2_pieza">M2 Pieza</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="zocalo_ml" ng-model="newGroup.zocalo_ml" type="number"
+                                       class="validate">
+                                <label for="zocalo_ml">Zócalo ML</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="encimera_ml" ng-model="newGroup.encimera_ml"
+                                       type="number" class="validate">
+                                <label for="encimera_ml">Encimera ML</label>
+                            </div>
+                        </div>
+
+                        <div class="center">
+                            <button ng-class="class_button" type="submit" name="action">
+                                {{action}}
+                                <i class="material-icons right">{{icon_action}}</i>
+                            </button>
+                            <a class="btn-large waves-effect waves-light blue" ng-click="refresh()">
+                                REFRESCAR
+                                <i class="material-icons right">refresh</i>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s6">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title"><h5>Filtrar Grupos</h5></span>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field">
+                                <i class="material-icons prefix">font_download</i>
+                                <input id="search_name" type="text" class="validate" ng-model="filter_nombre">
+                                <label id="label_name" for="search_name">Nombre</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Groups-->
+        <div class="col s12">
+            <ul class="collapsible">
+                <li class="active">
+                    <div class="collapsible-header"><h5>Grupos</h5></div>
+                    <div class="collapsible-body">
+                        <ul class="collapsible">
+                            <li ng-repeat="grupo in groups | filter:filterGroup track by $index">
+                                <div class="collapsible-header item row item">
+                                    <div class="col s6 left-align">
+                                        <b>{{grupo.nombre}}</b>
+                                    </div>
+                                    <div class="col s6 right-align">
+                                        <a href="#!"><i class="material-icons orange-text"
+                                                        ng-click="editGroup($index)"
+                                                        onclick="event.stopPropagation();">edit</i>
+                                            <i class="material-icons red-text"
+                                               ng-click="removeGroup($index)"
+                                               onclick="event.stopPropagation();">delete</i></a>
+                                    </div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Nombre:</b> {{grupo.nombre}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Precio Costo:</b> {{grupo.precio_costo}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>M2 Pieza:</b> {{grupo.M2_pieza}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Zócalo ML:</b> {{grupo.zocalo_ml}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. Encimera ML:</b> {{grupo.encimera_ml}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+        $('select').formSelect();
+        $('.collapsible').collapsible();
+    });
+</script>
+
+</html>
