@@ -166,7 +166,9 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
     function init() {
         console.log("Starting Articles controller");
         getArticles();
+        //getGroups(); ==>
         $scope.newArticle = {};
+        $scope.newArticle.grupo = $scope.groups[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";

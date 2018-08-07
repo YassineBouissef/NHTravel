@@ -48,11 +48,11 @@
                 <div class="row">
                     <form name="addArticuloForm" id="addArticuloForm" class="col s12" ng-submit="saveArticle()">
                         <div class="row">
-                            <div class="input-field col s6">
+                            <div class="input-field col s3">
                                 <input id="codigo" ng-model="newArticle.codigo" type="text" class="validate">
                                 <label for="codigo">Código</label>
                             </div>
-                            <div class="input-field col s6">
+                            <div class="input-field col s9">
                                 <input id="nombre" ng-model="newArticle.nombre" type="text" class="validate">
                                 <label for="nombre">Nombre</label>
                             </div>
@@ -96,14 +96,21 @@
                                 <label for="unidad">Unidad</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="dimension" ng-model="newArticle.dimension" type="text"
-                                       class="validate">
-                                <label for="dimension">Dimensión</label>
+                                <div class="col s6">
+                                    <input id="alto" ng-model="newArticle.dimension.alto" type="text"
+                                           class="validate">
+                                    <label for="alto">Alto</label>
+                                </div>
+                                <div class="col s6">
+                                    <input id="ancho" ng-model="newArticle.dimension.ancho" type="text"
+                                           class="validate">
+                                    <label for="ancho">Ancho</label>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <select ng-model="newArticle.grupo" id="grupo">
+                                <select ng-model="newArticle.grupo" id="grupo" required>
                                     <option ng-repeat="group in groups" value="{{group._id}}"
                                             ng-selected="group.selected == true">{{group.nombre}}
                                     </option>
@@ -176,16 +183,17 @@
                                             <div class="col s4">
                                                 <b>Código:</b> {{articulo.codigo}}
                                             </div>
-                                            <div class="col s4">
+                                            <div class="col s8">
                                                 <b>Nombre:</b> {{articulo.nombre}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>Unidad:</b> {{articulo.unidad}}
+                                                <b>Dimensión:</b> {{articulo.dimension.alto}} *
+                                                {{articulo.dimension.ancho}}
                                             </div>
                                             <div class="col s4">
-                                                <b>Dimensión:</b> {{articulo.dimension}}
+                                                <b>Unidad:</b> {{articulo.unidad}}
                                             </div>
                                         </div>
                                         <div class="row">
@@ -224,7 +232,8 @@
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
-        $('select').formSelect();
+        $('#grupo').find('option[value="0"]').prop('selected', true);
+        $('#grupo').formSelect();
         $('.collapsible').collapsible();
     });
 </script>

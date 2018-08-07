@@ -39,18 +39,7 @@
     <li><a href="proveedores.html">Proveedores</a></li>
 </ul>
 <div class="row">
-    <div class="col s12">
-        <div class="card">
-            <div class="card-content">
-                <h5>Creando A/P/F/FP para el cliente XXX </h5>
-                <button>A</button>
-                <button>P</button>
-                <button>F</button>
-                <button>FP</button>
-            </div>
-        </div>
-    </div>
-    <div class="col s6">
+    <div class="col s7">
         <div class="card">
             <div class="card-content">
                 <span class="card-title"><h5>Lista de Artículos</h5></span>
@@ -63,16 +52,18 @@
                         <th>CANTIDAD</th>
                         <th>PRECIO</th>
                         <th>DESCUENTO</th>
+                        <th>TOTAL</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in items track by $index">
                         <td>{{item.articulo.nombre}}</td>
                         <td>{{item.unidades}}</td>
-                        <td>{{item.articulo.medidas}}</td>
-                        <td>{{item.cantidad}}</td>
-                        <td>{{item.articulo.tarifa_general}}</td>
-                        <td>{{item.descuento}}</td>
+                        <td>{{item.dimension.alto}} * {{item.dimension.ancho}}</td>
+                        <td>{{item.cantidad}} M2</td>
+                        <td>{{item.precio}} €</td>
+                        <td>{{item.descuento}} %</td>
+                        <td>{{item.total}} €</td>
                     </tr>
                     </tbody>
                 </table>
@@ -83,7 +74,30 @@
             </div>
         </div>
     </div>
-    <div class="col s6">
+    <div class="col s5">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <h5>Cliente {{client.nombre}}</h5>
+                    <h6>Tarifa predeterminada: {{client.tarifa}}</h6>
+                    <br>
+                    <div class="row">
+                        <div class="col s3">
+                            <a class="waves-effect waves-light btn blue">Albarán</a>
+                        </div>
+                        <div class="col s3">
+                            <a class="waves-effect waves-light btn blue">Presupuesto</a>
+                        </div>
+                        <div class="col s3">
+                            <a class="waves-effect waves-light btn blue">Factura</a>
+                        </div>
+                        <div class="col s3">
+                            <a class="waves-effect waves-light btn blue">Factura P.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
@@ -112,9 +126,9 @@
                                         <b>{{articulo.codigo}} - {{articulo.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
-                                        <a href="#!"><i class="material-icons green-text"
-                                                        ng-click="addArticle($index)"
-                                                        onclick="event.stopPropagation();">add_box</i>
+                                        <a href="#!">
+                                            <i class="material-icons green-text" ng-click="setSelectedItem($index)"
+                                               onclick="event.stopPropagation();">add_box</i>
                                         </a>
                                     </div>
                                 </div>
@@ -124,16 +138,17 @@
                                             <div class="col s4">
                                                 <b>Código:</b> {{articulo.codigo}}
                                             </div>
-                                            <div class="col s4">
+                                            <div class="col s8">
                                                 <b>Nombre:</b> {{articulo.nombre}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>Unidad:</b> {{articulo.unidad}}
+                                                <b>Dimensión:</b> {{articulo.dimension.alto}} *
+                                                {{articulo.dimension.ancho}}
                                             </div>
                                             <div class="col s4">
-                                                <b>Dimensión:</b> {{articulo.dimension}}
+                                                <b>Unidad:</b> {{articulo.unidad}}
                                             </div>
                                         </div>
                                         <div class="row">
@@ -168,11 +183,89 @@
         </div>
     </div>
 </div>
+<!-- Modal Structure -->
+<div id="addArticle" class="modal">
+    <div class="modal-content">
+        <h4>Añadir "{{selectedItem.codigo}} - {{selectedItem.nombre}}"</h4>
+        <form name="addItemForm" id="addItemForm" class="col s12" ng-submit="addItem()">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="unidades" ng-model="newItem.unidades" type="number" class="validate" placeholder="1">
+                    <label for="unidades">Cantidad</label>
+                </div>
+                <div class="input-field col s12">
+                    <div class="row">
+                        <div class="col s6">
+                            <input id="alto" ng-model="newItem.dimension.alto" type="text"
+                                   class="validate" placeholder="100">
+                            <label for="alto">Alto</label>
+                        </div>
+                        <div class="col s6">
+                            <input id="ancho" ng-model="newItem.dimension.ancho" type="text"
+                                   class="validate" placeholder="100">
+                            <label for="ancho">Ancho</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-field col s12">
+                    <select ng-model="newItem.tarifa" id="tarifa">
+                        <option value="{{selectedItem.tarifa_general}}">Tarifa General - {{selectedItem.tarifa_general}}</option>
+                        <option value="{{selectedItem.tarifa_encimera}}">Tarifa Encimera - {{selectedItem.tarifa_encimera}}</option>
+                        <option value="{{selectedItem.tarifa_contratista}}">Tarifa Contratista - {{selectedItem.tarifa_contratista}}</option>
+                        <option value="{{selectedItem.tarifa_publico}}">Tarifa Publico - {{selectedItem.tarifa_publico}}</option>
+                    </select>
+                    <label>Tarifa</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="descuento" ng-model="newItem.descuento" type="number" class="validate" placeholder="0"
+                           min="0" max="100">
+                    <label for="descuento">Descuento (%)</label>
+                </div>
+            </div>
+            <div class="center">
+                <button class="btn-small waves-effect waves-light green" type="submit" name="action">
+                    AGREGAR
+                    <i class="material-icons right">add</i>
+                </button>
+            </div>
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>UNIDADES</th>
+                <th>MEDIDAS</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO</th>
+                <th>DESCUENTO</th>
+                <th>TOTAL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><p ng-if="newItem.unidades">{{newItem.unidades}}</p></td>
+                <td><p ng-if="newItem.dimension.alto && newItem.dimension.ancho">{{newItem.dimension.alto}} *
+                    {{newItem.dimension.ancho}}</p></td>
+                <td><p ng-if="newItem.dimension.alto && newItem.dimension.ancho">{{(newItem.dimension.alto *
+                    newItem.dimension.ancho)/10000}} M2</p></td>
+                <td><p ng-if="newItem.tarifa">{{newItem.tarifa}} €</p></td>
+                <td><p ng-if="typeof(newItem.descuento)!='undefined'">{{newItem.descuento}} %</p></td>
+                <td>
+                    <p ng-if="newItem.unidades && newItem.dimension.alto && newItem.dimension.ancho && newItem.tarifa && typeof(newItem.descuento)!='undefined'">
+                        {{(( ( newItem.dimension.alto * newItem.dimension.ancho ) / 10000 ) * newItem.tarifa ) * ( (100 -
+                        newItem.descuento) / 100) * newItem.unidades | number : 2}} €</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
         $('.collapsible').collapsible();
+        $('.modal').modal();
+        $('select').formSelect();
     });
 </script>
 </html>
