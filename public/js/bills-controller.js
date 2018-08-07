@@ -1,5 +1,23 @@
 angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope, $http, $location, $q) {
     let index;
+    $scope.tarifas = [
+        {
+            id: 0,
+            nombre: 'Tarifa General'
+        },
+        {
+            id: 1,
+            nombre: 'Tarifa Encimera'
+        },
+        {
+            id: 2,
+            nombre: 'Tarifa Contratista'
+        },
+        {
+            id: 3,
+            nombre: 'Tarifa Público'
+        }
+    ];
 
     function refresh() {
         console.log("Refreshing");
@@ -35,7 +53,12 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
     $scope.setSelectedItem = function (i) {
         console.log("Setting item", $scope.articles[i]);
         $scope.selectedItem = $scope.articles[i];
+        setTimeout(function () {
+            $('#tarifa').find('option[value="' + $scope.selectedItem.tarifas[$scope.client.tarifa].valor + '"]').prop('selected', true);
+            $('#tarifa').formSelect();
+        }, 500);
         $scope.newItem = {
+            tarifa: $scope.selectedItem.tarifas[$scope.client.tarifa].valor,
             dimension: {
                 alto: $scope.selectedItem.dimension.alto,
                 ancho: $scope.selectedItem.dimension.ancho
@@ -56,6 +79,20 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
     }
 
     function getClient(id) {
+        $scope.client = {
+            "nombre": "David Corral",
+            "dni": "87548747Q",
+            "domicilio": "Real 249",
+            "poblacion": "Cádiz",
+            "provincia": "Cádiz",
+            "cp": 11100,
+            "contacto": "Pepe",
+            "email": "david@uca.es",
+            "telefono": 666444333,
+            "rec": 0,
+            "formadepago": 0,
+            "tarifa": 0
+        };
         /*id = "5g533fc815249c4010458d15";
         $http.get("/api/v1/clients/" + id)
             .then(function (response) {

@@ -22,7 +22,7 @@
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="#">Artículos</a></li>
+                <li><a href="/articulos">Artículos</a></li>
                 <li><a href="grupos.html">Grupos</a></li>
                 <li class="active"><a href="clientes.html">Clientes</a></li>
                 <li><a href="proveedores.html">Proveedores</a></li>
@@ -78,8 +78,8 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h5>Cliente {{client.nombre}}</h5>
-                    <h6>Tarifa predeterminada: {{client.tarifa}}</h6>
+                    <h5>Cliente: {{client.nombre}}</h5>
+                    <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
                     <br>
                     <div class="row">
                         <div class="col s3">
@@ -209,10 +209,7 @@
                 </div>
                 <div class="input-field col s12">
                     <select ng-model="newItem.tarifa" id="tarifa">
-                        <option value="{{selectedItem.tarifa_general}}">Tarifa General - {{selectedItem.tarifa_general}}</option>
-                        <option value="{{selectedItem.tarifa_encimera}}">Tarifa Encimera - {{selectedItem.tarifa_encimera}}</option>
-                        <option value="{{selectedItem.tarifa_contratista}}">Tarifa Contratista - {{selectedItem.tarifa_contratista}}</option>
-                        <option value="{{selectedItem.tarifa_publico}}">Tarifa Publico - {{selectedItem.tarifa_publico}}</option>
+                        <option ng-repeat="tarifa in selectedItem.tarifas track by $index" value="{{tarifa.valor}}">{{tarifa.nombre}}</option>
                     </select>
                     <label>Tarifa</label>
                 </div>

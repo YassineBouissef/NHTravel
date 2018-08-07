@@ -70,22 +70,22 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="tarifa_general" ng-model="newArticle.tarifa_general" type="number"
+                                <input id="tarifa_general" ng-model="newArticle.tarifas[0].valor" type="number"
                                        class="validate">
                                 <label for="tarifa_general">Tarifa General</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="tarifa_encimera" ng-model="newArticle.tarifa_encimera" type="number"
+                                <input id="tarifa_encimera" ng-model="newArticle.tarifas[1].valor" type="number"
                                        class="validate">
                                 <label for="tarifa_encimera">Tarifa Encimera</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="tarifa_contratista" ng-model="newArticle.tarifa_contratista"
+                                <input id="tarifa_contratista" ng-model="newArticle.tarifas[2].valor"
                                        type="number" class="validate">
                                 <label for="tarifa_contratista">Tarifa Contratista</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="tarifa_publico" ng-model="newArticle.tarifa_publico" type="number"
+                                <input id="tarifa_publico" ng-model="newArticle.tarifas[3].valor" type="number"
                                        class="validate">
                                 <label for="tarifa_publico">Tarifa Público</label>
                             </div>
@@ -110,7 +110,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <select ng-model="newArticle.grupo" id="grupo" required>
+                                <select ng-model="newArticle.grupo" id="grupo">
                                     <option ng-repeat="group in groups" value="{{group._id}}"
                                             ng-selected="group.selected == true">{{group.nombre}}
                                     </option>
@@ -198,18 +198,18 @@
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>T. General:</b> {{articulo.tarifa_general}}
+                                                <b>T. General:</b> {{articulo.tarifas[0].valor}}
                                             </div>
                                             <div class="col s4">
-                                                <b>T. Encimera:</b> {{articulo.tarifa_encimera}}
+                                                <b>T. Encimera:</b> {{articulo.tarifas[1].valor}}
                                             </div>
                                             <div class="col s4">
-                                                <b>T. Contratista:</b> {{articulo.tarifa_contratista}}
+                                                <b>T. Contratista:</b> {{articulo.tarifas[2].valor}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>T. Público:</b> {{articulo.tarifa_publico}}
+                                                <b>T. Público:</b> {{articulo.tarifas[3].valor}}
                                             </div>
                                             <div class="col s4">
                                                 <b>IVA:</b> {{articulo.iva}}
@@ -233,7 +233,7 @@
     $(document).ready(function () {
         $('.sidenav').sidenav();
         $('#grupo').find('option[value="0"]').prop('selected', true);
-        $('#grupo').formSelect();
+        $('select').formSelect();
         $('.collapsible').collapsible();
     });
 </script>
