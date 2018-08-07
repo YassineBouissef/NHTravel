@@ -1,0 +1,222 @@
+<html ng-app="MarmolistasElPilarApp">
+<head>
+    <title>
+        Marmolistas El Pilar - Proveedores
+    </title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <link href="/css/materialize.css" rel="stylesheet" type="text/css"/>
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <script src="/bower_components/angular/angular.min.js" type="text/javascript"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
+    <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
+    <script src="/js/app.js" type="text/javascript"></script>
+    <script src="/js/providers-controller.js" type="text/javascript"></script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+</head>
+<body ng-controller="ProvidersCtrl">
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img class="logo" src="img/logo.png"></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="articulos.html">Artículos</a></li>
+                <li><a href="grupos.html">Grupos</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li class="active"><a href="#">Proveedores</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="articulos.html">Artículos</a></li>
+    <li><a href="grupos.html">Grupos</a></li>
+    <li><a href="clientes.html">Clientes</a></li>
+    <li class="active"><a href="#">Proveedores</a></li>
+</ul>
+<div class="row">
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5>{{action}} Proveedores</h5></span>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <form name="addProveedorForm" id="addProveedorForm" class="col s12" ng-submit="saveProvider()">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="nombre" ng-model="newProvider.nombre" type="text" class="validate">
+                                <label for="nombre">Nombre</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="cif" ng-model="newProvider.cif" type="text"
+                                       class="validate">
+                                <label for="cif">CIF</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="domicilio" ng-model="newProvider.domicilio" type="text" class="validate">
+                                <label for="domicilio">Domicilio</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="provincia" ng-model="newProvider.provincia" type="text" class="validate">
+                                <label for="provincia">Provincia</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="poblacion" ng-model="newProvider.poblacion" type="text"
+                                       class="validate">
+                                <label for="poblacion">Población</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="contacto" ng-model="newProvider.contacto" type="text" class="validate">
+                                <label for="contacto">Contacto</label>
+                            </div>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="cp" ng-model="newCustomer.cp" type="number"
+                                   class="validate">
+                            <label for="cp">C.P</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="telefono" ng-model="newCustomer.telefono"
+                                   type="number" class="validate">
+                            <label for="telefono">Teléfono</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="email" ng-model="newCustomer.email" type="number"
+                                   class="validate">
+                            <label for="email">Email</label>
+                        </div>
+                    </form>
+                        <div class="center">
+                            <button ng-class="class_button" type="submit" name="action">
+                                {{action}}
+                                <i class="material-icons right">{{icon_action}}</i>
+                            </button>
+                            <a class="btn-large waves-effect waves-light blue" ng-click="refresh()">
+                                REFRESCAR
+                                <i class="material-icons right">refresh</i>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s6">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title"><h5>Filtrar Proveedores</h5></span>
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">filter_1</i>
+                                <input id="search_cif" type="text" class="validate" ng-model="filter_cif">
+                                <label id="label_cif" for="search_cif">CIF</label>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">font_download</i>
+                                <input id="search_name" type="text" class="validate" ng-model="filter_nombre">
+                                <label id="label_name" for="search_name">Nombre</label>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">font_download</i>
+                                <input id="search_telefono" type="text" class="validate" ng-model="filter_nombre">
+                                <label id="label_telefono" for="search_telefono">Teléfono</label>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">font_download</i>
+                                <input id="search_direccion" type="text" class="validate" ng-model="filter_nombre">
+                                <label id="label_direccion" for="search_direccion">Dirección</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Providers-->
+        <div class="col s12">
+            <ul class="collapsible">
+                <li class="active">
+                    <div class="collapsible-header"><h5>Proveedores</h5></div>
+                    <div class="collapsible-body">
+                        <ul class="collapsible">
+                            <li ng-repeat="proveedor in providers | filter:filterProvider track by $index">
+                                <div class="collapsible-header item row item">
+                                    <div class="col s6 left-align">
+                                        <b>{{proveedor.dni}} - {{proveedor.nombre}}</b>
+                                    </div>
+                                    <div class="col s6 right-align">
+                                        <a href="#!"><i class="material-icons orange-text"
+                                                        ng-click="editProvider($index)"
+                                                        onclick="event.stopPropagation();">edit</i>
+                                            <i class="material-icons red-text"
+                                               ng-click="removeProvider($index)" onclick="event.stopPropagation();">delete</i></a>
+                                    </div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Nombre:</b> {{proveedor.nombre}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>CIF:</b> {{proveedor.cif}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Domicilio:</b> {{proveedor.domicilio}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Provincia:</b> {{proveedor.provincia}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>T. Población:</b> {{proveedor.poblacion}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. Contacto:</b> {{proveedor.contacto}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. C.P:</b> {{proveedor.cp}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>T. Teléfono:</b> {{proveedor.telefono}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Email:</b> {{proveedor.email}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+        $('select').formSelect();
+        $('.collapsible').collapsible();
+    });
+</script>
+</html>
