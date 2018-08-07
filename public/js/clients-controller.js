@@ -2,18 +2,6 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
 
     let index = -1;
     $scope.clients = [];
-    $scope.equivalencia = [
-        {
-            _id: 0,
-            nombre: "SI",
-            selected: true
-        },
-        {
-            _id: 1,
-            nombre: "NO"
-        }
-    ];
-
     $scope.formadepagos = [
         {
             _id: "0",
@@ -21,36 +9,36 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             selected: true
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "1",
             nombre: "Tarjeta"
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "2",
             nombre: "Efectivo"
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "3",
             nombre: "Cheque"
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "4",
             nombre: "30 días"
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "5",
             nombre: "60 días"
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "6",
             nombre: "Pagaré"
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "7",
             nombre: "Confirming"
         },
         {
             _id: "5g573fc815249c4010458d15",
-            nombre: "Trasnferencia"
+            nombre: "8"
         }];
 
     $scope.tarifas = [
@@ -60,15 +48,15 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             selected: true
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "1",
             nombre: "Encimeras"
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "2",
             nombre: "Contratistas"
         },
         {
-            _id: "5g533fc815249c4010458d15",
+            _id: "3",
             nombre: "Público"
         }];
 
@@ -108,12 +96,12 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         $scope.filter_direccion = "";
         $("#search_dni").removeClass('valid');
         $("#search_name").removeClass('valid');
-        $("#search_telefono").removeClass('valid');
-        $("#search_direccion").removeClass('valid');
+        $("#search_phone").removeClass('valid');
+        $("#search_adress").removeClass('valid');
         $("#label_dni").removeClass('active');
         $("#label_name").removeClass('active');
-        $("#label_telefono").removeClass('active');
-        $("#label_direccion").removeClass('active');
+        $("#label_phone").removeClass('active');
+        $("#label_adress").removeClass('active');
     }
 
     $scope.editClient = function (i) {
@@ -125,9 +113,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         $('#formadepago').find('option[value="' + $scope.newClient.formadepago + '"]').prop('selected', true);
         $("#formadepago").formSelect();
         $('#tarifa').find('option[value="' + $scope.newClient.tarifa + '"]').prop('selected', true);
-        $("#tarifa").formSelect();
-        $('#rec').find('option[value="' + $scope.newClient.rec + '"]').prop('selected', true);
-        $("#rec").formSelect();
+        $("#tarifa").formSelect();;
         console.log("Editing client", $scope.newCustomer);
         toggleForm();
     };
@@ -151,31 +137,27 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             let search = $scope.filter_nombre.toLowerCase();
             let code = item.dni.toLowerCase();
             let searchCode = $scope.filter_dni.toLowerCase();
-            let telephone = item.telefono.toLowerCase();
-            let searchTelephone = $scope.filter_telefono.toLowerCase();
-            let direction = item.direccion.toLowerCase();
-            let searchDirection = $scope.filter_direccion.toLowerCase();
-            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || telephone.indexOf(searchTelephone) > -1 || direction.indexOf(searchDirection) > -1;
+            let phone = item.telefono.toLowerCase();
+            let searchPhone = $scope.filter_telefono.toLowerCase();
+            let adress = item.domicilio.toLowerCase();
+            let searchAdress = $scope.filter_direccion.toLowerCase();
+            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || telephone.indexOf(searchPhone) > -1 || direction.indexOf(searchAdress) > -1;
         } else if ($scope.filter_nombre) {
-            // Filtrar por nombre
             let text = item.nombre.toLowerCase();
             let search = $scope.filter_nombre.toLowerCase();
             return text.indexOf(search) > -1;
         } else if ($scope.filter_dni) {
-            // Filtrar por dni
             let code = item.dni.toLowerCase();
             let search = $scope.filter_dni.toLowerCase();
             return code.indexOf(search) > -1;
         } else if ($scope.filter_telefono) {
-            // Filtrar por dni
-            let telephone = item.telefono.toLowerCase();
+            let phone = item.telefono.toLowerCase();
             let search = $scope.filter_telefono.toLowerCase();
-            return telephone.indexOf(search) > -1;
+            return phone.indexOf(search) > -1;
         } else if ($scope.filter_direccion) {
-            // Filtrar por dni
-            let direction = item.direccion.toLowerCase();
+            let adress = item.domicilio.toLowerCase();
             let search = $scope.filter_direccion.toLowerCase();
-            return direction.indexOf(search) > -1;
+            return adress.indexOf(search) > -1;
         }
     };
 
@@ -190,8 +172,8 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             });
     }
 
-    function postClient(customer) {
-        $http.post("/api/v1/clients", customer)
+    function postClient(client) {
+        $http.post("/api/v1/clients", client)
             .then(function (response) {
                 console.log('Client added', response);
                 refresh();
@@ -201,8 +183,8 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             });
     }
 
-    function updateClient(customer) {
-        $http.put("/api/v1/clients/" + client._id, customer)
+    function updateClient(client) {
+        $http.put("/api/v1/clients/" + client._id, client)
             .then(function (response) {
                 console.log('Client updated', response);
                 refresh();
@@ -212,8 +194,8 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             });
     }
 
-    function deleteClient(customer) {
-        $http.delete("/api/v1/clients/" + customer._id)
+    function deleteClient(client) {
+        $http.delete("/api/v1/clients/" + client._id)
             .then(function (response) {
                 console.log('Client deleted', response);
                 refresh();
@@ -232,12 +214,9 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         $("#formadepago").formSelect();
         $('#tarifa').find('option[value="0"]').prop('selected', true);
         $("#tarifa").formSelect();
-        $('#rec').find('option[value="0"]').prop('selected', true);
-        $("#rec").formSelect()
         $scope.newClient = {};
         $scope.newClient.formadepago = $scope.formadepagos[0]._id;
-        $scope.newClient.tarifas = $scope.tarifas[0]._id;
-        $scope.newClient.rec = $scope.equivalencia[0]._id;
+        $scope.newClient.tarifa = $scope.tarifas[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
