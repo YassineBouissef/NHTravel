@@ -4,59 +4,55 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
     $scope.clients = [];
     $scope.formadepagos = [
         {
-            _id: "0",
+            _id: 0,
             nombre: "50/50",
             selected: true
         },
         {
-            _id: "1",
+            _id: 1,
             nombre: "Tarjeta"
         },
         {
-            _id: "2",
+            _id: 2,
             nombre: "Efectivo"
         },
         {
-            _id: "3",
+            _id: 3,
             nombre: "Cheque"
         },
         {
-            _id: "4",
+            _id: 4,
             nombre: "30 días"
         },
         {
-            _id: "5",
+            _id: 5,
             nombre: "60 días"
         },
         {
-            _id: "6",
+            _id: 6,
             nombre: "Pagaré"
         },
         {
-            _id: "7",
+            _id: 7,
             nombre: "Confirming"
-        },
-        {
-            _id: "5g573fc815249c4010458d15",
-            nombre: "8"
         }];
 
     $scope.tarifas = [
         {
-            _id: "0",
+            _id: 0,
             nombre: "General",
             selected: true
         },
         {
-            _id: "1",
+            _id: 1,
             nombre: "Encimeras"
         },
         {
-            _id: "2",
+            _id: 2,
             nombre: "Contratistas"
         },
         {
-            _id: "3",
+            _id: 3,
             nombre: "Público"
         }];
 
@@ -151,13 +147,15 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             let search = $scope.filter_dni.toLowerCase();
             return code.indexOf(search) > -1;
         } else if ($scope.filter_telefono) {
-            let phone = item.telefono.toLowerCase();
-            let search = $scope.filter_telefono.toLowerCase();
+            let phone = item.telefono.toString();
+            let search = $scope.filter_telefono.toString();
             return phone.indexOf(search) > -1;
         } else if ($scope.filter_direccion) {
-            let adress = item.domicilio.toLowerCase();
+            let address = item.domicilio.toLowerCase();
+            let location = item.poblacion.toLowerCase();
+            let state = item.provincia.toLowerCase();
             let search = $scope.filter_direccion.toLowerCase();
-            return adress.indexOf(search) > -1;
+            return address.indexOf(search) > -1 || location.indexOf(search) > -1 || state.indexOf(search) > -1;
         }
     };
 
