@@ -1,7 +1,19 @@
-angular.module("MarmolistasElPilarApp").controller("CustomersCtrl", function ($scope, $http, $location, $q) {
+angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($scope, $http, $location, $q) {
 
     let index = -1;
-    $scope.customers = [];
+    $scope.clients = [];
+    $scope.equivalencia = [
+        {
+            _id: 0,
+            nombre: SI
+            selected: true
+        }
+        {
+            _id: 1,
+            nombre: NO
+        }
+    ]
+
     $scope.formadepagos = [
         {
             _id: "0",
@@ -60,13 +72,13 @@ angular.module("MarmolistasElPilarApp").controller("CustomersCtrl", function ($s
             nombre: "Público"
         }];
 
-    $scope.saveCustomer = function () {
+    $scope.saveClient = function () {
         if ($scope.action === "Añadir") {
-            console.log("Creating customer", $scope.newCustomer);
-            postCustomer($scope.newCustomer);
+            console.log("Creating client", $scope.newClient);
+            postClient($scope.newClient);
         } else if ($scope.action === "Editar") {
-            console.log("Updating customer", $scope.newCustomer);
-            updateCustomer($scope.newCustomer);
+            console.log("Updating client", $scope.newClient);
+            updateClient($scope.newClient);
         }
         toggleForm();
     };
@@ -104,32 +116,34 @@ angular.module("MarmolistasElPilarApp").controller("CustomersCtrl", function ($s
         $("#label_direccion").removeClass('active');
     }
 
-    $scope.editCustomer = function (i) {
+    $scope.editClient = function (i) {
         index = i;
         $scope.action = "Editar";
         $scope.icon_action = "edit";
         $scope.class_button = "btn-large waves-effect waves-light orange";
-        $scope.newCustomer = $scope.customers[i];
-        $('#formadepago').find('option[value="' + $scope.newCustomer.formadepago + '"]').prop('selected', true);
+        $scope.newClient = $scope.clients[i];
+        $('#formadepago').find('option[value="' + $scope.newClient.formadepago + '"]').prop('selected', true);
         $("#formadepago").formSelect();
-        $('#tarifa').find('option[value="' + $scope.newCustomer.tarifa + '"]').prop('selected', true);
+        $('#tarifa').find('option[value="' + $scope.newClient.tarifa + '"]').prop('selected', true);
         $("#tarifa").formSelect();
-        console.log("Editing customer", $scope.newCustomer);
+        $('#rec').find('option[value="' + $scope.newClient.rec + '"]').prop('selected', true);
+        $("#rec").formSelect();
+        console.log("Editing client", $scope.newCustomer);
         toggleForm();
     };
 
-    $scope.removeCustomer = function (i) {
-        console.log("Deleting customer", $scope.customers[i]);
+    $scope.removeClient = function (i) {
+        console.log("Deleting client", $scope.clients[i]);
         let r = confirm("¿Está seguro de eliminar este cliente?\n" +
-            "DNI: " + $scope.customers[i].dni + " | Nombre: " + $scope.customers[i].nombre);
+            "DNI: " + $scope.clients[i].dni + " | Nombre: " + $scope.clients[i].nombre);
         if (r) {
-            deleteCustomer($scope.customers[i]);
+            deleteClient($scope.clients[i]);
         } else {
-            console.log("Customer not deleted");
+            console.log("Client not deleted");
         }
     };
 
-    $scope.filterCustomer = function (item) {
+    $scope.filterClient = function (item) {
         if (!$scope.filter_nombre && !$scope.filter_dni && !$scope.filter_telefono && !$scope.filter_direccion) return true;
         else if ($scope.filter_nombre && $scope.filter_dni && $scope.filter_telefono && $scope.filter_direccion) {
             // Filtrar por dni, nombre, telefono y direccion
@@ -167,62 +181,65 @@ angular.module("MarmolistasElPilarApp").controller("CustomersCtrl", function ($s
         }
     };
 
-    function getCustomers() {
-        $http.get("/api/v1/customers")
+    function getClients() {
+        $http.get("/api/v1/clients")
             .then(function (response) {
-                console.log('Customers retrieved');
-                $scope.customers = response.data;
+                console.log('Clients retrieved');
+                $scope.clients = response.data;
             }, function (error) {
-                console.log('Error retrieving customers', error);
+                console.log('Error retrieving clients', error);
                 alert("Ups! Ha ocurrido un error al recuperar los clientes, inténtalo de nuevo en unos minutos.");
             });
     }
 
-    function postCustomer(customer) {
-        $http.post("/api/v1/customers", customer)
+    function postClient(customer) {
+        $http.post("/api/v1/clients", customer)
             .then(function (response) {
-                console.log('Customer added', response);
+                console.log('Client added', response);
                 refresh();
             }, function (error) {
-                console.log('Error adding customer', error);
+                console.log('Error adding client', error);
                 alert("Ups! Ha ocurrido un error al añadir el cliente, inténtalo de nuevo en unos minutos.");
             });
     }
 
-    function updateCustomer(customer) {
-        $http.put("/api/v1/customers/" + customer._id, customer)
+    function updateClient(customer) {
+        $http.put("/api/v1/clients/" + client._id, customer)
             .then(function (response) {
-                console.log('Customer updated', response);
+                console.log('Client updated', response);
                 refresh();
             }, function (error) {
-                console.log('Error updating customer', error);
+                console.log('Error updating client', error);
                 alert("Ups! Ha ocurrido un error al editar el cliente, inténtalo de nuevo en unos minutos.");
             });
     }
 
-    function deleteCustomer(customer) {
-        $http.delete("/api/v1/customers/" + customer._id)
+    function deleteClient(customer) {
+        $http.delete("/api/v1/clients/" + customer._id)
             .then(function (response) {
-                console.log('Customer deleted', response);
+                console.log('Client deleted', response);
                 refresh();
             }, function (error) {
-                console.log('Error updating customer', error);
+                console.log('Error updating client', error);
                 alert("Ups! Ha ocurrido un error al eliminar el cliente, inténtalo de nuevo en unos minutos.");
             });
     }
 
     function refresh() {
         console.log("Refreshing");
-        getCustomers();
+        getClients();
         clearForm();
         clearFilter();
         $('#formadepago').find('option[value="0"]').prop('selected', true);
         $("#formadepago").formSelect();
         $('#tarifa').find('option[value="0"]').prop('selected', true);
         $("#tarifa").formSelect();
-        $scope.newCustomer = {};
-        $scope.newCustomer.formadepago = $scope.formadepagos[0]._id;
-        $scope.newCustomer.tarifas = $scope.tarifas[0]._id;
+        $('#rec').find('option[value="0"]').prop('selected', true);
+        $("#rec").formSelect()
+        $scope.newClient = {};
+        $scope.newClient.formadepago = $scope.formadepagos[0]._id;
+        $scope.newClient.tarifas = $scope.tarifas[0]._id;
+        $scope.newClient.rec = $scope.equivalencia[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
@@ -233,9 +250,9 @@ angular.module("MarmolistasElPilarApp").controller("CustomersCtrl", function ($s
     };
 
     function init() {
-        console.log("Starting Articles controller");
-        getCustomers();
-        $scope.newCustomer = {};
+        console.log("Starting Clients controller");
+        getClients();
+        $scope.newClient = {};
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";

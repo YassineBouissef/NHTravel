@@ -11,10 +11,10 @@
     <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
     <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
     <script src="/js/app.js" type="text/javascript"></script>
-    <script src="/js/customers-controller.js" type="text/javascript"></script>
+    <script src="/js/clients-controller.js" type="text/javascript"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
-<body ng-controller="CustomersCtrl">
+<body ng-controller="ClientsCtrl">
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
@@ -46,58 +46,62 @@
             </div>
             <div class="card-content">
                 <div class="row">
-                    <form name="addClienteForm" id="addClienteForm" class="col s12" ng-submit="saveCustomer()">
+                    <form name="addClienteForm" id="addClienteForm" class="col s12" ng-submit="saveClient()">
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="nombre" ng-model="newArticle.nombre" type="text" class="validate">
+                                <input id="nombre" ng-model="newClient.nombre" type="text" class="validate">
                                 <label for="nombre">Nombre</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="dni" ng-model="newCustomer.dni" type="text"
+                                <input id="dni" ng-model="newClient.dni" type="text"
                                        class="validate">
                                 <label for="dni">DNI</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="domicilio" ng-model="newCustomer.domicilio" type="text" class="validate">
+                                <input id="domicilio" ng-model="newClient.domicilio" type="text" class="validate">
                                 <label for="domicilio">Domicilio</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="provincia" ng-model="newCustomer.provincia" type="text" class="validate">
+                                <input id="provincia" ng-model="newClient.provincia" type="text" class="validate">
                                 <label for="provincia">Provincia</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="poblacion" ng-model="newCustomer.poblacion" type="text"
+                                <input id="poblacion" ng-model="newClient.poblacion" type="text"
                                        class="validate">
                                 <label for="poblacion">Población</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="contacto" ng-model="newCustomer.contacto" type="text" class="validate">
+                                <input id="cp" ng-model="newClient.cp" type="number"
+                                       class="validate">
+                                <label for="cp">C.P</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="email" ng-model="newClient.email" type="email"
+                                       class="validate">
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="telefono" ng-model="newClient.telefono"
+                                       type="number" class="validate">
+                                <label for="telefono">Teléfono</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="contacto" ng-model="newClient.contacto"
+                                       type="number" class="validate">
                                 <label for="contacto">Contacto</label>
                             </div>
                         </div>
-                        <div class="input-field col s6">
-                            <input id="cp" ng-model="newCustomer.cp" type="number"
-                                   class="validate">
-                            <label for="cp">C.P</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="telefono" ng-model="newCustomer.telefono"
-                                   type="number" class="validate">
-                            <label for="telefono">Teléfono</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="email" ng-model="newCustomer.email" type="number"
-                                   class="validate">
-                            <label for="email">Email</label>
-                        </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="rec" ng-model="newCustomer.rec" type="text"
-                                       class="validate">
-                                <label for="rec">Rec. Equiv. (Sí/No)</label>
+                                <select ng-model="newClient.rec" id="rec">
+                                    <option ng-repeat="rec in equivalencia" value="{{rec._id}}"
+                                            ng-selected="rec.selected == true">{{formadepago.nombre}}
+                                    </option>
+                                </select>
+                                <label>Rec. Equiv</label>
                             </div>
-                            <div class="input-field col s12">
-                                <select ng-model="newCustomer.formadepago" id="formadepago">
+                            <div class="input-field col s6">
+                                <select ng-model="newClient.formadepago" id="formadepago">
                                     <option ng-repeat="formadepago in formadepagos" value="{{formadepago._id}}"
                                             ng-selected="formadepago.selected == true">{{formadepago.nombre}}
                                     </option>
@@ -106,8 +110,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s12">
-                                <select ng-model="newCustomer.tarifa" id="tarifa">
+                            <div class="input-field col s6">
+                                <select ng-model="newClient.tarifa" id="tarifa">
                                     <option ng-repeat="tarifa in tarifas" value="{{tarifa._id}}"
                                             ng-selected="tarifa.selected == true">{{tarifa.nombre}}
                                     </option>
@@ -153,14 +157,14 @@
                         <div class="col s6">
                             <div class="input-field">
                                 <i class="material-icons prefix">font_download</i>
-                                <input id="search_telefono" type="text" class="validate" ng-model="filter_nombre">
+                                <input id="search_telefono" type="text" class="validate" ng-model="filter_telefono">
                                 <label id="label_telefono" for="search_telefono">Teléfono</label>
                             </div>
                         </div>
                         <div class="col s6">
                             <div class="input-field">
                                 <i class="material-icons prefix">font_download</i>
-                                <input id="search_direccion" type="text" class="validate" ng-model="filter_nombre">
+                                <input id="search_direccion" type="text" class="validate" ng-model="filter_direccion">
                                 <label id="label_direccion" for="search_direccion">Dirección</label>
                             </div>
                         </div>
@@ -175,17 +179,17 @@
                     <div class="collapsible-header"><h5>Clientes</h5></div>
                     <div class="collapsible-body">
                         <ul class="collapsible">
-                            <li ng-repeat="cliente in customers | filter:filterCustomer track by $index">
+                            <li ng-repeat="cliente in clients | filter:filterClient track by $index">
                                 <div class="collapsible-header item row item">
                                     <div class="col s6 left-align">
                                         <b>{{cliente.dni}} - {{cliente.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
                                         <a href="#!"><i class="material-icons orange-text"
-                                                        ng-click="editCustomer($index)"
+                                                        ng-click="editClient($index)"
                                                         onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
-                                               ng-click="removeCustomer($index)" onclick="event.stopPropagation();">delete</i></a>
+                                               ng-click="removeClient($index)" onclick="event.stopPropagation();">delete</i></a>
                                     </div>
                                 </div>
                                 <div class="collapsible-body">
@@ -197,35 +201,26 @@
                                             <div class="col s4">
                                                 <b>DNI:</b> {{cliente.dni}}
                                             </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col s4">
                                                 <b>Domicilio:</b> {{cliente.domicilio}}
                                             </div>
                                             <div class="col s4">
                                                 <b>Provincia:</b> {{cliente.provincia}}
                                             </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col s4">
                                                 <b>T. Población:</b> {{cliente.poblacion}}
                                             </div>
                                             <div class="col s4">
-                                                <b>T. Contacto:</b> {{cliente.contacto}}
-                                            </div>
-                                            <div class="col s4">
                                                 <b>T. C.P:</b> {{cliente.cp}}
                                             </div>
-                                        </div>
-                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>T. Email:</b> {{cliente.email}}
+                                            </div>
                                             <div class="col s4">
                                                 <b>T. Teléfono:</b> {{cliente.telefono}}
                                             </div>
                                             <div class="col s4">
-                                                <b>Email:</b> {{cliente.email}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>Rec. Equiv. (Sí/No):</b> {{cliente.rec}}
+                                                <b>T. Contacto:</b> {{cliente.contacto}}
                                             </div>
                                         </div>
                                     </div>
