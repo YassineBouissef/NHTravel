@@ -5,14 +5,14 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
     $scope.equivalencia = [
         {
             _id: 0,
-            nombre: SI
+            nombre: "SI",
             selected: true
-        }
+        },
         {
             _id: 1,
-            nombre: NO
+            nombre: "NO"
         }
-    ]
+    ];
 
     $scope.formadepagos = [
         {
@@ -152,10 +152,10 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             let code = item.dni.toLowerCase();
             let searchCode = $scope.filter_dni.toLowerCase();
             let telephone = item.telefono.toLowerCase();
-            let searchTelephone =  $scope.filter_telefono.toLowerCase();
+            let searchTelephone = $scope.filter_telefono.toLowerCase();
             let direction = item.direccion.toLowerCase();
             let searchDirection = $scope.filter_direccion.toLowerCase();
-            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || telephone.indexOf(searchTelephone) > -1 ||  direction.indexOf(searchDirection) > -1;
+            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || telephone.indexOf(searchTelephone) > -1 || direction.indexOf(searchDirection) > -1;
         } else if ($scope.filter_nombre) {
             // Filtrar por nombre
             let text = item.nombre.toLowerCase();
@@ -166,14 +166,12 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             let code = item.dni.toLowerCase();
             let search = $scope.filter_dni.toLowerCase();
             return code.indexOf(search) > -1;
-        }
-           else if ($scope.filter_telefono) {
+        } else if ($scope.filter_telefono) {
             // Filtrar por dni
             let telephone = item.telefono.toLowerCase();
             let search = $scope.filter_telefono.toLowerCase();
             return telephone.indexOf(search) > -1;
-        }
-           else if ($scope.filter_direccion) {
+        } else if ($scope.filter_direccion) {
             // Filtrar por dni
             let direction = item.direccion.toLowerCase();
             let search = $scope.filter_direccion.toLowerCase();

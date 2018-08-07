@@ -57,6 +57,8 @@
                                        class="validate">
                                 <label for="dni">DNI</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
                                 <input id="domicilio" ng-model="newClient.domicilio" type="text" class="validate">
                                 <label for="domicilio">Domicilio</label>
@@ -65,6 +67,8 @@
                                 <input id="provincia" ng-model="newClient.provincia" type="text" class="validate">
                                 <label for="provincia">Provincia</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
                                 <input id="poblacion" ng-model="newClient.poblacion" type="text"
                                        class="validate">
@@ -75,6 +79,8 @@
                                        class="validate">
                                 <label for="cp">C.P</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
                                 <input id="email" ng-model="newClient.email" type="email"
                                        class="validate">
@@ -84,11 +90,6 @@
                                 <input id="telefono" ng-model="newClient.telefono"
                                        type="number" class="validate">
                                 <label for="telefono">Teléfono</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input id="contacto" ng-model="newClient.contacto"
-                                       type="number" class="validate">
-                                <label for="contacto">Contacto</label>
                             </div>
                         </div>
                         <div class="row">
@@ -110,6 +111,11 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="input-field col s6">
+                                <input id="contacto" ng-model="newClient.contacto"
+                                       type="number" class="validate">
+                                <label for="contacto">Contacto</label>
+                            </div>
                             <div class="input-field col s6">
                                 <select ng-model="newClient.tarifa" id="tarifa">
                                     <option ng-repeat="tarifa in tarifas" value="{{tarifa._id}}"
@@ -154,16 +160,18 @@
                                 <label id="label_name" for="search_name">Nombre</label>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col s6">
                             <div class="input-field">
-                                <i class="material-icons prefix">font_download</i>
+                                <i class="material-icons prefix">local_phone</i>
                                 <input id="search_telefono" type="text" class="validate" ng-model="filter_telefono">
                                 <label id="label_telefono" for="search_telefono">Teléfono</label>
                             </div>
                         </div>
                         <div class="col s6">
                             <div class="input-field">
-                                <i class="material-icons prefix">font_download</i>
+                                <i class="material-icons prefix">location_city</i>
                                 <input id="search_direccion" type="text" class="validate" ng-model="filter_direccion">
                                 <label id="label_direccion" for="search_direccion">Dirección</label>
                             </div>
@@ -189,7 +197,8 @@
                                                         ng-click="editClient($index)"
                                                         onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
-                                               ng-click="removeClient($index)" onclick="event.stopPropagation();">delete</i></a>
+                                               ng-click="removeClient($index)"
+                                               onclick="event.stopPropagation();">delete</i></a>
                                     </div>
                                 </div>
                                 <div class="collapsible-body">

@@ -39,24 +39,38 @@ const server = http.createServer(app);
 
 app.use(baseAPI + '/articles', articles);
 app.use(baseAPI + '/groups', groups);
+app.use(baseAPI + '/clients', clients);
+app.use(baseAPI + '/providers', providers);
 
-
-groupsService.connectDb(function (err){
+providersService.connectDb(function (err) {
     if (err) {
-            console.log("Could not connect with MongoDB - groupsService");
-            process.exit(1);
+        console.log("Could not connect with MongoDB - providersService");
+        process.exit(1);
     }
 
-    articlesService.connectDb(function (err) {
+    clientsService.connectDb(function (err) {
         if (err) {
-            console.log("Could not connect with MongoDB - articlesService");
+            console.log("Could not connect with MongoDB - clientsService");
             process.exit(1);
         }
 
-        server.listen(PORT, function () {
-            console.log('Server with GUI up and running on localhost:' + PORT);
-        });
-});
+        groupsService.connectDb(function (err) {
+            if (err) {
+                console.log("Could not connect with MongoDB - groupsService");
+                process.exit(1);
+            }
 
-})
+            articlesService.connectDb(function (err) {
+                if (err) {
+                    console.log("Could not connect with MongoDB - articlesService");
+                    process.exit(1);
+                }
+
+                server.listen(PORT, function () {
+                    console.log('Server with GUI up and running on localhost:' + PORT);
+                });
+            });
+        });
+    });
+});
 
