@@ -15,19 +15,19 @@ angular.module("MarmolistasElPilarApp").controller("ProvidersCtrl", function ($s
     };
 
     function toggleForm() {
-        $("form#addProviderForm label").each(function () {
+        $("form#addProveedorForm label").each(function () {
             $(this).toggleClass('active');
         });
-        $("form#addProviderForm :input").each(function () {
+        $("form#addProveedorForm :input").each(function () {
             $(this).toggleClass('valid' || 'invalid');
         });
     }
 
     function clearForm() {
-        $("form#addProviderForm label").each(function () {
+        $("form#addProveedorForm label").each(function () {
             $(this).removeClass('active');
         });
-        $("form#addProviderForm :input").each(function () {
+        $("form#addProveedorForm :input").each(function () {
             $(this).removeClass('valid' || 'invalid');
         });
     }
@@ -39,15 +39,15 @@ angular.module("MarmolistasElPilarApp").controller("ProvidersCtrl", function ($s
         $scope.filter_direccion = "";
         $("#search_cif").removeClass('valid');
         $("#search_name").removeClass('valid');
-        $("#search_telefono").removeClass('valid');
-        $("#search_direccion").removeClass('valid');
+        $("#search_phone").removeClass('valid');
+        $("#search_adress").removeClass('valid');
         $("#label_cif").removeClass('active');
         $("#label_name").removeClass('active');
-        $("#label_telefono").removeClass('active');
-        $("#label_direccion").removeClass('active');
+        $("#label_phone").removeClass('active');
+        $("#label_adress").removeClass('active');
     }
 
-    $scope.editCustomer = function (i) {
+    $scope.editProvider = function (i) {
         index = i;
         $scope.action = "Editar";
         $scope.icon_action = "edit";
@@ -59,8 +59,8 @@ angular.module("MarmolistasElPilarApp").controller("ProvidersCtrl", function ($s
 
     $scope.removeProvider = function (i) {
         console.log("Deleting provider", $scope.providers[i]);
-        let r = confirm("¿Está seguro de eliminar este proovedor?\n" +
-            "DNI: " + $scope.providers[i].cif + " | Nombre: " + $scope.providers[i].nombre);
+        let r = confirm("¿Está seguro de eliminar este proveedor?\n" +
+            "CIF: " + $scope.providers[i].cif + " | Nombre: " + $scope.providers[i].nombre);
         if (r) {
             deleteProvider($scope.providers[i]);
         } else {
@@ -70,39 +70,35 @@ angular.module("MarmolistasElPilarApp").controller("ProvidersCtrl", function ($s
 
     $scope.filterProvider = function (item) {
         if (!$scope.filter_nombre && !$scope.filter_cif && !$scope.filter_telefono && !$scope.filter_direccion) return true;
-        else if ($scope.filter_nombre && $scope.filter_dni && $scope.filter_telefono && $scope.filter_direccion) {
+        else if ($scope.filter_nombre && $scope.filter_cif && $scope.filter_telefono && $scope.filter_direccion) {
             // Filtrar por dni, nombre, telefono y direccion
             let text = item.nombre.toLowerCase();
             let search = $scope.filter_nombre.toLowerCase();
             let code = item.cif.toLowerCase();
             let searchCode = $scope.filter_cif.toLowerCase();
-            let telephone = item.telefono.toLowerCase();
-            let searchTelephone =  $scope.filter_telefono.toLowerCase();
-            let direction = item.direccion.toLowerCase();
-            let searchDirection = $scope.filter_direccion.toLowerCase();
-            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || telephone.indexOf(searchTelephone) > -1 ||  direction.indexOf(searchDirection) > -1;
+            let phone = item.telefono.toLowerCase();
+            let searchPhone = $scope.filter_telefono.toLowerCase();
+            let address = item.domicilio.toLowerCase();
+            let searchAddress = $scope.filter_direccion.toLowerCase();
+            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || phone.indexOf(searchPhone) > -1 || address.indexOf(searchAddress) > -1;
         } else if ($scope.filter_nombre) {
-            // Filtrar por nombre
             let text = item.nombre.toLowerCase();
             let search = $scope.filter_nombre.toLowerCase();
             return text.indexOf(search) > -1;
         } else if ($scope.filter_cif) {
-            // Filtrar por cif
-            let code = item.dni.toLowerCase();
+            let code = item.cif.toLowerCase();
             let search = $scope.filter_cif.toLowerCase();
             return code.indexOf(search) > -1;
-        }
-           else if ($scope.filter_telefono) {
-            // Filtrar por dni
-            let telephone = item.telefono.toLowerCase();
-            let search = $scope.filter_telefono.toLowerCase();
-            return telephone.indexOf(search) > -1;
-        }
-           else if ($scope.filter_direccion) {
-            // Filtrar por dni
-            let direction = item.direccion.toLowerCase();
+        } else if ($scope.filter_telefono) {
+            let phone = item.telefono.toString();
+            let search = $scope.filter_telefono.toString();
+            return phone.indexOf(search) > -1;
+        } else if ($scope.filter_direccion) {
+            let address = item.domicilio.toLowerCase();
+            let location = item.poblacion.toLowerCase();
+            let state = item.provincia.toLowerCase();
             let search = $scope.filter_direccion.toLowerCase();
-            return direction.indexOf(search) > -1;
+            return address.indexOf(search) > -1 || location.indexOf(search) > -1 || state.indexOf(search) > -1;
         }
     };
 
@@ -166,7 +162,7 @@ angular.module("MarmolistasElPilarApp").controller("ProvidersCtrl", function ($s
     };
 
     function init() {
-        console.log("Starting Articles controller");
+        console.log("Starting Providers controller");
         getProviders();
         $scope.newProvider = {};
         $scope.action = "Añadir";

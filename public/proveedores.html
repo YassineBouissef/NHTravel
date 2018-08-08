@@ -25,7 +25,7 @@
                 <li><a href="articulos.html">Artículos</a></li>
                 <li><a href="grupos.html">Grupos</a></li>
                 <li><a href="clientes.html">Clientes</a></li>
-                <li class="active"><a href="#">Proveedores</a></li>
+                <li class="active"><a href="3">Proveedores</a></li>
             </ul>
         </div>
     </nav>
@@ -36,7 +36,7 @@
     <li><a href="articulos.html">Artículos</a></li>
     <li><a href="grupos.html">Grupos</a></li>
     <li><a href="clientes.html">Clientes</a></li>
-    <li class="active"><a href="#">Proveedores</a></li>
+    <li class="active"><a href="3">Proveedores</a></li>
 </ul>
 <div class="row">
     <div class="col s6">
@@ -53,44 +53,46 @@
                                 <label for="nombre">Nombre</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="cif" ng-model="newProvider.cif" type="text"
-                                       class="validate">
+                                <input id="cif" ng-model="newProvider.cif" type="text" class="validate">
                                 <label for="cif">CIF</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
                                 <input id="domicilio" ng-model="newProvider.domicilio" type="text" class="validate">
                                 <label for="domicilio">Domicilio</label>
                             </div>
                             <div class="input-field col s6">
+                                <input id="poblacion" ng-model="newProvider.poblacion" type="text" class="validate">
+                                <label for="poblacion">Población</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
                                 <input id="provincia" ng-model="newProvider.provincia" type="text" class="validate">
                                 <label for="provincia">Provincia</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="poblacion" ng-model="newProvider.poblacion" type="text"
-                                       class="validate">
-                                <label for="poblacion">Población</label>
+                                <input id="cp" ng-model="newProvider.cp" type="number" class="validate">
+                                <label for="cp">C.P</label>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="email" ng-model="newProvider.email" type="email" class="validate">
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="telefono" ng-model="newProvider.telefono" type="number" class="validate">
+                                <label for="telefono">Teléfono</label>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
                                 <input id="contacto" ng-model="newProvider.contacto" type="text" class="validate">
                                 <label for="contacto">Contacto</label>
                             </div>
                         </div>
-                        <div class="input-field col s6">
-                            <input id="cp" ng-model="newCustomer.cp" type="number"
-                                   class="validate">
-                            <label for="cp">C.P</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="telefono" ng-model="newCustomer.telefono"
-                                   type="number" class="validate">
-                            <label for="telefono">Teléfono</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="email" ng-model="newCustomer.email" type="number"
-                                   class="validate">
-                            <label for="email">Email</label>
-                        </div>
-                    </form>
                         <div class="center">
                             <button ng-class="class_button" type="submit" name="action">
                                 {{action}}
@@ -126,18 +128,20 @@
                                 <label id="label_name" for="search_name">Nombre</label>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col s6">
                             <div class="input-field">
-                                <i class="material-icons prefix">font_download</i>
-                                <input id="search_telefono" type="text" class="validate" ng-model="filter_nombre">
-                                <label id="label_telefono" for="search_telefono">Teléfono</label>
+                                <i class="material-icons prefix">local_phone</i>
+                                <input id="search_phone" type="number" class="validate" ng-model="filter_telefono">
+                                <label id="label_phone" for="search_phone">Teléfono</label>
                             </div>
                         </div>
                         <div class="col s6">
                             <div class="input-field">
-                                <i class="material-icons prefix">font_download</i>
-                                <input id="search_direccion" type="text" class="validate" ng-model="filter_nombre">
-                                <label id="label_direccion" for="search_direccion">Dirección</label>
+                                <i class="material-icons prefix">location_city</i>
+                                <input id="search_adress" type="text" class="validate" ng-model="filter_direccion">
+                                <label id="label_adress" for="search_adress">Dirección</label>
                             </div>
                         </div>
                     </div>
@@ -154,20 +158,21 @@
                             <li ng-repeat="proveedor in providers | filter:filterProvider track by $index">
                                 <div class="collapsible-header item row item">
                                     <div class="col s6 left-align">
-                                        <b>{{proveedor.dni}} - {{proveedor.nombre}}</b>
+                                        <b>{{proveedor.cif}} - {{proveedor.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
                                         <a href="#!"><i class="material-icons orange-text"
                                                         ng-click="editProvider($index)"
                                                         onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
-                                               ng-click="removeProvider($index)" onclick="event.stopPropagation();">delete</i></a>
+                                               ng-click="removeProvider($index)"
+                                               onclick="event.stopPropagation();">delete</i></a>
                                     </div>
                                 </div>
                                 <div class="collapsible-body">
                                     <div class="row">
                                         <div class="row">
-                                            <div class="col s4">
+                                            <div class="col s8">
                                                 <b>Nombre:</b> {{proveedor.nombre}}
                                             </div>
                                             <div class="col s4">
@@ -179,26 +184,26 @@
                                                 <b>Domicilio:</b> {{proveedor.domicilio}}
                                             </div>
                                             <div class="col s4">
+                                                <b>Población:</b> {{proveedor.poblacion}}
+                                            </div>
+                                            <div class="col s4">
                                                 <b>Provincia:</b> {{proveedor.provincia}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>T. Población:</b> {{proveedor.poblacion}}
+                                                <b>C.P:</b> {{proveedor.cp}}
                                             </div>
                                             <div class="col s4">
-                                                <b>T. Contacto:</b> {{proveedor.contacto}}
+                                                <b>Email:</b> {{proveedor.email}}
                                             </div>
                                             <div class="col s4">
-                                                <b>T. C.P:</b> {{proveedor.cp}}
+                                                <b>Teléfono:</b> {{proveedor.telefono}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>T. Teléfono:</b> {{proveedor.telefono}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>Email:</b> {{proveedor.email}}
+                                                <b>Contacto:</b> {{proveedor.contacto}}
                                             </div>
                                         </div>
                                     </div>
