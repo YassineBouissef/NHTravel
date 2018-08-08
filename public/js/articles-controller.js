@@ -21,9 +21,56 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         toggleForm();
     };
 
+    $scope.updateTarifas = function () {
+        if ($scope.newArticle.grupo != "0") {
+            $scope.tarifa_general = $scope.groups.find(x => x._id === $scope.newArticle.grupo).encimera_ml;
+            $scope.tarifa_encimera = $scope.groups.find(x => x._id === $scope.newArticle.grupo).encimera_ml;
+
+            $scope.newArticle.tarifas = [
+                {
+                    nombre: "Tarifa General",
+                    valor: $scope.tarifa_general
+                },
+                {
+                    nombre: "Tarifa Encimera (35%)",
+                    valor: $scope.tarifa_general * 1.35
+                }
+            ];
+
+            $("label[for=tarifa_general]").each(function () {
+                $(this).addClass('active');
+            });
+            $("label[for=tarifa_encimera]").each(function () {
+                $(this).addClass('active');
+            });
+            $("#tarifa_general").each(function () {
+                $(this).addClass('valid');
+            });
+            $("#tarifa_encimera").each(function () {
+                $(this).addClass('valid');
+            });
+        } else {
+            $scope.newArticle.tarifas = [];
+            $("label[for=tarifa_general]").each(function () {
+                $(this).removeClass('active');
+            });
+            $("label[for=tarifa_encimera]").each(function () {
+                $(this).removeClass('active');
+            });
+            $("#tarifa_general").each(function () {
+                $(this).removeClass('valid');
+            });
+            $("#tarifa_encimera").each(function () {
+                $(this).removeClass('valid');
+            });
+        }
+        $('#grupo').formSelect();
+        console.log($scope.newArticle);
+    };
+
     function setTarifasName() {
         $scope.newArticle.tarifas[0].nombre = "Tarifa General";
-        $scope.newArticle.tarifas[1].nombre = "Tarifa Encimera";
+        $scope.newArticle.tarifas[1].nombre = "Tarifa Encimera (35%)";
         $scope.newArticle.tarifas[2].nombre = "Tarifa Contratista";
         $scope.newArticle.tarifas[3].nombre = "Tarifa Público";
     }
@@ -55,7 +102,6 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         $("#label_name").removeClass('active');
     }
 
-
     $scope.editArticle = function (i) {
         index = i;
         $scope.action = "Editar";
@@ -63,7 +109,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         $scope.class_button = "btn-large waves-effect waves-light orange";
         $scope.newArticle = $scope.articles[i];
         $('#grupo').find('option[value="' + $scope.newArticle.grupo + '"]').prop('selected', true);
-        $("#grupo").formSelect();
+        $('#grupo').formSelect();
         console.log("Editing article", $scope.newArticle);
         toggleForm();
     };
@@ -117,8 +163,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             .then(function (response) {
                 console.log('Groups retrieved');
                 $scope.groups.push(...response.data);
-                setTimeout(function(){
-                    console.log($scope.groups);
+                setTimeout(function () {
                     $('#grupo').find('option[value="0"]').prop('selected', true);
                     $('#grupo').formSelect();
                 }, 2000);
@@ -183,11 +228,11 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         getArticles();
         getGroups();
         $scope.newArticle = {};
-        //$scope.newArticle.grupo = $scope.groups[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
     }
 
     init();
-});
+})
+;

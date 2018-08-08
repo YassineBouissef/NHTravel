@@ -69,16 +69,28 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="input-field col s12">
+                                <select ng-model="newArticle.grupo" id="grupo" ng-change="updateTarifas()">
+                                    <option ng-repeat="group in groups" value="{{group._id}}"
+                                            ng-selected="group.selected == true">{{group.nombre}}
+                                    </option>
+                                </select>
+                                <label>Grupo (Encimeras)</label>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
-                                <input id="tarifa_general" ng-model="newArticle.tarifas[0].valor" type="number"
-                                       class="validate">
+                                <input id="tarifa_general" ng-model="newArticle.tarifas[0].valor"
+                                       type="number" class="validate">
                                 <label for="tarifa_general">Tarifa General</label>
                             </div>
                             <div class="input-field col s6">
                                 <input id="tarifa_encimera" ng-model="newArticle.tarifas[1].valor" type="number"
                                        class="validate">
-                                <label for="tarifa_encimera">Tarifa Encimera</label>
+                                <label for="tarifa_encimera">Tarifa Encimera (35%)</label>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="input-field col s6">
                                 <input id="tarifa_contratista" ng-model="newArticle.tarifas[2].valor"
                                        type="number" class="validate">
@@ -92,7 +104,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="unidad" ng-model="newArticle.unidad" type="text" class="validate">
+                                <input id="unidad" ng-model="newArticle.unidad" type="text" class="validate" required>
                                 <label for="unidad">Unidad</label>
                             </div>
                             <div class="input-field col s6">
@@ -106,16 +118,6 @@
                                            class="validate">
                                     <label for="ancho">Ancho</label>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <select ng-model="newArticle.grupo" id="grupo">
-                                    <option ng-repeat="group in groups" value="{{group._id}}"
-                                            ng-selected="group.selected == true">{{group.nombre}}
-                                    </option>
-                                </select>
-                                <label>Grupo (Encimeras)</label>
                             </div>
                         </div>
                         <div class="center">
@@ -204,7 +206,7 @@
                                                 <b>T. General:</b> {{articulo.tarifas[0].valor}}
                                             </div>
                                             <div class="col s4">
-                                                <b>T. Encimera:</b> {{articulo.tarifas[1].valor}}
+                                                <b>T. Encimera (35%):</b> {{articulo.tarifas[1].valor}}
                                             </div>
                                             <div class="col s4">
                                                 <b>T. Contratista:</b> {{articulo.tarifas[2].valor}}
