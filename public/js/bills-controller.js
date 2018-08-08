@@ -82,7 +82,7 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         console.log("Setting item", $scope.articles[i]);
         $scope.selectedItem = $scope.articles[i];
         setTimeout(function () {
-            $("select#tarifa").prop('selectedIndex', $scope.client.tarifa + 1);
+            $('select#tarifa').prop('selectedIndex', $scope.client.tarifa + 1);
             $('#tarifa').formSelect();
         }, 500);
         $scope.newItem = {

@@ -101,7 +101,7 @@
                             </div>
                             <div class="input-field col s6">
                                 <select ng-model="newClient.formadepago" id="formadepago">
-                                    <option ng-repeat="formadepago in formadepagos" value="{{formadepago._id}}"
+                                    <option ng-repeat="formadepago in formadepagos" ng-value="formadepago._id"
                                             ng-selected="formadepago.selected == true">{{formadepago.nombre}}
                                     </option>
                                 </select>
@@ -116,8 +116,7 @@
                             </div>
                             <div class="input-field col s6">
                                 <select ng-model="newClient.tarifa" id="tarifa">
-                                    <option ng-repeat="tarifa in tarifas" value="{{tarifa._id}}"
-                                            ng-selected="tarifa.selected == true">{{tarifa.nombre}}
+                                    <option ng-repeat="tarifa in tarifas" ng-value="tarifa._id">{{tarifa.nombre}}
                                     </option>
                                 </select>
                                 <label>Tarifas</label>
@@ -261,6 +260,9 @@
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
+        $('select').formSelect();
+        $('select#formadepago').prop('selectedIndex', 1);
+        $('select#tarifa').prop('selectedIndex', 1);
         $('select').formSelect();
         $('.collapsible').collapsible();
     });

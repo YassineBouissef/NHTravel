@@ -109,7 +109,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         $('#formadepago').find('option[value="' + $scope.newClient.formadepago + '"]').prop('selected', true);
         $("#formadepago").formSelect();
         $('#tarifa').find('option[value="' + $scope.newClient.tarifa + '"]').prop('selected', true);
-        $("#tarifa").formSelect();;
+        $("#tarifa").formSelect();
         console.log("Editing client", $scope.newCustomer);
         toggleForm();
     };
@@ -135,9 +135,9 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
             let searchCode = $scope.filter_dni.toLowerCase();
             let phone = item.telefono.toLowerCase();
             let searchPhone = $scope.filter_telefono.toLowerCase();
-            let adress = item.domicilio.toLowerCase();
-            let searchAdress = $scope.filter_direccion.toLowerCase();
-            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || telephone.indexOf(searchPhone) > -1 || direction.indexOf(searchAdress) > -1;
+            let address = item.domicilio.toLowerCase();
+            let searchAddress = $scope.filter_direccion.toLowerCase();
+            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || phone.indexOf(searchPhone) > -1 || address.indexOf(searchAddress) > -1;
         } else if ($scope.filter_nombre) {
             let text = item.nombre.toLowerCase();
             let search = $scope.filter_nombre.toLowerCase();
@@ -208,10 +208,9 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         getClients();
         clearForm();
         clearFilter();
-        $('#formadepago').find('option[value="0"]').prop('selected', true);
-        $("#formadepago").formSelect();
-        $('#tarifa').find('option[value="0"]').prop('selected', true);
-        $("#tarifa").formSelect();
+        $('select#formadepago').prop('selectedIndex', 1);
+        $('select#tarifa').prop('selectedIndex', 1);
+        $('select').formSelect();
         $scope.newClient = {};
         $scope.newClient.formadepago = $scope.formadepagos[0]._id;
         $scope.newClient.tarifa = $scope.tarifas[0]._id;
@@ -228,6 +227,8 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         console.log("Starting Clients controller");
         getClients();
         $scope.newClient = {};
+        $scope.newClient.formadepago = $scope.formadepagos[0]._id;
+        $scope.newClient.tarifa = $scope.tarifas[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
