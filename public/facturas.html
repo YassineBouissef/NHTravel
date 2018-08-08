@@ -53,23 +53,43 @@
                         <th>PRECIO</th>
                         <th>DESCUENTO</th>
                         <th>TOTAL</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in items track by $index">
-                        <td>{{item.articulo.nombre}}</td>
-                        <td>{{item.unidades}}</td>
-                        <td>{{item.dimension.alto}} * {{item.dimension.ancho}}</td>
-                        <td>{{item.cantidad}} M2</td>
-                        <td>{{item.precio}} €</td>
-                        <td>{{item.descuento}} %</td>
-                        <td>{{item.total}} €</td>
+                        <td><p ng-if="item.articulo.nombre">{{item.articulo.nombre}}</p></td>
+                        <td><p ng-if="">{{item.unidades}}</p></td>
+                        <td><p ng-if="item.dimension.alto && item.dimension.ancho">{{item.dimension.alto}} *
+                            {{item.dimension.ancho}}</p></td>
+                        <td><p ng-if="item.cantidad">{{item.cantidad}} M2</p></td>
+                        <td><p ng-if="item.precio">{{item.precio}} €</p></td>
+                        <td><p ng-if="item.descuento">{{item.descuento}} %</p></td>
+                        <td><p ng-if="item.total">{{item.total}} €</p></td>
+                        <td><a href="#!">
+                            <i class="material-icons red-text"
+                               ng-click="removeItem($index)" onclick="event.stopPropagation();">delete</i>
+                        </a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
+
             <div class="card-content">
+                <hr>
+                <br>
                 <div class="row">
+                    <div class="input-field col s8">
+                        <input type="text" id="custom_item"
+                               ng-model="newCustomItem.articulo.nombre"
+                               placeholder="Añadir entrada personalizada">
+                        <label id="custom_label" for="custom_item">Entrada Personalizada</label>
+                    </div>
+                    <div class="input-field col s1">
+                        <a class="btn-floating btn-medium waves-effect waves-light orange"
+                           ng-click="addCustomItem()" onclick="event.stopPropagation();"><i
+                                class="material-icons">add</i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,21 +98,41 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h5>Cliente: {{client.nombre}}</h5>
-                    <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
+                    <div class="col s6">
+                        <h5>Cliente: {{client.nombre}}</h5>
+                        <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
+                        <h6>Rec. Equivalencia: {{client.rec ? 'Sí' : 'No'}}</h6>
+                    </div>
+                    <div class="col s6">
+                        <div class="row">
+                            <div class="col s6">
+                                <a class="waves-effect waves-light btn blue">Albarán</a>
+                            </div>
+                            <div class="col s6">
+                                <a class="waves-effect waves-light btn blue">Presupuesto</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s6">
+                                <a class="waves-effect waves-light btn blue">Factura</a>
+                            </div>
+                            <div class="col s6">
+                                <a class="waves-effect waves-light btn blue">Factura P.</a>
+                            </div>
+                        </div>
+                    </div>
                     <br>
                     <div class="row">
                         <div class="col s3">
-                            <a class="waves-effect waves-light btn blue">Albarán</a>
                         </div>
                         <div class="col s3">
-                            <a class="waves-effect waves-light btn blue">Presupuesto</a>
+
                         </div>
                         <div class="col s3">
-                            <a class="waves-effect waves-light btn blue">Factura</a>
+
                         </div>
                         <div class="col s3">
-                            <a class="waves-effect waves-light btn blue">Factura P.</a>
+
                         </div>
                     </div>
                 </div>
@@ -196,15 +236,15 @@
                     <input id="unidades" ng-model="newItem.unidades" type="number" class="validate" placeholder="1">
                     <label for="unidades">Cantidad</label>
                 </div>
-                <div class="input-field col s12">
+                <div class="input-field col s12" ng-if="selectedItem.unidad.toUpperCase()==='M2'">
                     <div class="row">
                         <div class="col s6">
-                            <input id="alto" ng-model="newItem.dimension.alto" type="text"
+                            <input id="alto" ng-model="newItem.dimension.alto" type="number"
                                    class="validate" placeholder="100">
                             <label for="alto">Alto</label>
                         </div>
                         <div class="col s6">
-                            <input id="ancho" ng-model="newItem.dimension.ancho" type="text"
+                            <input id="ancho" ng-model="newItem.dimension.ancho" type="number"
                                    class="validate" placeholder="100">
                             <label for="ancho">Ancho</label>
                         </div>
@@ -212,7 +252,9 @@
                 </div>
                 <div class="input-field col s12">
                     <select ng-model="newItem.tarifa" id="tarifa">
-                        <option ng-repeat="tarifa in selectedItem.tarifas track by $index" value="{{tarifa.valor}}">{{tarifa.nombre}}</option>
+                        <option ng-repeat="tarifa in selectedItem.tarifas track by $index" value="{{tarifa.valor}}">
+                            {{tarifa.nombre}}
+                        </option>
                     </select>
                     <label>Tarifa</label>
                 </div>
@@ -245,14 +287,20 @@
                 <td><p ng-if="newItem.unidades">{{newItem.unidades}}</p></td>
                 <td><p ng-if="newItem.dimension.alto && newItem.dimension.ancho">{{newItem.dimension.alto}} *
                     {{newItem.dimension.ancho}}</p></td>
-                <td><p ng-if="newItem.dimension.alto && newItem.dimension.ancho">{{(newItem.dimension.alto *
-                    newItem.dimension.ancho)/10000}} M2</p></td>
+                <td><p ng-if="newItem.dimension.alto && newItem.dimension.ancho && newItem.unidades">
+                    {{((newItem.dimension.alto *
+                    newItem.dimension.ancho)/10000) * newItem.unidades}} M2</p></td>
                 <td><p ng-if="newItem.tarifa">{{newItem.tarifa}} €</p></td>
                 <td><p ng-if="typeof(newItem.descuento)!='undefined'">{{newItem.descuento}} %</p></td>
-                <td>
+                <td ng-if="selectedItem.unidad.toUpperCase()==='M2'">
                     <p ng-if="newItem.unidades && newItem.dimension.alto && newItem.dimension.ancho && newItem.tarifa && typeof(newItem.descuento)!='undefined'">
-                        {{(( ( newItem.dimension.alto * newItem.dimension.ancho ) / 10000 ) * newItem.tarifa ) * ( (100 -
-                        newItem.descuento) / 100) * newItem.unidades | number : 2}} €</p>
+                        {{(( ( newItem.dimension.alto * newItem.dimension.ancho ) / 10000 ) * newItem.tarifa )
+                        * ( (100 - newItem.descuento) / 100) * newItem.unidades | number : 2}} €</p>
+                </td>
+                <td ng-if="selectedItem.unidad.toUpperCase()===('ML' || 'UNIDAD')">
+                    <p ng-if="newItem.unidades && newItem.tarifa && typeof(newItem.descuento)!='undefined'">
+                        {{ newItem.tarifa * newItem.unidades * ((100 - newItem.descuento) / 100) | number :2 }}€
+                    </p>
                 </td>
             </tr>
             </tbody>
