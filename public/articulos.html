@@ -195,6 +195,9 @@
                                             <div class="col s4">
                                                 <b>Unidad:</b> {{articulo.unidad}}
                                             </div>
+                                            <div class="col s4">
+                                                <b>Grupo:</b> {{(groups | filter: {'_id': articulo.grupo})[0].nombre }}
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">

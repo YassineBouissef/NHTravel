@@ -1,5 +1,6 @@
 angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope, $http, $location, $q) {
     let index;
+    $scope.groups = [];
     $scope.tarifas = [
         {
             id: 0,
@@ -104,12 +105,24 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
             });*/
     }
 
+    function getGroups() {
+        $http.get("/api/v1/groups")
+            .then(function (response) {
+                console.log('Groups retrieved');
+                $scope.groups = response.data;
+            }, function (error) {
+                console.log('Error retrieving groups', error);
+                alert("Ups! Ha ocurrido un error al recuperar los grupos, inténtalo de nuevo en unos minutos.");
+            });
+    }
+
     function init() {
         console.log("Starting Bills controller");
         $scope.selectedItem = {};
         $scope.articles = [];
         $scope.items = [];
         getArticles();
+        getGroups();
         let url = window.location.href;
         $scope.userId = url.substr(url.lastIndexOf("/") + 1, url.length);
         console.log($scope.userId);
