@@ -1,7 +1,7 @@
 <html ng-app="MarmolistasElPilarApp">
 <head>
     <title>
-        Marmolistas El Pilar - Proveedores
+        Marmolistas El Pilar - Clientes
     </title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
@@ -11,10 +11,10 @@
     <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
     <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
     <script src="/js/app.js" type="text/javascript"></script>
-    <script src="/js/providers-controller.js" type="text/javascript"></script>
+    <script src="/js/clients-controller.js" type="text/javascript"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
-<body ng-controller="ProvidersCtrl">
+<body ng-controller="ClientsCtrl">
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
@@ -24,8 +24,8 @@
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="articulos.html">Artículos</a></li>
                 <li><a href="grupos.html">Grupos</a></li>
-                <li><a href="clientes.html">Clientes</a></li>
-                <li class="active"><a href="3">Proveedores</a></li>
+                <li class="active"><a href="#">Clientes</a></li>
+                <li><a href="proveedores.html">Proveedores</a></li>
             </ul>
         </div>
     </nav>
@@ -35,62 +35,92 @@
     <li><a href="index.html">Inicio</a></li>
     <li><a href="articulos.html">Artículos</a></li>
     <li><a href="grupos.html">Grupos</a></li>
-    <li><a href="clientes.html">Clientes</a></li>
-    <li class="active"><a href="3">Proveedores</a></li>
+    <li class="active"><a href="#">Clientes</a></li>
+    <li><a href="proveedores.html">Proveedores</a></li>
 </ul>
 <div class="row">
     <div class="col s6">
         <div class="card">
             <div class="card-content">
-                <span class="card-title"><h5>{{action}} Proveedores</h5></span>
+                <span class="card-title"><h5>{{action}} Clientes</h5></span>
             </div>
             <div class="card-content">
                 <div class="row">
-                    <form name="addProveedorForm" id="addProveedorForm" class="col s12" ng-submit="saveProvider()">
+                    <form name="addClienteForm" id="addClienteForm" class="col s12" ng-submit="saveClient()">
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="nombre" ng-model="newProvider.nombre" type="text" class="validate">
+                                <input id="nombre" ng-model="newClient.nombre" type="text" class="validate">
                                 <label for="nombre">Nombre</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="cif" ng-model="newProvider.cif" type="text" class="validate">
-                                <label for="cif">CIF</label>
+                                <input id="dni" ng-model="newClient.dni" type="text"
+                                       class="validate">
+                                <label for="dni">DNI</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="domicilio" ng-model="newProvider.domicilio" type="text" class="validate">
+                                <input id="domicilio" ng-model="newClient.domicilio" type="text" class="validate">
                                 <label for="domicilio">Domicilio</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="poblacion" ng-model="newProvider.poblacion" type="text" class="validate">
+                                <input id="poblacion" ng-model="newClient.poblacion" type="text"
+                                       class="validate">
                                 <label for="poblacion">Población</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="provincia" ng-model="newProvider.provincia" type="text" class="validate">
+                                <input id="provincia" ng-model="newClient.provincia" type="text" class="validate">
                                 <label for="provincia">Provincia</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="cp" ng-model="newProvider.cp" type="number" class="validate">
+                                <input id="cp" ng-model="newClient.cp" type="number"
+                                       class="validate">
                                 <label for="cp">C.P</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="email" ng-model="newProvider.email" type="email" class="validate">
+                                <input id="email" ng-model="newClient.email" type="email"
+                                       class="validate">
                                 <label for="email">Email</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="telefono" ng-model="newProvider.telefono" type="number" class="validate">
+                                <input id="telefono" ng-model="newClient.telefono"
+                                       type="number" class="validate">
                                 <label for="telefono">Teléfono</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="contacto" ng-model="newProvider.contacto" type="text" class="validate">
+                                <label>
+                                    <input id="rec" type="checkbox" ng-model="newClient.rec" class="validate"/>
+                                    <span>Rec. Equivalencia</span>
+                                </label>
+                            </div>
+                            <div class="input-field col s6">
+                                <select ng-model="newClient.formadepago" id="formadepago">
+                                    <option ng-repeat="formadepago in formadepagos" value="{{formadepago._id}}"
+                                            ng-selected="formadepago.selected == true">{{formadepago.nombre}}
+                                    </option>
+                                </select>
+                                <label>Forma de pago</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="contacto" ng-model="newClient.contacto"
+                                       type="text" class="validate">
                                 <label for="contacto">Contacto</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <select ng-model="newClient.tarifa" id="tarifa">
+                                    <option ng-repeat="tarifa in tarifas" value="{{tarifa._id}}"
+                                            ng-selected="tarifa.selected == true">{{tarifa.nombre}}
+                                    </option>
+                                </select>
+                                <label>Tarifas</label>
                             </div>
                         </div>
                         <div class="center">
@@ -112,13 +142,13 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title"><h5>Filtrar Proveedores</h5></span>
+                    <span class="card-title"><h5>Filtrar Clientes</h5></span>
                     <div class="row">
                         <div class="col s6">
                             <div class="input-field">
                                 <i class="material-icons prefix">filter_1</i>
-                                <input id="search_cif" type="text" class="validate" ng-model="filter_cif">
-                                <label id="label_cif" for="search_cif">CIF</label>
+                                <input id="search_dni" type="text" class="validate" ng-model="filter_dni">
+                                <label id="label_dni" for="search_dni">DNI</label>
                             </div>
                         </div>
                         <div class="col s6">
@@ -148,24 +178,24 @@
                 </div>
             </div>
         </div>
-        <!-- Providers-->
+        <!-- Clients-->
         <div class="col s12">
             <ul class="collapsible">
                 <li class="active">
-                    <div class="collapsible-header"><h5>Proveedores</h5></div>
+                    <div class="collapsible-header"><h5>Clientes</h5></div>
                     <div class="collapsible-body">
                         <ul class="collapsible">
-                            <li ng-repeat="proveedor in providers | filter:filterProvider track by $index">
+                            <li ng-repeat="cliente in clients | filter:filterClient track by $index">
                                 <div class="collapsible-header item row item">
                                     <div class="col s6 left-align">
-                                        <b>{{proveedor.cif}} - {{proveedor.nombre}}</b>
+                                        <b>{{cliente.dni}} - {{cliente.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
                                         <a href="#!"><i class="material-icons orange-text"
-                                                        ng-click="editProvider($index)"
+                                                        ng-click="editClient($index)"
                                                         onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
-                                               ng-click="removeProvider($index)"
+                                               ng-click="removeClient($index)"
                                                onclick="event.stopPropagation();">delete</i></a>
                                     </div>
                                 </div>
@@ -173,37 +203,48 @@
                                     <div class="row">
                                         <div class="row">
                                             <div class="col s8">
-                                                <b>Nombre:</b> {{proveedor.nombre}}
+                                                <b>Nombre:</b> {{cliente.nombre}}
                                             </div>
                                             <div class="col s4">
-                                                <b>CIF:</b> {{proveedor.cif}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s4">
-                                                <b>Domicilio:</b> {{proveedor.domicilio}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>Población:</b> {{proveedor.poblacion}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>Provincia:</b> {{proveedor.provincia}}
+                                                <b>DNI:</b> {{cliente.dni}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>C.P:</b> {{proveedor.cp}}
+                                                <b>Domicilio:</b> {{cliente.domicilio}}
                                             </div>
                                             <div class="col s4">
-                                                <b>Email:</b> {{proveedor.email}}
+                                                <b>Población:</b> {{cliente.poblacion}}
                                             </div>
                                             <div class="col s4">
-                                                <b>Teléfono:</b> {{proveedor.telefono}}
+                                                <b>Provincia:</b> {{cliente.provincia}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>Contacto:</b> {{proveedor.contacto}}
+                                                <b>C.P:</b> {{cliente.cp}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Email:</b> {{cliente.email}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Teléfono:</b> {{cliente.telefono}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Forma de pago:</b> {{formadepagos[cliente.formadepago].nombre}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Tarifa:</b> {{tarifas[cliente.tarifa].nombre}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Contacto:</b> {{cliente.contacto}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Rec. Equivalencia:</b> {{cliente.rec ? 'Sí' : 'No'}}
                                             </div>
                                         </div>
                                     </div>
