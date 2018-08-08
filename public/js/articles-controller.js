@@ -5,19 +5,12 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
     $scope.groups = [
         {
             _id: "0",
-            nombre: "Sin Grupo",
-            selected: true
-        },
-        {
-            _id: "5g533fc815249c4010458d15",
-            nombre: "Grupo 1"
-        },
-        {
-            _id: "5g573fc815249c4010458d15",
-            nombre: "Grupo 2"
-        }];
+            nombre: "Sin Grupo"
+        }
+    ];
 
     $scope.saveArticle = function () {
+        setTarifasName();
         if ($scope.action === "Añadir") {
             console.log("Creating article", $scope.newArticle);
             postArticle($scope.newArticle);
@@ -27,6 +20,13 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         }
         toggleForm();
     };
+
+    function setTarifasName() {
+        $scope.newArticle.tarifas[0].nombre = "Tarifa General";
+        $scope.newArticle.tarifas[1].nombre = "Tarifa Encimera";
+        $scope.newArticle.tarifas[2].nombre = "Tarifa Contratista";
+        $scope.newArticle.tarifas[3].nombre = "Tarifa Público";
+    }
 
     function toggleForm() {
         $("form#addArticuloForm label").each(function () {
@@ -112,6 +112,22 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             });
     }
 
+    function getGroups() {
+        $http.get("/api/v1/groups")
+            .then(function (response) {
+                console.log('Groups retrieved');
+                $scope.groups.push(...response.data);
+                setTimeout(function(){
+                    console.log($scope.groups);
+                    $('#grupo').find('option[value="0"]').prop('selected', true);
+                    $('#grupo').formSelect();
+                }, 2000);
+            }, function (error) {
+                console.log('Error retrieving groups', error);
+                alert("Ups! Ha ocurrido un error al recuperar los grupos, inténtalo de nuevo en unos minutos.");
+            });
+    }
+
     function postArticle(article) {
         $http.post("/api/v1/articles", article)
             .then(function (response) {
@@ -153,7 +169,6 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         $('#grupo').find('option[value="0"]').prop('selected', true);
         $("#grupo").formSelect();
         $scope.newArticle = {};
-        $scope.newArticle.grupo = $scope.groups[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
@@ -166,7 +181,9 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
     function init() {
         console.log("Starting Articles controller");
         getArticles();
+        getGroups();
         $scope.newArticle = {};
+        //$scope.newArticle.grupo = $scope.groups[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";

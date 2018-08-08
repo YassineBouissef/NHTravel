@@ -1,7 +1,7 @@
 <html ng-app="MarmolistasElPilarApp">
 <head>
     <title>
-        Marmolistas El Pilar - Artículos
+        Marmolistas El Pilar - Clientes
     </title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
@@ -11,10 +11,10 @@
     <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
     <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
     <script src="/js/app.js" type="text/javascript"></script>
-    <script src="/js/articles-controller.js" type="text/javascript"></script>
+    <script src="/js/clients-controller.js" type="text/javascript"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
-<body ng-controller="ArticlesCtrl">
+<body ng-controller="ClientsCtrl">
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
@@ -22,9 +22,9 @@
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="index.html">Inicio</a></li>
-                <li class="active"><a href="#">Artículos</a></li>
+                <li><a href="articulos.html">Artículos</a></li>
                 <li><a href="grupos.html">Grupos</a></li>
-                <li><a href="clientes.html">Clientes</a></li>
+                <li class="active"><a href="#">Clientes</a></li>
                 <li><a href="proveedores.html">Proveedores</a></li>
             </ul>
         </div>
@@ -33,89 +33,94 @@
 
 <ul class="sidenav" id="mobile-demo">
     <li><a href="index.html">Inicio</a></li>
-    <li class="active"><a href="#">Artículos</a></li>
+    <li><a href="articulos.html">Artículos</a></li>
     <li><a href="grupos.html">Grupos</a></li>
-    <li><a href="clientes.html">Clientes</a></li>
+    <li class="active"><a href="#">Clientes</a></li>
     <li><a href="proveedores.html">Proveedores</a></li>
 </ul>
 <div class="row">
     <div class="col s6">
         <div class="card">
             <div class="card-content">
-                <span class="card-title"><h5>{{action}} Artículo</h5></span>
+                <span class="card-title"><h5>{{action}} Clientes</h5></span>
             </div>
             <div class="card-content">
                 <div class="row">
-                    <form name="addArticuloForm" id="addArticuloForm" class="col s12" ng-submit="saveArticle()">
+                    <form name="addClienteForm" id="addClienteForm" class="col s12" ng-submit="saveClient()">
                         <div class="row">
-                            <div class="input-field col s3">
-                                <input id="codigo" ng-model="newArticle.codigo" type="text" class="validate">
-                                <label for="codigo">Código</label>
-                            </div>
-                            <div class="input-field col s9">
-                                <input id="nombre" ng-model="newArticle.nombre" type="text" class="validate">
+                            <div class="input-field col s6">
+                                <input id="nombre" ng-model="newClient.nombre" type="text" class="validate">
                                 <label for="nombre">Nombre</label>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="input-field col s6">
-                                <input id="iva" ng-model="newArticle.iva" type="number" class="validate">
-                                <label for="iva">IVA</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input id="precio_costo" ng-model="newArticle.precio_costo" type="number"
+                                <input id="dni" ng-model="newClient.dni" type="text"
                                        class="validate">
-                                <label for="precio_costo">Precio Costo</label>
+                                <label for="dni">DNI</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="tarifa_general" ng-model="newArticle.tarifas[0].valor" type="number"
-                                       class="validate">
-                                <label for="tarifa_general">Tarifa General</label>
+                                <input id="domicilio" ng-model="newClient.domicilio" type="text" class="validate">
+                                <label for="domicilio">Domicilio</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="tarifa_encimera" ng-model="newArticle.tarifas[1].valor" type="number"
+                                <input id="poblacion" ng-model="newClient.poblacion" type="text"
                                        class="validate">
-                                <label for="tarifa_encimera">Tarifa Encimera</label>
+                                <label for="poblacion">Población</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="provincia" ng-model="newClient.provincia" type="text" class="validate">
+                                <label for="provincia">Provincia</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="tarifa_contratista" ng-model="newArticle.tarifas[2].valor"
+                                <input id="cp" ng-model="newClient.cp" type="number"
+                                       class="validate">
+                                <label for="cp">C.P</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="email" ng-model="newClient.email" type="email"
+                                       class="validate">
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="telefono" ng-model="newClient.telefono"
                                        type="number" class="validate">
-                                <label for="tarifa_contratista">Tarifa Contratista</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input id="tarifa_publico" ng-model="newArticle.tarifas[3].valor" type="number"
-                                       class="validate">
-                                <label for="tarifa_publico">Tarifa Público</label>
+                                <label for="telefono">Teléfono</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="unidad" ng-model="newArticle.unidad" type="text" class="validate">
-                                <label for="unidad">Unidad</label>
+                                <label>
+                                    <input id="rec" type="checkbox" ng-model="newClient.rec" class="validate"/>
+                                    <span>Rec. Equivalencia</span>
+                                </label>
                             </div>
                             <div class="input-field col s6">
-                                <div class="col s6">
-                                    <input id="alto" ng-model="newArticle.dimension.alto" type="text"
-                                           class="validate">
-                                    <label for="alto">Alto</label>
-                                </div>
-                                <div class="col s6">
-                                    <input id="ancho" ng-model="newArticle.dimension.ancho" type="text"
-                                           class="validate">
-                                    <label for="ancho">Ancho</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <select ng-model="newArticle.grupo" id="grupo">
-                                    <option ng-repeat="group in groups" value="{{group._id}}"
-                                            ng-selected="group.selected == true">{{group.nombre}}
+                                <select ng-model="newClient.formadepago" id="formadepago">
+                                    <option ng-repeat="formadepago in formadepagos" value="{{formadepago._id}}"
+                                            ng-selected="formadepago.selected == true">{{formadepago.nombre}}
                                     </option>
                                 </select>
-                                <label>Grupo (Encimeras)</label>
+                                <label>Forma de pago</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="contacto" ng-model="newClient.contacto"
+                                       type="text" class="validate">
+                                <label for="contacto">Contacto</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <select ng-model="newClient.tarifa" id="tarifa">
+                                    <option ng-repeat="tarifa in tarifas" value="{{tarifa._id}}"
+                                            ng-selected="tarifa.selected == true">{{tarifa.nombre}}
+                                    </option>
+                                </select>
+                                <label>Tarifas</label>
                             </div>
                         </div>
                         <div class="center">
@@ -137,13 +142,13 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title"><h5>Filtrar Artículos</h5></span>
+                    <span class="card-title"><h5>Filtrar Clientes</h5></span>
                     <div class="row">
                         <div class="col s6">
                             <div class="input-field">
                                 <i class="material-icons prefix">filter_1</i>
-                                <input id="search_code" type="text" class="validate" ng-model="filter_codigo">
-                                <label id="label_code" for="search_code">Código</label>
+                                <input id="search_dni" type="text" class="validate" ng-model="filter_dni">
+                                <label id="label_dni" for="search_dni">DNI</label>
                             </div>
                         </div>
                         <div class="col s6">
@@ -154,68 +159,92 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">local_phone</i>
+                                <input id="search_phone" type="number" class="validate" ng-model="filter_telefono">
+                                <label id="label_phone" for="search_phone">Teléfono</label>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">location_city</i>
+                                <input id="search_adress" type="text" class="validate" ng-model="filter_direccion">
+                                <label id="label_adress" for="search_adress">Dirección</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Articles-->
+        <!-- Clients-->
         <div class="col s12">
             <ul class="collapsible">
                 <li class="active">
-                    <div class="collapsible-header"><h5>Artículos</h5></div>
+                    <div class="collapsible-header"><h5>Clientes</h5></div>
                     <div class="collapsible-body">
                         <ul class="collapsible">
-                            <li ng-repeat="articulo in articles | filter:filterArticle track by $index">
+                            <li ng-repeat="cliente in clients | filter:filterClient track by $index">
                                 <div class="collapsible-header item row item">
                                     <div class="col s6 left-align">
-                                        <b>{{articulo.codigo}} - {{articulo.nombre}}</b>
+                                        <b>{{cliente.dni}} - {{cliente.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
                                         <a href="#!"><i class="material-icons orange-text"
-                                                        ng-click="editArticle($index)"
+                                                        ng-click="editClient($index)"
                                                         onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
-                                               ng-click="removeArticle($index)" onclick="event.stopPropagation();">delete</i></a>
+                                               ng-click="removeClient($index)"
+                                               onclick="event.stopPropagation();">delete</i></a>
                                     </div>
                                 </div>
                                 <div class="collapsible-body">
                                     <div class="row">
                                         <div class="row">
-                                            <div class="col s4">
-                                                <b>Código:</b> {{articulo.codigo}}
-                                            </div>
                                             <div class="col s8">
-                                                <b>Nombre:</b> {{articulo.nombre}}
+                                                <b>Nombre:</b> {{cliente.nombre}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>DNI:</b> {{cliente.dni}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>Dimensión:</b> {{articulo.dimension.alto}} *
-                                                {{articulo.dimension.ancho}}
+                                                <b>Domicilio:</b> {{cliente.domicilio}}
                                             </div>
                                             <div class="col s4">
-                                                <b>Unidad:</b> {{articulo.unidad}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s4">
-                                                <b>T. General:</b> {{articulo.tarifas[0].valor}}
+                                                <b>Población:</b> {{cliente.poblacion}}
                                             </div>
                                             <div class="col s4">
-                                                <b>T. Encimera:</b> {{articulo.tarifas[1].valor}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>T. Contratista:</b> {{articulo.tarifas[2].valor}}
+                                                <b>Provincia:</b> {{cliente.provincia}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>T. Público:</b> {{articulo.tarifas[3].valor}}
+                                                <b>C.P:</b> {{cliente.cp}}
                                             </div>
                                             <div class="col s4">
-                                                <b>IVA:</b> {{articulo.iva}}
+                                                <b>Email:</b> {{cliente.email}}
                                             </div>
                                             <div class="col s4">
-                                                <b>Precio Costo:</b> {{articulo.precio_costo}}
+                                                <b>Teléfono:</b> {{cliente.telefono}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Forma de pago:</b> {{formadepagos[cliente.formadepago].nombre}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Tarifa:</b> {{tarifas[cliente.tarifa].nombre}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>Contacto:</b> {{cliente.contacto}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Rec. Equivalencia:</b> {{cliente.rec ? 'Sí' : 'No'}}
                                             </div>
                                         </div>
                                     </div>
@@ -232,7 +261,6 @@
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
-        $('#grupo').find('option[value="0"]').prop('selected', true);
         $('select').formSelect();
         $('.collapsible').collapsible();
     });
