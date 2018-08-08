@@ -24,7 +24,7 @@
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="articulos.html">Artículos</a></li>
                 <li><a href="grupos.html">Grupos</a></li>
-                <li ><a href="clientes.html">Clientes</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
                 <li class="active"><a href="3">Proveedores</a></li>
             </ul>
         </div>
@@ -46,15 +46,14 @@
             </div>
             <div class="card-content">
                 <div class="row">
-                    <form name="addCProveedorForm" id="addCProveedorForm" class="col s12" ng-submit="saveProvider()">
+                    <form name="addProveedorForm" id="addProveedorForm" class="col s12" ng-submit="saveProvider()">
                         <div class="row">
                             <div class="input-field col s6">
                                 <input id="nombre" ng-model="newProvider.nombre" type="text" class="validate">
                                 <label for="nombre">Nombre</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="cif" ng-model="newProvider.cif" type="text"
-                                       class="validate">
+                                <input id="cif" ng-model="newProvider.cif" type="text" class="validate">
                                 <label for="cif">CIF</label>
                             </div>
                         </div>
@@ -64,8 +63,7 @@
                                 <label for="domicilio">Domicilio</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="poblacion" ng-model="newProvider.poblacion" type="text"
-                                       class="validate">
+                                <input id="poblacion" ng-model="newProvider.poblacion" type="text" class="validate">
                                 <label for="poblacion">Población</label>
                             </div>
                         </div>
@@ -75,27 +73,23 @@
                                 <label for="provincia">Provincia</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="cp" ng-model="newProvider.cp" type="number"
-                                       class="validate">
+                                <input id="cp" ng-model="newProvider.cp" type="number" class="validate">
                                 <label for="cp">C.P</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="email" ng-model="newProvider.email" type="email"
-                                       class="validate">
+                                <input id="email" ng-model="newProvider.email" type="email" class="validate">
                                 <label for="email">Email</label>
                             </div>
                             <div class="input-field col s6">
-                                <input id="telefono" ng-model="newProvider.telefono"
-                                       type="number" class="validate">
+                                <input id="telefono" ng-model="newProvider.telefono" type="number" class="validate">
                                 <label for="telefono">Teléfono</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="contacto" ng-model="newProvider.contacto"
-                                       type="text" class="validate">
+                                <input id="contacto" ng-model="newProvider.contacto" type="text" class="validate">
                                 <label for="contacto">Contacto</label>
                             </div>
                         </div>

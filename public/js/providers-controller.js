@@ -1,4 +1,4 @@
-angular.module("MarmolistasElPilarApp").controller("pROVIDERCtrl", function ($scope, $http, $location, $q) {
+angular.module("MarmolistasElPilarApp").controller("ProvidersCtrl", function ($scope, $http, $location, $q) {
 
     let index = -1;
     $scope.providers = [];
@@ -78,9 +78,9 @@ angular.module("MarmolistasElPilarApp").controller("pROVIDERCtrl", function ($sc
             let searchCode = $scope.filter_cif.toLowerCase();
             let phone = item.telefono.toLowerCase();
             let searchPhone = $scope.filter_telefono.toLowerCase();
-            let adress = item.domicilio.toLowerCase();
-            let searchAdress = $scope.filter_direccion.toLowerCase();
-            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || telephone.indexOf(searchPhone) > -1 || direction.indexOf(searchAdress) > -1;
+            let address = item.domicilio.toLowerCase();
+            let searchAddress = $scope.filter_direccion.toLowerCase();
+            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1 || phone.indexOf(searchPhone) > -1 || address.indexOf(searchAddress) > -1;
         } else if ($scope.filter_nombre) {
             let text = item.nombre.toLowerCase();
             let search = $scope.filter_nombre.toLowerCase();
