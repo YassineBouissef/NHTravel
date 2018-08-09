@@ -10,7 +10,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
     ];
 
     $scope.saveArticle = function () {
-        setTarifasName();
+        //setTarifasName();
         if ($scope.action === "Añadir") {
             console.log("Creating article", $scope.newArticle);
             postArticle($scope.newArticle);
@@ -26,68 +26,34 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             $scope.tarifa_general = $scope.groups.find(x => x._id === $scope.newArticle.grupo).encimera_ml;
             $scope.tarifa_encimera = $scope.groups.find(x => x._id === $scope.newArticle.grupo).encimera_ml;
 
-            $scope.newArticle.tarifas = [
-                {
-                    nombre: "Tarifa General",
-                    valor: $scope.tarifa_general
-                },
-                {
-                    nombre: "Tarifa Encimera (35%)",
-                    valor: $scope.tarifa_general * 1.35
-                }
-            ];
+            $scope.newArticle.tarifas[0] = {
+                nombre: "Tarifa General",
+                valor: $scope.tarifa_general
+            };
 
-            $("label[for=tarifa_general]").each(function () {
-                $(this).addClass('active');
-            });
-            $("label[for=tarifa_encimera]").each(function () {
-                $(this).addClass('active');
-            });
-            $("#tarifa_general").each(function () {
-                $(this).addClass('valid');
-            });
-            $("#tarifa_encimera").each(function () {
-                $(this).addClass('valid');
-            });
+            $scope.newArticle.tarifas[1] = {
+                nombre: "Tarifa Encimera (35%)",
+                valor: $scope.tarifa_general * 1.35
+            };
         } else {
-            $scope.newArticle.tarifas = [];
-            $("label[for=tarifa_general]").each(function () {
-                $(this).removeClass('active');
-            });
-            $("label[for=tarifa_encimera]").each(function () {
-                $(this).removeClass('active');
-            });
-            $("#tarifa_general").each(function () {
-                $(this).removeClass('valid');
-            });
-            $("#tarifa_encimera").each(function () {
-                $(this).removeClass('valid');
+            $scope.newArticle.tarifas.forEach(item => {
+                item.valor = 0
             });
         }
+        $(".tarifa").each(function () {
+            $(this).addClass('valid');
+        });
         $('#grupo').formSelect();
         console.log($scope.newArticle);
     };
 
-    function setTarifasName() {
-        $scope.newArticle.tarifas[0].nombre = "Tarifa General";
-        $scope.newArticle.tarifas[1].nombre = "Tarifa Encimera (35%)";
-        $scope.newArticle.tarifas[2].nombre = "Tarifa Contratista";
-        $scope.newArticle.tarifas[3].nombre = "Tarifa Público";
-    }
-
     function toggleForm() {
-        $("form#addArticuloForm label").each(function () {
-            $(this).toggleClass('active');
-        });
         $("form#addArticuloForm :input").each(function () {
             $(this).toggleClass('valid' || 'invalid');
         });
     }
 
     function clearForm() {
-        $("form#addArticuloForm label").each(function () {
-            $(this).removeClass('active');
-        });
         $("form#addArticuloForm :input").each(function () {
             $(this).removeClass('valid' || 'invalid');
         });
@@ -152,6 +118,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             .then(function (response) {
                 console.log('Articles retrieved');
                 $scope.articles = response.data;
+                $scope.newArticle.codigo = $scope.articles.length > 0 ? $scope.articles[$scope.articles.length - 1].codigo + 1 : 1;
             }, function (error) {
                 console.log('Error retrieving articles', error);
                 alert("Ups! Ha ocurrido un error al recuperar los artículos, inténtalo de nuevo en unos minutos.");
@@ -166,7 +133,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
                 setTimeout(function () {
                     $('#grupo').find('option[value="0"]').prop('selected', true);
                     $('#grupo').formSelect();
-                }, 2000);
+                }, 1000);
             }, function (error) {
                 console.log('Error retrieving groups', error);
                 alert("Ups! Ha ocurrido un error al recuperar los grupos, inténtalo de nuevo en unos minutos.");
@@ -208,12 +175,12 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
 
     function refresh() {
         console.log("Refreshing");
+        $scope.newArticle = {};
         getArticles();
         clearForm();
         clearFilter();
         $('#grupo').find('option[value="0"]').prop('selected', true);
         $("#grupo").formSelect();
-        $scope.newArticle = {};
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
@@ -225,14 +192,33 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
 
     function init() {
         console.log("Starting Articles controller");
+        $scope.newArticle = {
+            grupo: "0",
+            tarifas: [
+                {
+                    nombre: "Tarifa General",
+                    valor: 0
+                },
+                {
+                    nombre: "Tarifa Encimera (35%)",
+                    valor: 0
+                },
+                {
+                    nombre: "Tarifa Contratista",
+                    valor: 0
+                },
+                {
+                    nombre: "Tarifa Público",
+                    valor: 0
+                }
+            ]
+        };
         getArticles();
         getGroups();
-        $scope.newArticle = {};
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
     }
 
     init();
-})
-;
+});
