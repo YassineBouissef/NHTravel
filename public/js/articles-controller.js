@@ -175,12 +175,12 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
 
     function refresh() {
         console.log("Refreshing");
-        $scope.newArticle = {};
+        initArticle();
         getArticles();
         clearForm();
         clearFilter();
         $('#grupo').find('option[value="0"]').prop('selected', true);
-        $("#grupo").formSelect();
+        $('#grupo').formSelect();
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
@@ -190,8 +190,18 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         refresh();
     };
 
+
     function init() {
         console.log("Starting Articles controller");
+        initArticle();
+        getArticles();
+        getGroups();
+        $scope.action = "Añadir";
+        $scope.icon_action = "add";
+        $scope.class_button = "btn-large waves-effect waves-light green";
+    }
+
+    function initArticle(){
         $scope.newArticle = {
             grupo: "0",
             tarifas: [
@@ -213,11 +223,6 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
                 }
             ]
         };
-        getArticles();
-        getGroups();
-        $scope.action = "Añadir";
-        $scope.icon_action = "add";
-        $scope.class_button = "btn-large waves-effect waves-light green";
     }
 
     init();

@@ -43,7 +43,7 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title"><h5>Lista de Artículos</h5></span>
-                <table>
+                <table class="responsive-table">
                     <thead>
                     <tr>
                         <th>DESCRIPCIÓN</th>
@@ -59,11 +59,11 @@
                     <tbody>
                     <tr ng-repeat="item in items track by $index">
                         <td><p ng-if="item.articulo.nombre">{{item.articulo.nombre}}</p></td>
-                        <td><p ng-if="">{{item.unidades}}</p></td>
+                        <td><p ng-if="item.unidades">{{item.unidades}}</p></td>
                         <td><p ng-if="item.dimension.alto && item.dimension.ancho">{{item.dimension.alto}} *
                             {{item.dimension.ancho}}</p></td>
-                        <td><p ng-if="item.cantidad">{{item.cantidad}} M2</p></td>
-                        <td><p ng-if="item.precio">{{item.precio}} €</p></td>
+                        <td><p ng-if="item.cantidad">{{item.cantidad * item.unidades}} M2</p></td>
+                        <td><p ng-if="item.tarifa">{{item.tarifa}} €</p></td>
                         <td><p ng-if="item.descuento">{{item.descuento}} %</p></td>
                         <td><p ng-if="item.total">{{item.total}} €</p></td>
                         <td><a href="#!">
@@ -74,10 +74,20 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="card-content">
                 <hr>
-                <br>
+                <div class="row">
+                    <div class="col s3">
+                        <h6><b>Bruto: </b>{{getTotal(1)}}€</h6>
+                    </div>
+                    <div class="col s3">
+                        <h6><b>IVA: </b>{{bill.iva ? getTotal(0.21) : 0}}€</h6>
+                    </div>
+                    <div class="col s3">
+                        <h6><b>A Pagar: </b>{{bill.iva && bill.rec ? getTotal(1.27292) : bill.iva ? getTotal(1.21) :
+                            bill.rec ? getTotal(1.052) : getTotal(1)}}€</h6>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="input-field col s8">
                         <input type="text" id="custom_item"
@@ -93,31 +103,59 @@
                 </div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5>Observaciones</h5></span>
+                <textarea id="observaciones_publicas" class="materialize-textarea"
+                          ng-model="bill.observaciones_publicas"
+                          placeholder="Observaciones que aparecerán en el documento"></textarea>
+                <label for="observaciones_publicas">Observaciones</label>
+            </div>
+        </div>
     </div>
     <div class="col s5">
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <div class="col s6">
+                    <div class="col s7">
                         <h5>Cliente: {{client.nombre}}</h5>
                         <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
-                        <h6>Rec. Equivalencia: {{client.rec ? 'Sí' : 'No'}}</h6>
+                        <h6>
+                            <label>
+                                <input type="checkbox" ng-model="bill.rec" ng-init="client.rec"/>
+                                <span>Rec. Equiv.</span>
+                            </label>
+                        </h6>
+                        <h6>
+                            <label>
+                                <input type="checkbox" ng-model="bill.iva" ng-init="bill.iva = true"/>
+                                <span>IVA</span>
+                            </label>
+                        </h6>
+                        <textarea id="observaciones_internas" class="materialize-textarea"
+                                  ng-model="bill.observaciones_internas"
+                                  placeholder="Observaciones que aparecerán solo aquí"></textarea>
+                        <label for="observaciones_internas">Observaciones</label>
                     </div>
-                    <div class="col s6">
+                    <div class="col s5">
                         <div class="row">
                             <div class="col s6">
-                                <a class="waves-effect waves-light btn blue">Albarán</a>
+                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(0)">Albarán</a>
+                                </h5>
                             </div>
                             <div class="col s6">
-                                <a class="waves-effect waves-light btn blue">Presupuesto</a>
+                                <h5><a class="waves-effect waves-light btn blue"
+                                       ng-click="saveDocument(1)">Presupuesto</a></h5>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col s6">
-                                <a class="waves-effect waves-light btn blue">Factura</a>
+                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(2)">Factura</a>
+                                </h5>
                             </div>
                             <div class="col s6">
-                                <a class="waves-effect waves-light btn blue">Factura P.</a>
+                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(3)">Factura
+                                    P.</a></h5>
                             </div>
                         </div>
                     </div>
@@ -271,7 +309,7 @@
                 </button>
             </div>
         </form>
-        <table>
+        <table class="responsive-table">
             <thead>
             <tr>
                 <th>UNIDADES</th>

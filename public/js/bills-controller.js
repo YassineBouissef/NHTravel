@@ -31,7 +31,7 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
 
     function round(amount) {
         return Math.round(amount * 100) / 100;
-    };
+    }
 
     $scope.addItem = function () {
         console.log("Adding article", $scope.newItem);
@@ -41,14 +41,12 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         if ($scope.selectedItem.unidad.toUpperCase() === 'M2') {
             $scope.newItem.cantidad = ($scope.newItem.dimension.alto * $scope.newItem.dimension.ancho) / 10000;
             $scope.newItem.cantidad = round($scope.newItem.cantidad);
-            $scope.newItem.precio = $scope.newItem.tarifa;
             $scope.newItem.total = ((($scope.newItem.dimension.alto * $scope.newItem.dimension.ancho) / 10000)
                 * $scope.newItem.tarifa)
                 * ((100 - $scope.newItem.descuento) / 100)
                 * $scope.newItem.unidades;
             $scope.newItem.total = round($scope.newItem.total);
         } else {
-            $scope.newItem.precio = $scope.newItem.tarifa;
             $scope.newItem.total = $scope.newItem.tarifa * $scope.newItem.unidades
                 * ((100 - $scope.newItem.descuento) / 100);
             $scope.newItem.total = Math.round($scope.newItem.total * 100) / 100;
@@ -63,9 +61,7 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
     $scope.addCustomItem = function () {
         console.log("Adding custom item", $scope.newCustomItem);
         if ($scope.newCustomItem) {
-            $scope.newItem = $scope.newCustomItem;
-            $scope.items.push($scope.newItem);
-            $scope.newItem = {};
+            $scope.items.push($scope.newCustomItem);
             $scope.newCustomItem = {};
         } else {
             alert("Ups! Escribe algún texto para añadirlo.");
@@ -85,13 +81,13 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
             $('select#tarifa').prop('selectedIndex', $scope.client.tarifa + 1);
             $('#tarifa').formSelect();
         }, 500);
-        $scope.newItem = {
-            tarifa: $scope.selectedItem.tarifas[$scope.client.tarifa].valor,
-            dimension: {
+        $scope.newItem.tarifa = $scope.selectedItem.tarifas[$scope.client.tarifa].valor;
+        if ($scope.selectedItem.unidad.toUpperCase() === "M2") {
+            $scope.newItem.dimension = {
                 alto: $scope.selectedItem.dimension.alto,
                 ancho: $scope.selectedItem.dimension.ancho
-            }
-        };
+            };
+        }
         $('.modal').modal('open');
     };
 
@@ -139,6 +135,14 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         }
     };
 
+    $scope.saveDocument = function (type) {
+        if (type === 0) {
+            //Albarán
+            $scope.bill.items = $scope.items;
+            console.log($scope.bill);
+        }
+    };
+
     function getClient(id) {
         $scope.client = {
             "nombre": "David Corral",
@@ -176,11 +180,22 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
             });
     }
 
+    $scope.getTotal = function (aux) {
+        let total = 0;
+        $scope.items.forEach((item) => {
+            if (item.hasOwnProperty("total"))
+                total += item.total;
+        });
+        return round(total * aux);
+    };
+
     function init() {
         console.log("Starting Bills controller");
         $scope.selectedItem = {};
         $scope.articles = [];
         $scope.items = [];
+        $scope.bill = {};
+        $scope.newItem = {};
         getArticles();
         getGroups();
         let url = window.location.href;
