@@ -1,6 +1,40 @@
 angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope, $http, $location, $q) {
 
     $scope.groups = [];
+    $scope.formadepagos = [
+        {
+            _id: 0,
+            nombre: "50/50",
+            selected: true
+        },
+        {
+            _id: 1,
+            nombre: "Tarjeta"
+        },
+        {
+            _id: 2,
+            nombre: "Efectivo"
+        },
+        {
+            _id: 3,
+            nombre: "Cheque"
+        },
+        {
+            _id: 4,
+            nombre: "30 días"
+        },
+        {
+            _id: 5,
+            nombre: "60 días"
+        },
+        {
+            _id: 6,
+            nombre: "Pagaré"
+        },
+        {
+            _id: 7,
+            nombre: "Confirming"
+        }];
     $scope.tarifas = [
         {
             id: 0,
@@ -155,9 +189,12 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
             "email": "david@uca.es",
             "telefono": 666444333,
             "rec": 0,
-            "formadepago": 0,
+            "formadepago": 1,
             "tarifa": 0
         };
+        $scope.bill.formadepago = $scope.client.formadepago;
+        $scope.bill.rec = $scope.client.rec;
+        $scope.bill.client = $scope.client;
         /*id = "5g533fc815249c4010458d15";
         $http.get("/api/v1/clients/" + id)
             .then(function (response) {
@@ -195,6 +232,7 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         $scope.articles = [];
         $scope.items = [];
         $scope.bill = {};
+
         $scope.newItem = {};
         getArticles();
         getGroups();

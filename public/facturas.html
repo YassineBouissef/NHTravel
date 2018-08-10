@@ -106,10 +106,10 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title"><h5>Observaciones</h5></span>
+                <label for="observaciones_publicas">Observaciones</label>
                 <textarea id="observaciones_publicas" class="materialize-textarea"
                           ng-model="bill.observaciones_publicas"
                           placeholder="Observaciones que aparecerán en el documento"></textarea>
-                <label for="observaciones_publicas">Observaciones</label>
             </div>
         </div>
     </div>
@@ -117,60 +117,42 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <div class="col s7">
-                        <h5>Cliente: {{client.nombre}}</h5>
-                        <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
-                        <h6>
-                            <label>
-                                <input type="checkbox" ng-model="bill.rec" ng-init="client.rec"/>
-                                <span>Rec. Equiv.</span>
-                            </label>
-                        </h6>
-                        <h6>
-                            <label>
-                                <input type="checkbox" ng-model="bill.iva" ng-init="bill.iva = true"/>
-                                <span>IVA</span>
-                            </label>
-                        </h6>
-                        <textarea id="observaciones_internas" class="materialize-textarea"
-                                  ng-model="bill.observaciones_internas"
-                                  placeholder="Observaciones que aparecerán solo aquí"></textarea>
-                        <label for="observaciones_internas">Observaciones</label>
-                    </div>
-                    <div class="col s5">
-                        <div class="row">
-                            <div class="col s6">
-                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(0)">Albarán</a>
-                                </h5>
-                            </div>
-                            <div class="col s6">
-                                <h5><a class="waves-effect waves-light btn blue"
-                                       ng-click="saveDocument(1)">Presupuesto</a></h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s6">
-                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(2)">Factura</a>
-                                </h5>
-                            </div>
-                            <div class="col s6">
-                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(3)">Factura
-                                    P.</a></h5>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
                     <div class="row">
-                        <div class="col s3">
+                        <div class="col s12">
+                            <h5>Cliente: {{client.nombre}}</h5>
+                            <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
+                            <h6>
+                                <label>
+                                    <input type="checkbox" ng-model="bill.rec" ng-init="client.rec"/>
+                                    <span>Rec. Equiv.</span>
+                                </label>
+                            </h6>
+                            <h6>
+                                <label>
+                                    <input type="checkbox" ng-model="bill.iva" ng-init="bill.iva = true"/>
+                                    <span>IVA</span>
+                                </label>
+                            </h6>
+                            <div class="input-field">
+                                <select ng-model="bill.formadepago" id="formadepago">
+                                    <option ng-repeat="formadepago in formadepagos" ng-value="formadepago._id"
+                                            ng-selected="formadepago._id == client.formadepago">{{formadepago.nombre}}
+                                    </option>
+                                </select>
+                                <label for="formadepago">Forma de pago</label>
+                            </div>
+                            <label for="observaciones_internas">Observaciones</label>
+                            <textarea id="observaciones_internas" class="materialize-textarea"
+                                      ng-model="bill.observaciones_internas"
+                                      placeholder="Observaciones que aparecerán solo aquí"></textarea>
                         </div>
-                        <div class="col s3">
-
-                        </div>
-                        <div class="col s3">
-
-                        </div>
-                        <div class="col s3">
-
+                        <div class="row center">
+                            <h5>
+                                <a class="waves-effect waves-light btn blue" ng-click="saveDocument(0)">A</a>
+                                <a class="waves-effect waves-light btn blue" ng-click="saveDocument(1)">P</a>
+                                <a class="waves-effect waves-light btn blue" ng-click="saveDocument(2)">F</a>
+                                <a class="waves-effect waves-light btn blue" ng-click="saveDocument(3)">F.P.</a>
+                            </h5>
                         </div>
                     </div>
                 </div>

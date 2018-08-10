@@ -58,7 +58,6 @@ app.use(baseAPI + '/storages', storages);
 app.use(baseAPI + '/materials', materials);
 
 
-
 providersService.connectDb(function (err) {
     if (err) {
         console.log("Could not connect with MongoDB - providersService");
@@ -84,21 +83,23 @@ providersService.connectDb(function (err) {
                 }
 
                 storagesService.connectDb(function (err) {
-                     if (err) {
+                    if (err) {
                         console.log("Could not connect with MongoDB - storagesService");
-                         process.exit(1);
-                                }
-                materialsService.connectDb(function (err) {
-                     if (err) {
-                        console.log("Could not connect with MongoDB - materialsService");
-                         process.exit(1);
-                                }
-                server.listen(PORT, function () {
-                    console.log('Server with GUI up and running on localhost:' + PORT);
+                        process.exit(1);
+                    }
+
+                    materialsService.connectDb(function (err) {
+                        if (err) {
+                            console.log("Could not connect with MongoDB - materialsService");
+                            process.exit(1);
+                        }
+
+                        server.listen(PORT, function () {
+                            console.log('Server with GUI up and running on localhost:' + PORT);
+                        });
+                    });
                 });
             });
-           });
-                      });
         });
     });
 });
