@@ -1,0 +1,98 @@
+<html ng-app="MarmolistasElPilarApp">
+<head>
+    <title>
+        Marmolistas El Pilar - Cliente
+    </title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <link href="/css/materialize.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="/bower_components/angular/angular.min.js" type="text/javascript"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
+    <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
+    <script src="/js/app.js" type="text/javascript"></script>
+    <script src="/js/clients-view-controller.js" type="text/javascript"></script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+</head>
+<body ng-controller="ClientsViewCtrl">
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img class="logo" src="/img/logo.png"></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/articulos">Artículos</a></li>
+                <li><a href="/grupos">Grupos</a></li>
+                <li class="active"><a href="/clientes">Clientes</a></li>
+                <li><a href="/proveedores">Proveedores</a></li>
+                <li><a href="/almacen">Almacén</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Inicio</a></li>
+    <li><a href="/articulos">Artículos</a></li>
+    <li><a href="/grupos">Grupos</a></li>
+    <li class="active"><a href="/clientes">Clientes</a></li>
+    <li><a href="/proveedores">Proveedores</a></li>
+    <li><a href="/almacen">Almacén</a></li>
+</ul>
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5 class="center">{{client.nombre}}</h5></span>
+                <div class="row">
+                    <div class="col s12 center">
+                        <div class="row">
+                            <tr>
+                                <th><b>DNI:</b> {{client.dni}}</th>
+                                <th><b>Dirección:</b> {{client.domicilio + ', ' + client.poblacion + ', ' +
+                                    client.provincia + ' ' + client.cp}}
+                                </th>
+                                <th><b>Email:</b> {{client.email}}</th>
+                                <th><b>Teléfono:</b> {{client.telefono}}</th>
+                                <th><b>Forma de Pago:</b> {{formadepagos[client.formadepago].nombre}}</th>
+                                <th><b>Tarifa:</b> {{tarifas[client.tarifa].nombre}}</th>
+                                <th><b>Rec. Equiv.:</b> {{client.rec ? 'Si' : 'No'}}</th>
+                                <th><b>Contacto:</b> {{client.contacto}}</th>
+                            </tr>
+                        </div>
+                        <div class="row">
+                            <button class="btn-large waves-effect waves-light blue" type="submit" name="action"
+                                    ng-click="createBill()">Nuevo Documento
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s3"><a href="#albaran">Albaranes</a></li>
+                            <li class="tab col s3"><a href="#presupuesto">Presupuestos</a></li>
+                            <li class="tab col s3"><a class="active" href="#factura">Facturas</a></li>
+                            <li class="tab col s3"><a href="#facturap">Facturas P.</a></li>
+                        </ul>
+                    </div>
+                    <div id="albaran" class="col s12">Albaranes</div>
+                    <div id="presupuesto" class="col s12">Presupuestos</div>
+                    <div id="factura" class="col s12">Facturas</div>
+                    <div id="facturap" class="col s12">Facturas P.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+        $('.collapsible').collapsible();
+        $('.tabs').tabs();
+    });
+</script>
+</html>

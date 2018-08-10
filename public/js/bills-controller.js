@@ -42,7 +42,7 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         },
         {
             id: 1,
-            nombre: 'Tarifa Encimera'
+            nombre: 'Tarifa Encimera (35%)'
         },
         {
             id: 2,
@@ -178,7 +178,7 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
     };
 
     function getClient(id) {
-        $scope.client = {
+        /*$scope.client = {
             "nombre": "David Corral",
             "dni": "87548747Q",
             "domicilio": "Real 249",
@@ -191,19 +191,23 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
             "rec": 0,
             "formadepago": 1,
             "tarifa": 0
-        };
-        $scope.bill.formadepago = $scope.client.formadepago;
-        $scope.bill.rec = $scope.client.rec;
-        $scope.bill.client = $scope.client;
-        /*id = "5g533fc815249c4010458d15";
+        };*/
+
+        /*id = "5g533fc815249c4010458d15";*/
         $http.get("/api/v1/clients/" + id)
             .then(function (response) {
-                console.log('Client retrieved');
-                $scope.client = response.data;
+                console.log('Client retrieved', response.data[0]);
+                $scope.client = response.data[0];
+                $scope.bill.formadepago = $scope.client.formadepago;
+                setTimeout(function () {
+                    $('#formadepago').formSelect();
+                }, 500);
+                $scope.bill.rec = !!$scope.client.rec;
+                $scope.bill.client = $scope.client;
             }, function (error) {
                 console.log('Error retrieving client', error);
                 alert("Ups! Ha ocurrido un error al recuperar los datos del cliente, inténtalo de nuevo en unos minutos.");
-            });*/
+            });
     }
 
     function getGroups() {
@@ -237,9 +241,9 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         getArticles();
         getGroups();
         let url = window.location.href;
-        $scope.userId = url.substr(url.lastIndexOf("/") + 1, url.length);
-        console.log($scope.userId);
-        getClient($scope.userId);
+        $scope.clientId = url.substr(url.lastIndexOf("/") + 1, url.length);
+        console.log($scope.clientId);
+        getClient($scope.clientId);
     }
 
     init();

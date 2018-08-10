@@ -190,12 +190,17 @@
                                         <b>{{cliente.dni}} - {{cliente.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
-                                        <a href="#!"><i class="material-icons orange-text"
-                                                        ng-click="editClient($index)"
-                                                        onclick="event.stopPropagation();">edit</i>
+                                        <a href="#!">
+                                            <a href="/clientes/{{cliente._id}}" onclick="event.stopPropagation();">
+                                                <i class="material-icons blue-text">account_box</i>
+                                            </a>
+                                            <i class="material-icons orange-text"
+                                               ng-click="editClient($index)"
+                                               onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
                                                ng-click="removeClient($index)"
-                                               onclick="event.stopPropagation();">delete</i></a>
+                                               onclick="event.stopPropagation();">delete</i>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="collapsible-body">

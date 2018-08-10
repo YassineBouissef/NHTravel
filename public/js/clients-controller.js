@@ -45,7 +45,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         },
         {
             _id: 1,
-            nombre: "Encimeras"
+            nombre: "Encimeras (35%)"
         },
         {
             _id: 2,
