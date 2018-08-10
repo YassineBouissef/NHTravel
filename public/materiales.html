@@ -1,0 +1,114 @@
+<html ng-app="MarmolistasElPilarApp">
+<head>
+    <title>
+        Marmolistas El Pilar - Materiales
+    </title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <link href="/css/materialize.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="/bower_components/angular/angular.min.js" type="text/javascript"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
+    <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
+    <script src="/js/app.js" type="text/javascript"></script>
+    <script src="/js/materials-controller.js" type="text/javascript"></script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+</head>
+<body ng-controller="MaterialsCtrl">
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img class="logo" src="img/logo.png"></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/articulos">Artículos</a></li>
+                <li><a href="/grupos">Grupos</a></li>
+                <li><a href="/clientes">Clientes</a></li>
+                <li><a href="/proveedores">Proveedores</a></li>
+                <li><a href="/almacen">Almacén</a></li>
+                <li class="active"><a href="/materiales">Materiales</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Inicio</a></li>
+    <li><a href="/articulos">Artículos</a></li>
+    <li><a href="/grupos">Grupos</a></li>
+    <li><a href="/clientes">Clientes</a></li>
+    <li><a href="/proveedores">Proveedores</a></li>
+    <li><a href="/almacen">Almacén</a></li>
+    <li class="active"><a href="/materiales">Materiales</a></li>
+</ul>
+<div class="row">
+    <div class="container">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title"><h5 class="center">Reservas de Materiales</h5></span>
+                </div>
+                <div class="card-content">
+                    <div class="row">
+                        <table class="highlight responsive-table">
+                            <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Referencia</th>
+                                <th>Fecha</th>
+                                <th>Material</th>
+                                <th>Cantidad</th>
+                                <th>Montaje</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td class="input-field"><input id="cliente" ng-model="newMaterial.cliente" type="text"
+                                                               class="validate" placeholder="Cliente"></td>
+                                <td class="input-field"><input id="referencia" ng-model="newMaterial.referencia" type="text"
+                                                               class="validate" placeholder="Referencia"></td>
+                                <td class="input-field"><input id="fecha" ng-model="newMaterial.fecha" type="date"
+                                                               class="validate" placeholder="Fecha">
+                                </td>
+                                <td class="input-field"><input id="material" ng-model="newMaterial.material" type="text"
+                                                               class="validate" placeholder="Material"></td>
+                                <td class="input-field"><input id="cantidad" ng-model="newMaterial.cantidad" type="text"
+                                                               class="validate" placeholder="Cantidad"></td>
+                                <td class="input-field"><input id="montaje" ng-model="newMaterial.montaje" type="text"
+                                                               class="validate" placeholder="Montaje"></td>
+                                <td><a href="#!"><i class="small material-icons green-text"
+                                                    ng-click="saveMaterial($index)"
+                                                    onclick="event.stopPropagation();">add_box</i>
+                                </a></td>
+                            </tr>
+                            <tr ng-repeat="material in materials track by $index">
+                                <td>{{material.cliente}}</td>
+                                <td>{{material.referencia}}</td>
+                                <td>{{material.fecha}}</td>
+                                <td>{{material.material}}</td>
+                                <td>{{material.cantidad}}</td>
+                                <td>{{material.montaje}}</td>
+                                <td><a href="#!"><i class="material-icons red-text"
+                                                    ng-click="removeMaterial($index)"
+                                                    onclick="event.stopPropagation();">delete</i>
+                                </a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+        $('.collapsible').collapsible();
+    });
+</script>
+</html>

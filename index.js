@@ -24,6 +24,8 @@ app.use('/clientes', express.static(path.join(__dirname + '/public/clientes.html
 app.use('/facturas/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
 app.use('/proveedores', express.static(path.join(__dirname + '/public/proveedores.html')));
 app.use('/almacen', express.static(path.join(__dirname + '/public/almacen.html')));
+app.use('/materiales', express.static(path.join(__dirname + '/public/materiales.html')));
+
 
 /** ROUTERS **/
 
@@ -42,6 +44,8 @@ const providers = require('./routes/providers');
 const storagesService = require('./routes/storages-service');
 const storages = require('./routes/storages');
 
+const materialsService = require('./routes/materials-service');
+const materials = require('./routes/materials');
 /*************/
 
 const server = http.createServer(app);
@@ -51,6 +55,8 @@ app.use(baseAPI + '/groups', groups);
 app.use(baseAPI + '/clients', clients);
 app.use(baseAPI + '/providers', providers);
 app.use(baseAPI + '/storages', storages);
+app.use(baseAPI + '/materials', materials);
+
 
 
 providersService.connectDb(function (err) {
@@ -82,12 +88,17 @@ providersService.connectDb(function (err) {
                         console.log("Could not connect with MongoDB - storagesService");
                          process.exit(1);
                                 }
-
+                materialsService.connectDb(function (err) {
+                     if (err) {
+                        console.log("Could not connect with MongoDB - materialsService");
+                         process.exit(1);
+                                }
                 server.listen(PORT, function () {
                     console.log('Server with GUI up and running on localhost:' + PORT);
                 });
             });
            });
+                      });
         });
     });
 });
