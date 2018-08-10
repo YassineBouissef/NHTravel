@@ -5,8 +5,8 @@ angular.module("MarmolistasElPilarApp").controller("StoragesCtrl", function ($sc
 
     $scope.saveStorage = function () {
         console.log("Adding new storage", $scope.newStorage);
-        $scope.storages.push($scope.newStorage);
-        refresh();
+        postStorage($scope.newStorage);
+           refresh();
     };
 
     function clearForm() {
@@ -24,7 +24,6 @@ angular.module("MarmolistasElPilarApp").controller("StoragesCtrl", function ($sc
             console.log("Storage not deleted");
         }
     };
-
 
     function getStorages() {
         $http.get("/api/v1/storages")
@@ -45,17 +44,6 @@ angular.module("MarmolistasElPilarApp").controller("StoragesCtrl", function ($sc
             }, function (error) {
                 console.log('Error adding storage', error);
                 alert("Ups! Ha ocurrido un error al añadir el registro de almacén, inténtalo de nuevo en unos minutos.");
-            });
-    }
-
-    function updateStorage(storage) {
-        $http.put("/api/v1/storages/" + storage._id, storage)
-            .then(function (response) {
-                console.log('Storage updated', response);
-                refresh();
-            }, function (error) {
-                console.log('Error updating storage', error);
-                alert("Ups! Ha ocurrido un error al editar el registro de almacén, inténtalo de nuevo en unos minutos.");
             });
     }
 

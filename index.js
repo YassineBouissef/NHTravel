@@ -39,6 +39,9 @@ const clients = require('./routes/clients');
 const providersService = require('./routes/providers-service');
 const providers = require('./routes/providers');
 
+const storagesService = require('./routes/storages-service');
+const storages = require('./routes/storages');
+
 /*************/
 
 const server = http.createServer(app);
@@ -47,6 +50,8 @@ app.use(baseAPI + '/articles', articles);
 app.use(baseAPI + '/groups', groups);
 app.use(baseAPI + '/clients', clients);
 app.use(baseAPI + '/providers', providers);
+app.use(baseAPI + '/storages', storages);
+
 
 providersService.connectDb(function (err) {
     if (err) {
@@ -72,10 +77,17 @@ providersService.connectDb(function (err) {
                     process.exit(1);
                 }
 
+                storagesService.connectDb(function (err) {
+                     if (err) {
+                        console.log("Could not connect with MongoDB - storagesService");
+                         process.exit(1);
+                                }
+
                 server.listen(PORT, function () {
                     console.log('Server with GUI up and running on localhost:' + PORT);
                 });
             });
+           });
         });
     });
 });
