@@ -21,29 +21,29 @@
             <a href="#" class="brand-logo"><img class="logo" src="/img/logo.png"></a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                <li><a href="index.html">Inicio</a></li>
+                <li><a href="/">Inicio</a></li>
                 <li><a href="/articulos">Artículos</a></li>
-                <li><a href="grupos.html">Grupos</a></li>
-                <li class="active"><a href="clientes.html">Clientes</a></li>
-                <li><a href="proveedores.html">Proveedores</a></li>
+                <li><a href="/grupos">Grupos</a></li>
+                <li class="active"><a href="/clientes">Clientes</a></li>
+                <li><a href="/proveedores">Proveedores</a></li>
             </ul>
         </div>
     </nav>
 </div>
 
 <ul class="sidenav" id="mobile-demo">
-    <li><a href="index.html">Inicio</a></li>
-    <li class="active"><a href="#">Artículos</a></li>
-    <li><a href="grupos.html">Grupos</a></li>
-    <li><a href="clientes.html">Clientes</a></li>
-    <li><a href="proveedores.html">Proveedores</a></li>
+    <li><a href="/">Inicio</a></li>
+    <li><a href="/articulos">Artículos</a></li>
+    <li><a href="/grupos">Grupos</a></li>
+    <li class="active"><a href="/clientes">Clientes</a></li>
+    <li><a href="/proveedores">Proveedores</a></li>
 </ul>
 <div class="row">
     <div class="col s7">
         <div class="card">
             <div class="card-content">
                 <span class="card-title"><h5>Lista de Artículos</h5></span>
-                <table>
+                <table class="responsive-table">
                     <thead>
                     <tr>
                         <th>DESCRIPCIÓN</th>
@@ -53,24 +53,63 @@
                         <th>PRECIO</th>
                         <th>DESCUENTO</th>
                         <th>TOTAL</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in items track by $index">
-                        <td>{{item.articulo.nombre}}</td>
-                        <td>{{item.unidades}}</td>
-                        <td>{{item.dimension.alto}} * {{item.dimension.ancho}}</td>
-                        <td>{{item.cantidad}} M2</td>
-                        <td>{{item.precio}} €</td>
-                        <td>{{item.descuento}} %</td>
-                        <td>{{item.total}} €</td>
+                        <td><p ng-if="item.articulo.nombre">{{item.articulo.nombre}}</p></td>
+                        <td><p ng-if="item.unidades">{{item.unidades}}</p></td>
+                        <td><p ng-if="item.dimension.alto && item.dimension.ancho">{{item.dimension.alto}} *
+                            {{item.dimension.ancho}}</p></td>
+                        <td><p ng-if="item.cantidad">{{item.cantidad * item.unidades}} M2</p></td>
+                        <td><p ng-if="item.tarifa">{{item.tarifa}} €</p></td>
+                        <td><p ng-if="item.descuento">{{item.descuento}} %</p></td>
+                        <td><p ng-if="item.total">{{item.total}} €</p></td>
+                        <td><a href="#!">
+                            <i class="material-icons red-text"
+                               ng-click="removeItem($index)" onclick="event.stopPropagation();">delete</i>
+                        </a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="card-content">
+                <hr>
                 <div class="row">
+                    <div class="col s3">
+                        <h6><b>Bruto: </b>{{getTotal(1)}}€</h6>
+                    </div>
+                    <div class="col s3">
+                        <h6><b>IVA: </b>{{bill.iva ? getTotal(0.21) : 0}}€</h6>
+                    </div>
+                    <div class="col s3">
+                        <h6><b>A Pagar: </b>{{bill.iva && bill.rec ? getTotal(1.27292) : bill.iva ? getTotal(1.21) :
+                            bill.rec ? getTotal(1.052) : getTotal(1)}}€</h6>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s8">
+                        <input type="text" id="custom_item"
+                               ng-model="newCustomItem.articulo.nombre"
+                               placeholder="Añadir entrada personalizada">
+                        <label id="custom_label" for="custom_item">Entrada Personalizada</label>
+                    </div>
+                    <div class="input-field col s1">
+                        <a class="btn-floating btn-medium waves-effect waves-light orange"
+                           ng-click="addCustomItem()" onclick="event.stopPropagation();"><i
+                                class="material-icons">add</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5>Observaciones</h5></span>
+                <textarea id="observaciones_publicas" class="materialize-textarea"
+                          ng-model="bill.observaciones_publicas"
+                          placeholder="Observaciones que aparecerán en el documento"></textarea>
+                <label for="observaciones_publicas">Observaciones</label>
             </div>
         </div>
     </div>
@@ -78,21 +117,60 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <h5>Cliente: {{client.nombre}}</h5>
-                    <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
+                    <div class="col s7">
+                        <h5>Cliente: {{client.nombre}}</h5>
+                        <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
+                        <h6>
+                            <label>
+                                <input type="checkbox" ng-model="bill.rec" ng-init="client.rec"/>
+                                <span>Rec. Equiv.</span>
+                            </label>
+                        </h6>
+                        <h6>
+                            <label>
+                                <input type="checkbox" ng-model="bill.iva" ng-init="bill.iva = true"/>
+                                <span>IVA</span>
+                            </label>
+                        </h6>
+                        <textarea id="observaciones_internas" class="materialize-textarea"
+                                  ng-model="bill.observaciones_internas"
+                                  placeholder="Observaciones que aparecerán solo aquí"></textarea>
+                        <label for="observaciones_internas">Observaciones</label>
+                    </div>
+                    <div class="col s5">
+                        <div class="row">
+                            <div class="col s6">
+                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(0)">Albarán</a>
+                                </h5>
+                            </div>
+                            <div class="col s6">
+                                <h5><a class="waves-effect waves-light btn blue"
+                                       ng-click="saveDocument(1)">Presupuesto</a></h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s6">
+                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(2)">Factura</a>
+                                </h5>
+                            </div>
+                            <div class="col s6">
+                                <h5><a class="waves-effect waves-light btn blue" ng-click="saveDocument(3)">Factura
+                                    P.</a></h5>
+                            </div>
+                        </div>
+                    </div>
                     <br>
                     <div class="row">
                         <div class="col s3">
-                            <a class="waves-effect waves-light btn blue">Albarán</a>
                         </div>
                         <div class="col s3">
-                            <a class="waves-effect waves-light btn blue">Presupuesto</a>
+
                         </div>
                         <div class="col s3">
-                            <a class="waves-effect waves-light btn blue">Factura</a>
+
                         </div>
                         <div class="col s3">
-                            <a class="waves-effect waves-light btn blue">Factura P.</a>
+
                         </div>
                     </div>
                 </div>
@@ -150,21 +228,24 @@
                                             <div class="col s4">
                                                 <b>Unidad:</b> {{articulo.unidad}}
                                             </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col s4">
-                                                <b>T. General:</b> {{articulo.tarifa_general}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>T. Encimera:</b> {{articulo.tarifa_encimera}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>T. Contratista:</b> {{articulo.tarifa_contratista}}
+                                                <b>Grupo:</b> {{(groups | filter: {'_id': articulo.grupo})[0].nombre }}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>T. Público:</b> {{articulo.tarifa_publico}}
+                                                <b>T. General:</b> {{articulo.tarifas[0].valor}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. Encimera:</b> {{articulo.tarifas[1].valor}}
+                                            </div>
+                                            <div class="col s4">
+                                                <b>T. Contratista:</b> {{articulo.tarifas[2].valor}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>T. Público:</b> {{articulo.tarifas[3].valor}}
                                             </div>
                                             <div class="col s4">
                                                 <b>IVA:</b> {{articulo.iva}}
@@ -193,15 +274,15 @@
                     <input id="unidades" ng-model="newItem.unidades" type="number" class="validate" placeholder="1">
                     <label for="unidades">Cantidad</label>
                 </div>
-                <div class="input-field col s12">
+                <div class="input-field col s12" ng-if="selectedItem.unidad.toUpperCase()==='M2'">
                     <div class="row">
                         <div class="col s6">
-                            <input id="alto" ng-model="newItem.dimension.alto" type="text"
+                            <input id="alto" ng-model="newItem.dimension.alto" type="number"
                                    class="validate" placeholder="100">
                             <label for="alto">Alto</label>
                         </div>
                         <div class="col s6">
-                            <input id="ancho" ng-model="newItem.dimension.ancho" type="text"
+                            <input id="ancho" ng-model="newItem.dimension.ancho" type="number"
                                    class="validate" placeholder="100">
                             <label for="ancho">Ancho</label>
                         </div>
@@ -209,7 +290,9 @@
                 </div>
                 <div class="input-field col s12">
                     <select ng-model="newItem.tarifa" id="tarifa">
-                        <option ng-repeat="tarifa in selectedItem.tarifas track by $index" value="{{tarifa.valor}}">{{tarifa.nombre}}</option>
+                        <option ng-repeat="tarifa in selectedItem.tarifas track by $index" value="{{tarifa.valor}}">
+                            {{tarifa.nombre}}
+                        </option>
                     </select>
                     <label>Tarifa</label>
                 </div>
@@ -226,7 +309,7 @@
                 </button>
             </div>
         </form>
-        <table>
+        <table class="responsive-table">
             <thead>
             <tr>
                 <th>UNIDADES</th>
@@ -242,14 +325,20 @@
                 <td><p ng-if="newItem.unidades">{{newItem.unidades}}</p></td>
                 <td><p ng-if="newItem.dimension.alto && newItem.dimension.ancho">{{newItem.dimension.alto}} *
                     {{newItem.dimension.ancho}}</p></td>
-                <td><p ng-if="newItem.dimension.alto && newItem.dimension.ancho">{{(newItem.dimension.alto *
-                    newItem.dimension.ancho)/10000}} M2</p></td>
+                <td><p ng-if="newItem.dimension.alto && newItem.dimension.ancho && newItem.unidades">
+                    {{((newItem.dimension.alto *
+                    newItem.dimension.ancho)/10000) * newItem.unidades}} M2</p></td>
                 <td><p ng-if="newItem.tarifa">{{newItem.tarifa}} €</p></td>
                 <td><p ng-if="typeof(newItem.descuento)!='undefined'">{{newItem.descuento}} %</p></td>
-                <td>
+                <td ng-if="selectedItem.unidad.toUpperCase()==='M2'">
                     <p ng-if="newItem.unidades && newItem.dimension.alto && newItem.dimension.ancho && newItem.tarifa && typeof(newItem.descuento)!='undefined'">
-                        {{(( ( newItem.dimension.alto * newItem.dimension.ancho ) / 10000 ) * newItem.tarifa ) * ( (100 -
-                        newItem.descuento) / 100) * newItem.unidades | number : 2}} €</p>
+                        {{(( ( newItem.dimension.alto * newItem.dimension.ancho ) / 10000 ) * newItem.tarifa )
+                        * ( (100 - newItem.descuento) / 100) * newItem.unidades | number : 2}} €</p>
+                </td>
+                <td ng-if="selectedItem.unidad.toUpperCase()===('ML' || 'UNIDAD')">
+                    <p ng-if="newItem.unidades && newItem.tarifa && typeof(newItem.descuento)!='undefined'">
+                        {{ newItem.tarifa * newItem.unidades * ((100 - newItem.descuento) / 100) | number :2 }}€
+                    </p>
                 </td>
             </tr>
             </tbody>

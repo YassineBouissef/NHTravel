@@ -19,7 +19,11 @@ app.get('/', function (req, res) {
 
 app.use('/', express.static(__dirname + "/public/"));
 app.use('/articulos', express.static(path.join(__dirname + '/public/articulos.html')));
+app.use('/grupos', express.static(path.join(__dirname + '/public/grupos.html')));
+app.use('/clientes', express.static(path.join(__dirname + '/public/clientes.html')));
 app.use('/facturas/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
+app.use('/proveedores', express.static(path.join(__dirname + '/public/proveedores.html')));
+app.use('/almacen', express.static(path.join(__dirname + '/public/almacen.html')));
 
 /** ROUTERS **/
 

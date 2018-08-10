@@ -10,7 +10,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
     ];
 
     $scope.saveArticle = function () {
-        setTarifasName();
+        //setTarifasName();
         if ($scope.action === "Añadir") {
             console.log("Creating article", $scope.newArticle);
             postArticle($scope.newArticle);
@@ -21,26 +21,39 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         toggleForm();
     };
 
-    function setTarifasName() {
-        $scope.newArticle.tarifas[0].nombre = "Tarifa General";
-        $scope.newArticle.tarifas[1].nombre = "Tarifa Encimera";
-        $scope.newArticle.tarifas[2].nombre = "Tarifa Contratista";
-        $scope.newArticle.tarifas[3].nombre = "Tarifa Público";
-    }
+    $scope.updateTarifas = function () {
+        if ($scope.newArticle.grupo != "0") {
+            $scope.tarifa_general = $scope.groups.find(x => x._id === $scope.newArticle.grupo).encimera_ml;
+            $scope.tarifa_encimera = $scope.groups.find(x => x._id === $scope.newArticle.grupo).encimera_ml;
+
+            $scope.newArticle.tarifas[0] = {
+                nombre: "Tarifa General",
+                valor: $scope.tarifa_general
+            };
+
+            $scope.newArticle.tarifas[1] = {
+                nombre: "Tarifa Encimera (35%)",
+                valor: $scope.tarifa_general * 1.35
+            };
+        } else {
+            $scope.newArticle.tarifas.forEach(item => {
+                item.valor = 0
+            });
+        }
+        $(".tarifa").each(function () {
+            $(this).addClass('valid');
+        });
+        $('#grupo').formSelect();
+        console.log($scope.newArticle);
+    };
 
     function toggleForm() {
-        $("form#addArticuloForm label").each(function () {
-            $(this).toggleClass('active');
-        });
         $("form#addArticuloForm :input").each(function () {
             $(this).toggleClass('valid' || 'invalid');
         });
     }
 
     function clearForm() {
-        $("form#addArticuloForm label").each(function () {
-            $(this).removeClass('active');
-        });
         $("form#addArticuloForm :input").each(function () {
             $(this).removeClass('valid' || 'invalid');
         });
@@ -55,7 +68,6 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         $("#label_name").removeClass('active');
     }
 
-
     $scope.editArticle = function (i) {
         index = i;
         $scope.action = "Editar";
@@ -63,7 +75,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         $scope.class_button = "btn-large waves-effect waves-light orange";
         $scope.newArticle = $scope.articles[i];
         $('#grupo').find('option[value="' + $scope.newArticle.grupo + '"]').prop('selected', true);
-        $("#grupo").formSelect();
+        $('#grupo').formSelect();
         console.log("Editing article", $scope.newArticle);
         toggleForm();
     };
@@ -106,6 +118,7 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             .then(function (response) {
                 console.log('Articles retrieved');
                 $scope.articles = response.data;
+                $scope.newArticle.codigo = $scope.articles.length > 0 ? $scope.articles[$scope.articles.length - 1].codigo + 1 : 1;
             }, function (error) {
                 console.log('Error retrieving articles', error);
                 alert("Ups! Ha ocurrido un error al recuperar los artículos, inténtalo de nuevo en unos minutos.");
@@ -117,11 +130,10 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             .then(function (response) {
                 console.log('Groups retrieved');
                 $scope.groups.push(...response.data);
-                setTimeout(function(){
-                    console.log($scope.groups);
+                setTimeout(function () {
                     $('#grupo').find('option[value="0"]').prop('selected', true);
                     $('#grupo').formSelect();
-                }, 2000);
+                }, 1000);
             }, function (error) {
                 console.log('Error retrieving groups', error);
                 alert("Ups! Ha ocurrido un error al recuperar los grupos, inténtalo de nuevo en unos minutos.");
@@ -163,12 +175,12 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
 
     function refresh() {
         console.log("Refreshing");
+        initArticle();
         getArticles();
         clearForm();
         clearFilter();
         $('#grupo').find('option[value="0"]').prop('selected', true);
-        $("#grupo").formSelect();
-        $scope.newArticle = {};
+        $('#grupo').formSelect();
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
@@ -178,15 +190,39 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
         refresh();
     };
 
+
     function init() {
         console.log("Starting Articles controller");
+        initArticle();
         getArticles();
         getGroups();
-        $scope.newArticle = {};
-        //$scope.newArticle.grupo = $scope.groups[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";
+    }
+
+    function initArticle(){
+        $scope.newArticle = {
+            grupo: "0",
+            tarifas: [
+                {
+                    nombre: "Tarifa General",
+                    valor: 0
+                },
+                {
+                    nombre: "Tarifa Encimera (35%)",
+                    valor: 0
+                },
+                {
+                    nombre: "Tarifa Contratista",
+                    valor: 0
+                },
+                {
+                    nombre: "Tarifa Público",
+                    valor: 0
+                }
+            ]
+        };
     }
 
     init();
