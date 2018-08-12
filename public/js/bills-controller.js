@@ -198,9 +198,9 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         $http.post("/api/v1/bills", bill)
             .then(function (response) {
                 console.log('Bill added', response);
-
                 alert('GENERAR WORD');
                 alert('VOLVER A LA PANTALLA ANTERIOR');
+                window.location.href = '/clients/' + $scope.bill.cliente._id;
             }, function (error) {
                 console.log('Error adding bill', error);
                 alert("Ups! Ha ocurrido un error al crear el documento, inténtalo de nuevo en unos minutos.");
