@@ -67,9 +67,9 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         window.location.href = '/facturas/crear/' + $scope.client._id;
     };
 
-    $scope.editBill = function (i) {
+    $scope.editBill = function (bill) {
         console.log('Redirect to edit bill');
-        window.location.href = '/facturas/editar/' + $scope.bills[i]._id;
+        window.location.href = '/facturas/editar/' + bill._id;
     };
 
     $scope.getTotalUnpaid = function () {
@@ -127,11 +127,11 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
             });
     }
 
-    $scope.removeBill = function (i) {
-        console.log("Deleting bill", $scope.bills[i]);
+    $scope.removeBill = function (bill) {
+        console.log("Deleting bill", bill);
         let r = confirm("¿Está seguro de eliminar este A/P/F/FP?");
         if (r) {
-            deleteBill($scope.bills[i]);
+            deleteBill(bill);
         } else {
             console.log("Bill not deleted");
         }

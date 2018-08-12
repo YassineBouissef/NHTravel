@@ -113,10 +113,10 @@
                                 <td>{{bill.pagado ? 'Sí' : 'No'}}</td>
                                 <td><a href="#">
                                     <i class="material-icons orange-text"
-                                       ng-click="editBill($index)"
+                                       ng-click="editBill(bill)"
                                        onclick="event.stopPropagation();">edit</i>
                                     <i class="material-icons red-text"
-                                       ng-click="removeBill($index)"
+                                       ng-click="removeBill(bill)"
                                        onclick="event.stopPropagation();">delete</i>
                                 </a></td>
                             </tr>

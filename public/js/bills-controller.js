@@ -131,10 +131,27 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
             });
     }
 
+    function getType() {
+        let type = $scope.bill.tipo;
+        switch (+type) {
+            case 0:
+                $scope.tipoText = "Albarán";
+                break;
+            case 1:
+                $scope.tipoText = "Presupuesto";
+                break;
+            case 2:
+                $scope.tipoText = "Factura";
+                break;
+            case 3:
+                $scope.tipoText = "Factura P.";
+                break;
+        }
+    }
+
     $scope.removeItem = function (i) {
         console.log("Deleting item", $scope.items[i]);
-        let r = confirm("¿Está seguro de eliminar este artículo de la lista?\n" +
-            "Codigo: " + $scope.items[i].articulo.codigo + " | Nombre: " + $scope.items[i].articulo.nombre);
+        let r = confirm("¿Está seguro de eliminar este artículo de la lista?");
         if (r) {
             $scope.items.splice(i, 1);
         } else {
@@ -186,12 +203,34 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
 
     $scope.saveDocument = function (type) {
         $scope.bill.items = $scope.items;
-        $scope.bill.fecha = new Date();
-        $scope.bill.tipo = type;
         $scope.bill.total = $scope.getTotalAmount();
-        console.log($scope.bill);
-        postBill($scope.bill);
+        if (type === $scope.bill.tipo) {
+            //UPDATE
+            $scope.bill.tipo = type;
+            console.log($scope.bill);
+            updateBill($scope.bill);
+        } else {
+            //CREATE
+            delete $scope.bill._id;
+            $scope.bill.fecha = new Date();
+            $scope.bill.tipo = type;
+            console.log($scope.bill);
+            postBill($scope.bill);
+        }
     };
+
+    function updateBill(bill) {
+        $http.put("/api/v1/bills/" + bill._id, bill)
+            .then(function (response) {
+                console.log('Bill updated', response);
+                alert('GENERAR WORD');
+                alert('VOLVER A LA PANTALLA ANTERIOR');
+                window.location.href = '/clientes/' + $scope.bill.cliente._id;
+            }, function (error) {
+                console.log('Error updating bill', error);
+                alert("Ups! Ha ocurrido un error al editar el documento, inténtalo de nuevo en unos minutos.");
+            });
+    }
 
 
     function postBill(bill) {
@@ -200,7 +239,7 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
                 console.log('Bill added', response);
                 alert('GENERAR WORD');
                 alert('VOLVER A LA PANTALLA ANTERIOR');
-                window.location.href = '/clients/' + $scope.bill.cliente._id;
+                window.location.href = '/clientes/' + $scope.bill.cliente._id;
             }, function (error) {
                 console.log('Error adding bill', error);
                 alert("Ups! Ha ocurrido un error al crear el documento, inténtalo de nuevo en unos minutos.");
@@ -212,12 +251,33 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
             .then(function (response) {
                 console.log('Client retrieved', response.data[0]);
                 $scope.cliente = response.data[0];
-                $scope.bill.formadepago = $scope.cliente.formadepago;
+                if ($scope.modo === 'add') {
+                    $scope.bill.formadepago = $scope.cliente.formadepago;
+                    setTimeout(function () {
+                        $('select#formadepago').prop('selectedIndex', $scope.cliente.formadepago);
+                        $('#formadepago').formSelect();
+                    }, 500);
+                    $scope.bill.rec = !!$scope.cliente.rec;
+                    $scope.bill.cliente = $scope.cliente;
+                }
+            }, function (error) {
+                console.log('Error retrieving cliente', error);
+                alert("Ups! Ha ocurrido un error al recuperar los datos del cliente, inténtalo de nuevo en unos minutos.");
+            });
+    }
+
+    function getBill(id) {
+        $http.get("/api/v1/bills/" + id)
+            .then(function (response) {
+                console.log('Bill retrieved', response.data[0]);
+                $scope.bill = response.data[0];
                 setTimeout(function () {
+                    $('select#formadepago').prop('selectedIndex', $scope.bill.formadepago);
                     $('#formadepago').formSelect();
                 }, 500);
-                $scope.bill.rec = !!$scope.cliente.rec;
-                $scope.bill.cliente = $scope.cliente;
+                $scope.items = $scope.bill.items;
+                getType();
+                getClient($scope.bill.cliente._id);
             }, function (error) {
                 console.log('Error retrieving cliente', error);
                 alert("Ups! Ha ocurrido un error al recuperar los datos del cliente, inténtalo de nuevo en unos minutos.");
@@ -241,14 +301,18 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         $scope.articles = [];
         $scope.items = [];
         $scope.bill = {};
-
         $scope.newItem = {};
         getArticles();
         getGroups();
         let url = window.location.href;
-        $scope.clientId = url.substr(url.lastIndexOf("/") + 1, url.length);
-        console.log($scope.clientId);
-        getClient($scope.clientId);
+        $scope.modo = (url.includes('crear') ? 'add' : 'edit');
+        console.log('Modo: ', $scope.modo);
+        $scope.id = url.substr(url.lastIndexOf("/") + 1, url.length);
+        console.log($scope.id);
+        if ($scope.modo === 'add')
+            getClient($scope.id);
+        else
+            getBill($scope.id)
     }
 
     init();
