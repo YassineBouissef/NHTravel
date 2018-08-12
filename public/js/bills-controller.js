@@ -112,10 +112,10 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         console.log("Setting item", $scope.articles[i]);
         $scope.selectedItem = $scope.articles[i];
         setTimeout(function () {
-            $('select#tarifa').prop('selectedIndex', $scope.client.tarifa + 1);
+            $('select#tarifa').prop('selectedIndex', $scope.cliente.tarifa + 1);
             $('#tarifa').formSelect();
         }, 500);
-        $scope.newItem.tarifa = $scope.selectedItem.tarifas[$scope.client.tarifa].valor;
+        $scope.newItem.tarifa = $scope.selectedItem.tarifas[$scope.cliente.tarifa].valor;
         if ($scope.selectedItem.unidad.toUpperCase() === "M2") {
             $scope.newItem.dimension = {
                 alto: $scope.selectedItem.dimension.alto,
@@ -170,42 +170,39 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
     };
 
     $scope.saveDocument = function (type) {
-        if (type === 0) {
-            //Albarán
-            $scope.bill.items = $scope.items;
-            console.log($scope.bill);
-        }
+        $scope.bill.items = $scope.items;
+        $scope.bill.fecha = new Date();
+        $scope.bill.tipo = type;
+        console.log($scope.bill);
+        postBill($scope.bill);
     };
 
-    function getClient(id) {
-        /*$scope.client = {
-            "nombre": "David Corral",
-            "dni": "87548747Q",
-            "domicilio": "Real 249",
-            "poblacion": "Cádiz",
-            "provincia": "Cádiz",
-            "cp": 11100,
-            "contacto": "Pepe",
-            "email": "david@uca.es",
-            "telefono": 666444333,
-            "rec": 0,
-            "formadepago": 1,
-            "tarifa": 0
-        };*/
+    function postBill(bill) {
+        $http.post("/api/v1/bills", bill)
+            .then(function (response) {
+                console.log('Bill added', response);
+                //refresh();
+                alert('GENERAR WORD');
+                alert('VOLVER A LA PANTALLA ANTERIOR');
+            }, function (error) {
+                console.log('Error adding bill', error);
+                alert("Ups! Ha ocurrido un error al crear el documento, inténtalo de nuevo en unos minutos.");
+            });
+    }
 
-        /*id = "5g533fc815249c4010458d15";*/
+    function getClient(id) {
         $http.get("/api/v1/clients/" + id)
             .then(function (response) {
                 console.log('Client retrieved', response.data[0]);
-                $scope.client = response.data[0];
-                $scope.bill.formadepago = $scope.client.formadepago;
+                $scope.cliente = response.data[0];
+                $scope.bill.formadepago = $scope.cliente.formadepago;
                 setTimeout(function () {
                     $('#formadepago').formSelect();
                 }, 500);
-                $scope.bill.rec = !!$scope.client.rec;
-                $scope.bill.client = $scope.client;
+                $scope.bill.rec = !!$scope.cliente.rec;
+                $scope.bill.cliente = $scope.cliente;
             }, function (error) {
-                console.log('Error retrieving client', error);
+                console.log('Error retrieving cliente', error);
                 alert("Ups! Ha ocurrido un error al recuperar los datos del cliente, inténtalo de nuevo en unos minutos.");
             });
     }

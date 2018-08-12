@@ -119,11 +119,11 @@
                 <div class="card-content">
                     <div class="row">
                         <div class="col s12">
-                            <h5>Cliente: {{client.nombre}}</h5>
-                            <h6>Tarifa predeterminada: {{tarifas[client.tarifa].nombre}}</h6>
+                            <h5>Cliente: {{cliente.nombre}}</h5>
+                            <h6>Tarifa predeterminada: {{tarifas[cliente.tarifa].nombre}}</h6>
                             <h6>
                                 <label>
-                                    <input type="checkbox" ng-model="bill.rec" ng-init="client.rec"/>
+                                    <input type="checkbox" ng-model="bill.rec" ng-init="cliente.rec"/>
                                     <span>Rec. Equiv.</span>
                                 </label>
                             </h6>
@@ -136,7 +136,7 @@
                             <div class="input-field">
                                 <select ng-model="bill.formadepago" id="formadepago">
                                     <option ng-repeat="formadepago in formadepagos" ng-value="formadepago._id"
-                                            ng-selected="formadepago._id == client.formadepago">{{formadepago.nombre}}
+                                            ng-selected="formadepago._id == cliente.formadepago">{{formadepago.nombre}}
                                     </option>
                                 </select>
                                 <label for="formadepago">Forma de pago</label>

@@ -71,6 +71,44 @@
                 </div>
                 <div class="row">
                     <div class="col s12">
+                        <div class="input-field col s2">
+                            <select ng-change="updateBillType()" ng-model="billType">
+                                <option value="0" selected>Albarán</option>
+                                <option value="1">Presupuesto</option>
+                                <option value="2">Factura</option>
+                                <option value="3">Factura P.</option>
+                            </select>
+                            <label>Tipo de documento</label>
+                        </div>
+
+                        <table class="responsive-table striped">
+                            <thead>
+                            <tr>
+                                <th>{{billSelected}}</th>
+                                <th>Fecha</th>
+                                <th>Importe</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr ng-repeat="bill in bills">
+                                <td>{{billSelected}} nº {{bill.codigo}}</td>
+                                <td>{{bill.fecha}}</td>
+                                <td>{{bill.total}}</td>
+                                <td><a href="#">
+                                    <i class="material-icons orange-text"
+                                       ng-click="editBill($index)"
+                                       onclick="event.stopPropagation();">edit</i>
+                                    <i class="material-icons red-text"
+                                       ng-click="removeBill($index)"
+                                       onclick="event.stopPropagation();">delete</i>
+                                </a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--<div class="col s12">
                         <ul class="tabs">
                             <li class="tab col s3"><a href="#albaran">Albaranes</a></li>
                             <li class="tab col s3"><a href="#presupuesto">Presupuestos</a></li>
@@ -78,10 +116,18 @@
                             <li class="tab col s3"><a href="#facturap">Facturas P.</a></li>
                         </ul>
                     </div>
-                    <div id="albaran" class="col s12">Albaranes</div>
-                    <div id="presupuesto" class="col s12">Presupuestos</div>
-                    <div id="factura" class="col s12">Facturas</div>
-                    <div id="facturap" class="col s12">Facturas P.</div>
+                    <div id="albaran" class="col s12">
+
+                    </div>
+                    <div id="presupuesto" class="col s12">
+
+                    </div>
+                    <div id="factura" class="col s12">
+
+                    </div>
+                    <div id="facturap" class="col s12">
+
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -93,6 +139,7 @@
         $('.sidenav').sidenav();
         $('.collapsible').collapsible();
         $('.tabs').tabs();
+        $('select').formSelect();
     });
 </script>
 </html>
