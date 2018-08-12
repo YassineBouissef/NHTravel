@@ -88,8 +88,22 @@
                             </select>
                             <label>Filtrar por</label>
                         </div>
-                        <div class="col s2">
-                            <!--<b><i class="small material-icons green-text">expand_less</i>{{getTotalPaid(true)}}€</b>-->
+                        <div class="input-field col s2">
+                            <input id="fecha_inicio" type="date" ng-model="fecha.inicio"
+                                   data-date-format="dd/mm/yyyy">
+                            <label for="fecha_inicio">Fecha Inicio</label>
+                        </div>
+                        <div class="input-field col s2">
+                            <input id="fecha_fin" type="date" ng-model="fecha.fin">
+                            <label for="fecha_fin">Fecha Fin</label>
+                        </div>
+                        <div class="input-field col s1">
+                            <a class="btn-floating btn-medium waves-effect waves-light green"
+                               ng-click="searchDates()">
+                                <i class="material-icons">date_range</i>
+                            </a>
+                        </div>
+                        <div class="input-field col s2">
                             <b><i class="small material-icons red-text">expand_more</i>{{getTotalUnpaid()}}€</b>
                         </div>
                     </div>

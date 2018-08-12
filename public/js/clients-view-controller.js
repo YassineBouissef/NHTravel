@@ -54,12 +54,21 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
     ];
 
     $scope.myFilter = function (bill) {
-        if (+$scope.payment === 0)
-            return bill.tipo === +$scope.billType;
-        else if (+$scope.payment === 1)
-            return bill.pagado;
-        else if (+$scope.payment === 2)
-            return !bill.pagado;
+        let date = new Date(bill.fecha).getTime();
+        if (date >= $scope.fecha.inicio.getTime() &&
+            date <= $scope.fecha.fin.getTime()) {
+            if (+$scope.payment === 0)
+                return bill.tipo === +$scope.billType;
+            else if (+$scope.payment === 1)
+                return bill.pagado;
+            else if (+$scope.payment === 2)
+                return !bill.pagado;
+        } else
+            return false;
+    };
+
+    $scope.searchDates = function () {
+        console.log('Buscando en: ', $scope.fecha);
     };
 
     $scope.createBill = function () {
@@ -164,6 +173,10 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         $scope.payment = 0;
         $scope.client = {};
         $scope.bills = [];
+        $scope.fecha = {
+            inicio: new Date(2018, 0, 1, 0, 0, 0, 0),
+            fin: new Date()
+        };
         let url = window.location.href;
         $scope.clientId = url.substr(url.lastIndexOf("/") + 1, url.length);
         console.log($scope.clientId);
