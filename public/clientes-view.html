@@ -70,9 +70,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s12">
+                    <div class="sol s12">
                         <div class="input-field col s2">
-                            <select ng-change="updateBillType()" ng-model="billType">
+                            <select ng-change="updateBillType()" ng-model="billType" id="billType">
                                 <option value="0" selected>Albarán</option>
                                 <option value="1">Presupuesto</option>
                                 <option value="2">Factura</option>
@@ -80,22 +80,37 @@
                             </select>
                             <label>Tipo de documento</label>
                         </div>
-
+                        <div class="input-field col s2">
+                            <select ng-model="payment" id="payment">
+                                <option value="0" selected>Todos</option>
+                                <option value="1">Pagados</option>
+                                <option value="2">No Pagados</option>
+                            </select>
+                            <label>Filtrar por</label>
+                        </div>
+                        <div class="col s2">
+                            <!--<b><i class="small material-icons green-text">expand_less</i>{{getTotalPaid(true)}}€</b>-->
+                            <b><i class="small material-icons red-text">expand_more</i>{{getTotalUnpaid()}}€</b>
+                        </div>
+                    </div>
+                    <div class="col s12">
                         <table class="responsive-table striped">
                             <thead>
                             <tr>
                                 <th>{{billSelected}}</th>
                                 <th>Fecha</th>
-                                <th>Importe</th>
+                                <th>Importe (Bruto)</th>
+                                <th>Pagado</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
 
                             <tbody>
-                            <tr ng-repeat="bill in bills">
+                            <tr ng-repeat="bill in bills | filter:myFilter track by $index">
                                 <td>{{billSelected}} nº {{bill.codigo}}</td>
-                                <td>{{bill.fecha}}</td>
-                                <td>{{bill.total}}</td>
+                                <td>{{bill.fecha | date:'dd/MM/yyyy'}}</td>
+                                <td>{{bill.total}}€</td>
+                                <td>{{bill.pagado ? 'Sí' : 'No'}}</td>
                                 <td><a href="#">
                                     <i class="material-icons orange-text"
                                        ng-click="editBill($index)"
@@ -108,26 +123,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <!--<div class="col s12">
-                        <ul class="tabs">
-                            <li class="tab col s3"><a href="#albaran">Albaranes</a></li>
-                            <li class="tab col s3"><a href="#presupuesto">Presupuestos</a></li>
-                            <li class="tab col s3"><a class="active" href="#factura">Facturas</a></li>
-                            <li class="tab col s3"><a href="#facturap">Facturas P.</a></li>
-                        </ul>
-                    </div>
-                    <div id="albaran" class="col s12">
-
-                    </div>
-                    <div id="presupuesto" class="col s12">
-
-                    </div>
-                    <div id="factura" class="col s12">
-
-                    </div>
-                    <div id="facturap" class="col s12">
-
-                    </div>-->
                 </div>
             </div>
         </div>
@@ -139,6 +134,8 @@
         $('.sidenav').sidenav();
         $('.collapsible').collapsible();
         $('.tabs').tabs();
+        $('#billType').find('option[value="0"]').prop('selected', true);
+        $('#payment').find('option[value="0"]').prop('selected', true);
         $('select').formSelect();
     });
 </script>

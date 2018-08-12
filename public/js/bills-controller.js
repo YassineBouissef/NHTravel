@@ -54,13 +54,8 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         }
     ];
 
-    function refresh() {
-        console.log("Refreshing");
-        $scope.selectedItem = {};
-    }
-
-    $scope.refresh = function () {
-        refresh();
+    $scope.round = function (amount) {
+        return round(amount);
     };
 
     function round(amount) {
@@ -169,19 +164,41 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         }
     };
 
+    $scope.getTotal = function (aux) {
+        let total = 0;
+        $scope.items.forEach((item) => {
+            if (item.hasOwnProperty("total"))
+                total += item.total;
+        });
+        return round(total * aux);
+    };
+
+    $scope.getTotalAmount = function () {
+        if ($scope.bill.iva && $scope.bill.rec)
+            return $scope.getTotal(1.27292);
+        else if ($scope.bill.iva)
+            return $scope.getTotal(1.21);
+        else if ($scope.bill.rec)
+            return $scope.getTotal(1.052);
+        else
+            return $scope.getTotal(1);
+    };
+
     $scope.saveDocument = function (type) {
         $scope.bill.items = $scope.items;
         $scope.bill.fecha = new Date();
         $scope.bill.tipo = type;
+        $scope.bill.total = $scope.getTotalAmount();
         console.log($scope.bill);
         postBill($scope.bill);
     };
+
 
     function postBill(bill) {
         $http.post("/api/v1/bills", bill)
             .then(function (response) {
                 console.log('Bill added', response);
-                //refresh();
+
                 alert('GENERAR WORD');
                 alert('VOLVER A LA PANTALLA ANTERIOR');
             }, function (error) {
@@ -217,15 +234,6 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
                 alert("Ups! Ha ocurrido un error al recuperar los grupos, inténtalo de nuevo en unos minutos.");
             });
     }
-
-    $scope.getTotal = function (aux) {
-        let total = 0;
-        $scope.items.forEach((item) => {
-            if (item.hasOwnProperty("total"))
-                total += item.total;
-        });
-        return round(total * aux);
-    };
 
     function init() {
         console.log("Starting Bills controller");

@@ -62,7 +62,7 @@
                         <td><p ng-if="item.unidades">{{item.unidades}}</p></td>
                         <td><p ng-if="item.dimension.alto && item.dimension.ancho">{{item.dimension.alto}} *
                             {{item.dimension.ancho}}</p></td>
-                        <td><p ng-if="item.cantidad">{{item.cantidad * item.unidades}} M2</p></td>
+                        <td><p ng-if="item.cantidad">{{round(item.cantidad * item.unidades)}} M2</p></td>
                         <td><p ng-if="item.tarifa">{{item.tarifa}} €</p></td>
                         <td><p ng-if="item.descuento">{{item.descuento}} %</p></td>
                         <td><p ng-if="item.total">{{item.total}} €</p></td>
@@ -84,8 +84,7 @@
                         <h6><b>IVA: </b>{{bill.iva ? getTotal(0.21) : 0}}€</h6>
                     </div>
                     <div class="col s3">
-                        <h6><b>A Pagar: </b>{{bill.iva && bill.rec ? getTotal(1.27292) : bill.iva ? getTotal(1.21) :
-                            bill.rec ? getTotal(1.052) : getTotal(1)}}€</h6>
+                        <h6><b>A Pagar: </b>{{getTotalAmount()}}€</h6>
                     </div>
                 </div>
                 <div class="row">

@@ -198,7 +198,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
                 console.log('Client deleted', response);
                 refresh();
             }, function (error) {
-                console.log('Error updating client', error);
+                console.log('Error deleting client', error);
                 alert("Ups! Ha ocurrido un error al eliminar el cliente, inténtalo de nuevo en unos minutos.");
             });
     }
