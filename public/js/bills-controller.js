@@ -234,12 +234,20 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
 
 
     function postBill(bill) {
-        $http.post("/api/v1/bills", bill)
+        $http.get("/api/v1/bills/type/" + bill.tipo)
             .then(function (response) {
-                console.log('Bill added', response);
-                alert('GENERAR WORD');
-                alert('VOLVER A LA PANTALLA ANTERIOR');
-                window.location.href = '/clientes/' + $scope.bill.cliente._id;
+                let bills = response.data;
+                console.log(bills);
+                bill.codigo = bills.length > 0 ? bills[bills.length -1 ].codigo +1 : 1;
+                $http.post("/api/v1/bills", bill)
+                    .then(function (response) {
+                        console.log('Bill added', response);
+                        alert('GENERAR WORD');
+                        window.location.href = '/clientes/' + $scope.bill.cliente._id;
+                    }, function (error) {
+                        console.log('Error adding bill', error);
+                        alert("Ups! Ha ocurrido un error al crear el documento, inténtalo de nuevo en unos minutos.");
+                    });
             }, function (error) {
                 console.log('Error adding bill', error);
                 alert("Ups! Ha ocurrido un error al crear el documento, inténtalo de nuevo en unos minutos.");

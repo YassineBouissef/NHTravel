@@ -22,6 +22,10 @@ Bills.prototype.add = function (bill, callback) {
     return db.insert(bill, callback);
 };
 
+Bills.prototype.getByType = function (type, callback) {
+    return db.find({tipo: +type}).toArray(callback);
+};
+
 Bills.prototype.get = function (_id, callback) {
     return db.find({_id: ObjectId(_id)}).toArray(callback);
 };

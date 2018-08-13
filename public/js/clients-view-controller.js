@@ -295,7 +295,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
                     bruto += item.total ? item.total : 0;
                 });
                 doc.setData({
-                    codigo: 100,
+                    codigo: bill.codigo,
                     fecha: date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
                     nombre: bill.cliente.nombre,
                     dni: bill.cliente.dni,

@@ -41,6 +41,25 @@ router.get('/:_id', function (req, res) {
 
 });
 
+router.get('/type/:type', function (req, res) {
+    let type = req.params.type;
+    billsService.getByType(type, (err, bill) => {
+            if (err) {
+                res.send({
+                    msg: err
+                }).sendStatus(500);
+            } else if (bill != null) {
+                res.status(200).send(bill);
+            } else {
+                res.send({
+                    msg: err
+                }).sendStatus(500);
+            }
+        }
+    );
+
+});
+
 router.get('/client/:_id', function (req, res) {
     let _id = req.params._id;
     billsService.getClientBills(_id, (err, bill) => {
@@ -59,7 +78,6 @@ router.get('/client/:_id', function (req, res) {
     );
 
 });
-
 
 router.post('/', function (req, res) {
     let bill = req.body;
