@@ -62,14 +62,74 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
 
         if (date >= dateStart.getTime() &&
             date <= dateEnd.getTime()) {
-            if (+$scope.payment === 0)
+            if (+$scope.isPaid === 0)
                 return bill.tipo === +$scope.billType;
-            else if (+$scope.payment === 1)
+            else if (+$scope.isPaid === 1)
                 return bill.pagado;
-            else if (+$scope.payment === 2)
+            else if (+$scope.isPaid === 2)
                 return !bill.pagado;
         } else
             return false;
+    };
+
+    $scope.markBillAsPaid = function () {
+        console.log('Marking bill as paid');
+
+        console.log('Payment type: ', $scope.billPaymentType);
+        console.log('Bill: ', $scope.billToPay);
+        console.log('Cheque/Pagaré: ', $scope.check);
+
+        $scope.billToPay.pagado = true;
+        $scope.billToPay.metododepago = +$scope.billPaymentType;
+
+        if(+$scope.billPaymentType < 2 || +$scope.billPaymentType > 3){
+            //Marcar como pagado simple
+            alert("Marcar como pagado simple");
+            updateBill($scope.billToPay);
+        }else{
+            //Crear cheque/pagaré
+            alert("Marcar como pagado con cheque/pagaré, crear cheque/pagaré y actualizar la bill");
+            updateBill($scope.billToPay);
+        }
+    };
+
+    $scope.getPaymentType = function (bill){
+        if(bill.pagado){
+            switch (bill.metododepago) {
+                case 0:
+                    return 'Efectivo';
+                case 1:
+                    return 'Transferencia';
+                case 2:
+                    return 'Cheque nº XXXX';
+                case 3:
+                    return 'Pagarés nº XXXX';
+                case 4:
+                    return 'Confirming';
+            }
+        }
+        else{
+            return 'No pagado'
+        }
+    };
+
+    $scope.payBill = function (bill) {
+        console.log('Paying bill', bill);
+        $('#payBill').modal('open');
+        $scope.billToPay = bill;
+    };
+
+    $scope.unpayBill = function (bill){
+        console.log("Unpaying bill", bill);
+        let r = confirm("¿Está seguro de marcar este A/P/F/FP como no pagado?");
+        if (r) {
+            bill.pagado = false;
+            delete bill.metododepago;
+            bill.check = {};
+            updateBill(bill);
+        } else {
+            console.log("Bill not marked as unpaid");
+        }
     };
 
     $scope.createBill = function () {
@@ -114,6 +174,18 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
                 break;
         }
     };
+
+    function updateBill(bill) {
+        $http.put("/api/v1/bills/" + bill._id, bill)
+            .then(function (response) {
+                console.log('Bill updated', response);
+                $('#payBill').modal('close');
+                refresh();
+            }, function (error) {
+                console.log('Error updating bill', error);
+                alert("Ups! Ha ocurrido un error al actualizar el documento, inténtalo de nuevo en unos minutos.");
+            });
+    }
 
     function getClient(id) {
         $http.get("/api/v1/clients/" + id)
@@ -160,6 +232,11 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
 
     function refresh() {
         console.log("Refreshing");
+        let d = new Date();
+        $scope.billPaymentType = 0;
+        $scope.check = {};
+        $scope.check.fecha = ("0" + (d.getDate())).slice(-2) + '/' + ("0" + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+        $scope.check.fecha_vencimiento = ("0" + (d.getDate())).slice(-2) + '/' + ("0" + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
         getBills($scope.clientId);
     }
 
@@ -172,7 +249,11 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         let d = new Date();
         $scope.billSelected = "Albarán";
         $scope.billType = 0;
-        $scope.payment = 0;
+        $scope.isPaid = 0;
+        $scope.billPaymentType = 0;
+        $scope.check = {};
+        $scope.check.fecha = ("0" + (d.getDate())).slice(-2) + '/' + ("0" + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+        $scope.check.fecha_vencimiento = ("0" + (d.getDate())).slice(-2) + '/' + ("0" + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
         $scope.client = {};
         $scope.bills = [];
         $scope.fecha = {

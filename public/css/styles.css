@@ -60,3 +60,7 @@ body {
 .item{
     margin: 0 !important;
 }
+
+.invisible {
+    visibility: hidden;
+}
