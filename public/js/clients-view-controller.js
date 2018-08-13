@@ -55,8 +55,13 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
 
     $scope.myFilter = function (bill) {
         let date = new Date(bill.fecha).getTime();
-        if (date >= $scope.fecha.inicio.getTime() &&
-            date <= $scope.fecha.fin.getTime()) {
+        let dateParts = $scope.fecha.inicio.split("/");
+        let dateStart = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], 0, 0, 0);
+        dateParts = $scope.fecha.fin.split("/");
+        let dateEnd = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], 23, 59, 59);
+
+        if (date >= dateStart.getTime() &&
+            date <= dateEnd.getTime()) {
             if (+$scope.payment === 0)
                 return bill.tipo === +$scope.billType;
             else if (+$scope.payment === 1)
@@ -65,10 +70,6 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
                 return !bill.pagado;
         } else
             return false;
-    };
-
-    $scope.searchDates = function () {
-        console.log('Buscando en: ', $scope.fecha);
     };
 
     $scope.createBill = function () {
@@ -168,14 +169,15 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
 
     function init() {
         console.log("Starting Clients View controller");
+        let d = new Date();
         $scope.billSelected = "Albarán";
         $scope.billType = 0;
         $scope.payment = 0;
         $scope.client = {};
         $scope.bills = [];
         $scope.fecha = {
-            inicio: new Date(2018, 0, 1, 0, 0, 0, 0),
-            fin: new Date()
+            inicio: '01/01/2018',
+            fin: ("0" + (d.getDate())).slice(-2) + '/' + ("0" + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear()
         };
         let url = window.location.href;
         $scope.clientId = url.substr(url.lastIndexOf("/") + 1, url.length);

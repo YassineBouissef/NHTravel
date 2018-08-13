@@ -89,19 +89,14 @@
                             <label>Filtrar por</label>
                         </div>
                         <div class="input-field col s2">
-                            <input id="fecha_inicio" type="date" ng-model="fecha.inicio"
-                                   data-date-format="dd/mm/yyyy">
+                            <input id="fecha_inicio" type="text" class="datepicker" value="01/01/2018"
+                                   ng-model="fecha.inicio">
                             <label for="fecha_inicio">Fecha Inicio</label>
                         </div>
                         <div class="input-field col s2">
-                            <input id="fecha_fin" type="date" ng-model="fecha.fin">
+                            <input id="fecha_fin" type="text" class="datepicker" value="01/01/2018"
+                                   ng-model="fecha.fin">
                             <label for="fecha_fin">Fecha Fin</label>
-                        </div>
-                        <div class="input-field col s1">
-                            <a class="btn-floating btn-medium waves-effect waves-light green"
-                               ng-click="searchDates()">
-                                <i class="material-icons">date_range</i>
-                            </a>
                         </div>
                         <div class="input-field col s2">
                             <b><i class="small material-icons red-text">expand_more</i>{{getTotalUnpaid()}}€</b>
@@ -151,6 +146,17 @@
         $('#billType').find('option[value="0"]').prop('selected', true);
         $('#payment').find('option[value="0"]').prop('selected', true);
         $('select').formSelect();
+        $('.datepicker').datepicker({
+            firstDay: 1,
+            format: 'dd/mm/yyyy',
+            i18n: {
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"]
+            }
+        });
     });
 </script>
 </html>
