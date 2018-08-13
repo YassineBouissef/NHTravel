@@ -82,19 +82,19 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         $scope.billToPay.pagado = true;
         $scope.billToPay.metododepago = +$scope.billPaymentType;
 
-        if(+$scope.billPaymentType < 2 || +$scope.billPaymentType > 3){
+        if (+$scope.billPaymentType < 2 || +$scope.billPaymentType > 3) {
             //Marcar como pagado simple
             alert("Marcar como pagado simple");
             updateBill($scope.billToPay);
-        }else{
+        } else {
             //Crear cheque/pagaré
             alert("Marcar como pagado con cheque/pagaré, crear cheque/pagaré y actualizar la bill");
             updateBill($scope.billToPay);
         }
     };
 
-    $scope.getPaymentType = function (bill){
-        if(bill.pagado){
+    $scope.getPaymentType = function (bill) {
+        if (bill.pagado) {
             switch (bill.metododepago) {
                 case 0:
                     return 'Efectivo';
@@ -108,7 +108,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
                     return 'Confirming';
             }
         }
-        else{
+        else {
             return 'No pagado'
         }
     };
@@ -119,7 +119,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         $scope.billToPay = bill;
     };
 
-    $scope.unpayBill = function (bill){
+    $scope.unpayBill = function (bill) {
         console.log("Unpaying bill", bill);
         let r = confirm("¿Está seguro de marcar este A/P/F/FP como no pagado?");
         if (r) {
@@ -268,4 +268,71 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
     }
 
     init();
+
+    $scope.generateBill = function (bill) {
+        console.log('Generating bill', bill);
+        JSZipUtils.getBinaryContent("/res/presupuesto.docx", function (error, content) {
+                if (error) {
+                    throw error
+                }
+                let zip = new JSZip(content);
+                let doc = new Docxtemplater().loadZip(zip);
+                let date = new Date(bill.fecha);
+                let items = [];
+                let bruto = 0;
+                bill.items.forEach(item => {
+                    items.push({
+                        nombre: item.articulo.nombre || '',
+                        unidades: item.unidades || '',
+                        medidas: item.dimension && item.dimension.alto && item.dimension.ancho ?
+                            item.dimension.alto + ' * ' + item.dimension.ancho : '',
+                        cantidad: item.dimension && item.dimension.alto && item.dimension.ancho && item.unidades ?
+                            ((item.dimension.alto * item.dimension.ancho) / 10000) * item.unidades : '',
+                        precio: item.tarifa || '',
+                        descuento: item.descuento || item.descuento >= 0 ? item.descuento : '',
+                        total: round(item.total || '')
+                    });
+                    bruto += item.total ? item.total : 0;
+                });
+                doc.setData({
+                    codigo: 100,
+                    fecha: date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+                    nombre: bill.cliente.nombre,
+                    dni: bill.cliente.dni,
+                    domicilio: bill.cliente.domicilio,
+                    poblacion: bill.cliente.poblacion,
+                    provincia: bill.cliente.provincia,
+                    cp: bill.cliente.cp,
+                    observaciones: bill.observaciones_publicas,
+                    formadepago: $scope.formadepagos[bill.formadepago].nombre,
+                    items: items,
+                    bruto: round(bruto),
+                    rec: round(bill.rec ? bruto * 1.21 * 0.052 : 0),
+                    descuento: 0,
+                    total: round(bill.rec && bill.iva ? bruto * 1.27292 : bill.iva ? bruto * 1.21 : bill.rec ? bruto * 1.052 : bruto)
+                });
+
+                try {
+                    // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+                    doc.render()
+                } catch (error) {
+                    let e = {
+                        message: error.message,
+                        name: error.name,
+                        stack: error.stack,
+                        properties: error.properties,
+                    };
+                    console.log(JSON.stringify({error: e}));
+                    // The error thrown here contains additional information when logged with JSON.stringify (it contains a property object).
+                    throw error;
+                }
+
+                let out = doc.getZip().generate({
+                    type: "blob",
+                    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                }); //Output the document using Data-URI
+                saveAs(out, "Presupuesto.docx")
+            }
+        );
+    };
 });
