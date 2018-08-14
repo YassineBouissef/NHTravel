@@ -49,6 +49,14 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title"><h5 class="center">Anomalías</h5></span>
+                <div class="input-field col s2">
+                    <select ng-model="anomalyStatus" id="anomalyStatus">
+                        <option value="0" selected>Todas</option>
+                        <option value="1">Terminadas</option>
+                        <option value="2">No Terminadas</option>
+                    </select>
+                    <label>Filtrar anomalías</label>
+                </div>
             </div>
             <div class="card-content">
                 <div class="row">
@@ -99,7 +107,7 @@
                                                 onclick="event.stopPropagation();">add_box</i>
                             </a></td>
                         </tr>
-                        <tr ng-repeat="anomaly in anomalies track by $index">
+                        <tr ng-repeat="anomaly in anomalies | filter:myFilter track by $index">
                             <td>{{anomaly.aviso}}</td>
                             <td>{{anomaly.cliente}}</td>
                             <td>{{anomaly.referencia}}</td>
@@ -118,6 +126,9 @@
                                 <i class="material-icons red-text"
                                    ng-click="removeAnomaly($index)"
                                    onclick="event.stopPropagation();">delete</i>
+                                <i class="material-icons blue-text"
+                                   ng-click="generateWord(anomaly)"
+                                   onclick="event.stopPropagation();">assignment</i>
                             </a></td>
                         </tr>
                         </tbody>
@@ -131,7 +142,8 @@
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
-        $('.collapsible').collapsible();
+        $('#anomalyStatus').find('option[value="0"]').prop('selected', true);
+        $('select').formSelect();
         $('.datepicker').datepicker({
             firstDay: 1,
             format: 'dd/mm/yyyy',
