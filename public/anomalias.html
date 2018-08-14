@@ -120,7 +120,7 @@
                             <td>{{anomaly.hechopor}}</td>
                             <td>{{anomaly.terminada ? 'Terminada' : 'No terminada'}}</td>
                             <td><a href="#!">
-                                <i class="material-icons green-text"
+                                <i ng-if="!anomaly.terminada" class="material-icons green-text"
                                    ng-click="anomalyDone($index)"
                                    onclick="event.stopPropagation();">done</i>
                                 <i class="material-icons red-text"
