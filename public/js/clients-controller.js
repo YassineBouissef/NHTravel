@@ -110,7 +110,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         $("#formadepago").formSelect();
         $('#tarifa').find('option[value="' + $scope.newClient.tarifa + '"]').prop('selected', true);
         $("#tarifa").formSelect();
-        console.log("Editing client", $scope.newCustomer);
+        console.log("Editing client", $scope.newClient);
         toggleForm();
     };
 
