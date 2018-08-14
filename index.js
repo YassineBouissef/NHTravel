@@ -27,6 +27,7 @@ app.use('/facturas/editar/:_id', express.static(path.join(__dirname + '/public/f
 app.use('/proveedores', express.static(path.join(__dirname + '/public/proveedores.html')));
 app.use('/almacen', express.static(path.join(__dirname + '/public/almacen.html')));
 app.use('/materiales', express.static(path.join(__dirname + '/public/materiales.html')));
+app.use('/anomalias', express.static(path.join(__dirname + '/public/anomalias.html')));
 app.use('/historico', express.static(path.join(__dirname + '/public/historico.html')));
 app.use('/cheques', express.static(path.join(__dirname + '/public/cheques.html')));
 
@@ -51,6 +52,9 @@ const storages = require('./routes/storages');
 const materialsService = require('./routes/materials-service');
 const materials = require('./routes/materials');
 
+const anomaliesService = require('./routes/anomalies-service');
+const anomalies = require('./routes/anomalies')
+
 const billsService = require('./routes/bills-service');
 const bills = require('./routes/bills');
 
@@ -67,6 +71,7 @@ app.use(baseAPI + '/clients', clients);
 app.use(baseAPI + '/providers', providers);
 app.use(baseAPI + '/storages', storages);
 app.use(baseAPI + '/materials', materials);
+app.use(baseAPI + '/anomalies', anomalies);
 app.use(baseAPI + '/bills', bills);
 app.use(baseAPI + '/checks', checks);
 
@@ -117,6 +122,11 @@ checksService.connectDb(function (err) {
                                     console.log("Could not connect with MongoDB - materialsService");
                                     process.exit(1);
                                 }
+                                     anomaliesService.connectDb(function (err) {
+                                         if (err) {
+                                             console.log("Could not connect with MongoDB - anomaliesService");
+                                             process.exit(1);
+                                         }
 
                                 server.listen(PORT, function () {
                                     console.log('Server with GUI up and running on localhost:' + PORT);
@@ -125,9 +135,8 @@ checksService.connectDb(function (err) {
                         });
                     });
                 });
+              });
             });
         });
     });
 });
-
-

@@ -1,4 +1,4 @@
-angular.module("MarmolistasElPilarApp").controller("AnomaliessCtrl", function ($scope, $http, $location, $q) {
+angular.module("MarmolistasElPilarApp").controller("AnomaliesCtrl", function ($scope, $http, $location, $q) {
 
     let index = -1;
     $scope.anomalies = [];
