@@ -97,8 +97,8 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             // Filtrar por codigo y nombre
             let text = item.nombre.toLowerCase();
             let search = $scope.filter_nombre.toLowerCase();
-            let code = item.codigo.toLowerCase();
-            let searchCode = $scope.filter_codigo.toLowerCase();
+            let code = item.codigo.toString().toLowerCase();
+            let searchCode = $scope.filter_codigo.toString().toLowerCase();
             return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1;
         } else if ($scope.filter_nombre) {
             // Filtrar por nombre
@@ -107,8 +107,8 @@ angular.module("MarmolistasElPilarApp").controller("ArticlesCtrl", function ($sc
             return text.indexOf(search) > -1;
         } else if ($scope.filter_codigo) {
             // Filtrar por código
-            let code = item.codigo.toLowerCase();
-            let search = $scope.filter_codigo.toLowerCase();
+            let code = item.codigo.toString().toLowerCase();
+            let search = $scope.filter_codigo.toString().toLowerCase();
             return code.indexOf(search) > -1;
         }
     };
