@@ -166,34 +166,43 @@
                 </select>
                 <label>Método de pago</label>
             </div>
-            <div class="col s12" ng-class="(billPaymentType !== '2' && billPaymentType !== '3') ? 'invisible' : ''">
-                <!--  Importe, Nombre, Fecha, Numeración. En pagarés, además, se añade Fecha de vencimiento. -->
-                <div class="col s12">
+            <div class="row" ng-class="(billPaymentType !== '2' && billPaymentType !== '3') ? 'invisible' : ''">
+                <div class="row">
                     <div class="input-field col s6">
-                        <input id="importe" type="number" placeholder="100" ng-model="check.importe">
+                        <input id="codigo" ng-model="newCheck.codigo" type="text" placeholder="0" disabled>
+                        <label for="codigo">Código</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="importe" ng-model="newCheck.importe" type="number" placeholder="100">
                         <label for="importe">Importe</label>
                     </div>
+                </div>
+                <div class="row">
                     <div class="input-field col s6">
-                        <input id="nombre" type="text" placeholder="Alberto" ng-model="check.nombre">
+                        <input id="nombre" ng-model="newCheck.nombre" type="text" placeholder="Unicaja">
                         <label for="nombre">Nombre</label>
                     </div>
-                </div>
-                <div class="col s12">
                     <div class="input-field col s6">
-                        <input id="fecha" type="text" placeholder="01/01/2018" class="datepicker"
-                               ng-model="check.fecha">
+                        <input id="fecha" type="text" class="datepicker" value="01/01/2018"
+                               ng-model="newCheck.fecha">
                         <label for="fecha">Fecha</label>
                     </div>
+                </div>
+                <div class="row">
                     <div class="input-field col s6">
-                        <input id="numeracion" type="text" placeholder="01010101" ng-model="check.numeracion">
+                        <input id="numeracion" ng-model="newCheck.numeracion" type="text" placeholder="1A28DBF10">
                         <label for="numeracion">Numeración</label>
                     </div>
-                </div>
-                <div class="col s12" ng-class="billPaymentType !== '3' ? 'invisible' : ''">
                     <div class="input-field col s6">
-                        <input id="fecha_vencimiento" type="text" placeholder="01/01/2018" class="datepicker"
-                               ng-model="check.fecha_vencimiento">
+                        <input id="fecha_vencimiento" type="text" class="datepicker" value="01/01/2018"
+                               ng-model="newCheck.fecha_vencimiento">
                         <label for="fecha_vencimiento">Fecha Vencimiento</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="reusado" ng-model="newCheck.reusado" type="text" placeholder="Si">
+                        <label for="reusado">¿Usado para pagar?</label>
                     </div>
                 </div>
             </div>

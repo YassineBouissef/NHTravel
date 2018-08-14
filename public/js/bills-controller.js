@@ -237,7 +237,6 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         $http.get("/api/v1/bills/type/" + bill.tipo)
             .then(function (response) {
                 let bills = response.data;
-                console.log(bills);
                 bill.codigo = bills.length > 0 ? bills[bills.length -1 ].codigo +1 : 1;
                 $http.post("/api/v1/bills", bill)
                     .then(function (response) {

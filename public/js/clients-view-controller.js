@@ -78,19 +78,19 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         console.log('Marking bill as paid');
         console.log('Payment type: ', $scope.billPaymentType);
         console.log('Bill: ', $scope.billToPay);
-        console.log('Cheque/Pagaré: ', $scope.check);
+        console.log('Cheque/Pagaré: ', $scope.newCheck);
 
         $scope.billToPay.pagado = true;
         $scope.billToPay.metododepago = +$scope.billPaymentType;
+        $scope.billToPay.cheque = $scope.newCheck;
 
         if (+$scope.billPaymentType < 2 || +$scope.billPaymentType > 3) {
             //Marcar como pagado simple
-            alert("Marcar como pagado simple");
             updateBill($scope.billToPay);
         } else {
             //Crear cheque/pagaré
-            alert("Marcar como pagado con cheque/pagaré, crear cheque/pagaré y actualizar la bill");
-            updateBill($scope.billToPay);
+            $scope.newCheck.tipo = +$scope.billPaymentType - 2;
+            postCheck($scope.newCheck);
         }
     };
 
@@ -102,9 +102,9 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
                 case 1:
                     return 'Transferencia';
                 case 2:
-                    return 'Cheque nº XXXX';
+                    return 'Cheque nº' + bill.cheque.codigo;
                 case 3:
-                    return 'Pagarés nº XXXX';
+                    return 'Pagarés nº' + bill.cheque.codigo;
                 case 4:
                     return 'Confirming';
             }
@@ -122,11 +122,11 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
 
     $scope.unpayBill = function (bill) {
         console.log("Unpaying bill", bill);
-        let r = confirm("¿Está seguro de marcar este A/P/F/FP como no pagado?");
+        let r = confirm("¿Está seguro de marcar este " + $scope.billTypeSelected + " como no pagado?");
         if (r) {
             bill.pagado = false;
             delete bill.metododepago;
-            bill.check = {};
+            bill.cheque = {};
             updateBill(bill);
         } else {
             console.log("Bill not marked as unpaid");
@@ -173,13 +173,13 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
                     tipo: $scope.billTypeSelected,
                     codigo: bill.codigo,
                     fecha: date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
-                    nombre: bill.cliente.nombre,
-                    dni: bill.cliente.dni,
-                    domicilio: bill.cliente.domicilio,
-                    poblacion: bill.cliente.poblacion,
-                    provincia: bill.cliente.provincia,
-                    cp: bill.cliente.cp,
-                    observaciones: bill.observaciones_publicas,
+                    nombre: bill.cliente.nombre || '',
+                    dni: bill.cliente.dni || '',
+                    domicilio: bill.cliente.domicilio || '',
+                    poblacion: bill.cliente.poblacion || '',
+                    provincia: bill.cliente.provincia || '',
+                    cp: bill.cliente.cp || '',
+                    observaciones: bill.observaciones_publicas || '',
                     formadepago: $scope.formadepagos[bill.formadepago].nombre,
                     items: items,
                     bruto: round(bruto),
@@ -239,6 +239,17 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         }
     };
 
+    function postCheck(check) {
+        $http.post("/api/v1/checks", check)
+            .then(function (response) {
+                console.log('Check added', response);
+                updateBill($scope.billToPay);
+            }, function (error) {
+                console.log('Error adding check', error);
+                alert("Ups! Ha ocurrido un error al añadir el cheque/pagarés, inténtalo de nuevo en unos minutos.");
+            });
+    }
+
     function updateBill(bill) {
         $http.put("/api/v1/bills/" + bill._id, bill)
             .then(function (response) {
@@ -248,6 +259,17 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
             }, function (error) {
                 console.log('Error updating bill', error);
                 alert("Ups! Ha ocurrido un error al actualizar el documento, inténtalo de nuevo en unos minutos.");
+            });
+    }
+
+    function getChecks() {
+        $http.get("/api/v1/checks")
+            .then(function (response) {
+                console.log('Checks retrieved');
+                $scope.newCheck.codigo = response.data.length > 0 ? response.data[response.data.length - 1].codigo + 1 : 1;
+            }, function (error) {
+                console.log('Error retrieving checks', error);
+                alert("Ups! Ha ocurrido un error al recuperar los cheques y pagarés, inténtalo de nuevo en unos minutos.");
             });
     }
 
@@ -301,9 +323,10 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
     function refresh() {
         console.log("Refreshing");
         $scope.billPaymentType = 0;
-        $scope.check = {};
-        $scope.check.fecha = today;
-        $scope.check.fecha_vencimiento = today;
+        $scope.newCheck = {};
+        $scope.newCheck.fecha = today;
+        $scope.newCheck.fecha_vencimiento = today;
+        getChecks();
         getBills($scope.clientId);
     }
 
@@ -317,9 +340,10 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         $scope.billType = 0;
         $scope.isPaid = 0;
         $scope.billPaymentType = 0;
-        $scope.check = {};
-        $scope.check.fecha = today;
-        $scope.check.fecha_vencimiento = today;
+        $scope.newCheck = {};
+        $scope.newCheck.fecha = today;
+        $scope.newCheck.fecha_vencimiento = today;
+        getChecks();
         $scope.client = {};
         $scope.bills = [];
         $scope.fecha = {
