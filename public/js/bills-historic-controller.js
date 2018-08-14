@@ -1,4 +1,4 @@
-angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function ($scope, $http, $location, $q) {
+angular.module("MarmolistasElPilarApp").controller("BillsHistoricCtrl", function ($scope, $http, $location, $q) {
 
     $scope.formadepagos = [
         {
@@ -34,24 +34,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
             _id: 7,
             nombre: "Confirming"
         }];
-    $scope.tarifas = [
-        {
-            id: 0,
-            nombre: 'Tarifa General'
-        },
-        {
-            id: 1,
-            nombre: 'Tarifa Encimera (35%)'
-        },
-        {
-            id: 2,
-            nombre: 'Tarifa Contratista'
-        },
-        {
-            id: 3,
-            nombre: 'Tarifa Público'
-        }
-    ];
+
     let d = new Date();
     let today = ("0" + (d.getDate())).slice(-2) + '/' + ("0" + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
 
@@ -74,26 +57,6 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
             return false;
     };
 
-    $scope.markBillAsPaid = function () {
-        console.log('Marking bill as paid');
-        console.log('Payment type: ', $scope.billPaymentType);
-        console.log('Bill: ', $scope.billToPay);
-        console.log('Cheque/Pagaré: ', $scope.check);
-
-        $scope.billToPay.pagado = true;
-        $scope.billToPay.metododepago = +$scope.billPaymentType;
-
-        if (+$scope.billPaymentType < 2 || +$scope.billPaymentType > 3) {
-            //Marcar como pagado simple
-            alert("Marcar como pagado simple");
-            updateBill($scope.billToPay);
-        } else {
-            //Crear cheque/pagaré
-            alert("Marcar como pagado con cheque/pagaré, crear cheque/pagaré y actualizar la bill");
-            updateBill($scope.billToPay);
-        }
-    };
-
     $scope.getPaymentType = function (bill) {
         if (bill.pagado) {
             switch (bill.metododepago) {
@@ -108,28 +71,8 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
                 case 4:
                     return 'Confirming';
             }
-        }
-        else {
-            return 'No pagado'
-        }
-    };
-
-    $scope.payBill = function (bill) {
-        console.log('Paying bill', bill);
-        $('#payBill').modal('open');
-        $scope.billToPay = bill;
-    };
-
-    $scope.unpayBill = function (bill) {
-        console.log("Unpaying bill", bill);
-        let r = confirm("¿Está seguro de marcar este A/P/F/FP como no pagado?");
-        if (r) {
-            bill.pagado = false;
-            delete bill.metododepago;
-            bill.check = {};
-            updateBill(bill);
         } else {
-            console.log("Bill not marked as unpaid");
+            return 'No pagado'
         }
     };
 
@@ -212,16 +155,6 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         );
     };
 
-    $scope.createBill = function () {
-        console.log('Redirect to bills');
-        window.location.href = '/facturas/crear/' + $scope.client._id;
-    };
-
-    $scope.editBill = function (bill) {
-        console.log('Redirect to edit bill');
-        window.location.href = '/facturas/editar/' + bill._id;
-    };
-
     $scope.updateBillTypeFilter = function () {
         switch (+$scope.billType) {
             case 0:
@@ -239,58 +172,14 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         }
     };
 
-    function updateBill(bill) {
-        $http.put("/api/v1/bills/" + bill._id, bill)
-            .then(function (response) {
-                console.log('Bill updated', response);
-                $('#payBill').modal('close');
-                refresh();
-            }, function (error) {
-                console.log('Error updating bill', error);
-                alert("Ups! Ha ocurrido un error al actualizar el documento, inténtalo de nuevo en unos minutos.");
-            });
-    }
-
-    function getClient(id) {
-        $http.get("/api/v1/clients/" + id)
-            .then(function (response) {
-                console.log('Client retrieved', response.data[0]);
-                $scope.client = response.data[0];
-            }, function (error) {
-                console.log('Error retrieving client', error);
-                alert("Ups! Ha ocurrido un error al recuperar los datos del cliente, inténtalo de nuevo en unos minutos.");
-            });
-    }
-
-    function getBills(id) {
-        $http.get("/api/v1/bills/client/" + id)
+    function getBills() {
+        $http.get("/api/v1/bills")
             .then(function (response) {
                 console.log('Bills retrieved');
                 $scope.bills = response.data;
             }, function (error) {
                 console.log('Error retrieving client', error);
-                alert("Ups! Ha ocurrido un error al recuperar las facturas del cliente, inténtalo de nuevo en unos minutos.");
-            });
-    }
-
-    $scope.removeBill = function (bill) {
-        console.log("Deleting bill", bill);
-        let r = confirm("¿Está seguro de eliminar este " + $scope.billTypeSelected + "?");
-        if (r) {
-            deleteBill(bill);
-        } else {
-            console.log("Bill not deleted");
-        }
-    };
-
-    function deleteBill(bill) {
-        $http.delete("/api/v1/bills/" + bill._id)
-            .then(function (response) {
-                console.log('Bill deleted', response);
-                refresh();
-            }, function (error) {
-                console.log('Error deleting bill', error);
-                alert("Ups! Ha ocurrido un error al eliminar el documento, inténtalo de nuevo en unos minutos.");
+                alert("Ups! Ha ocurrido un error al recuperar las facturas, inténtalo de nuevo en unos minutos.");
             });
     }
 
@@ -298,39 +187,17 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         return Math.round(amount * 100) / 100;
     }
 
-    function refresh() {
-        console.log("Refreshing");
-        $scope.billPaymentType = 0;
-        $scope.check = {};
-        $scope.check.fecha = today;
-        $scope.check.fecha_vencimiento = today;
-        getBills($scope.clientId);
-    }
-
-    $scope.refresh = function () {
-        refresh();
-    };
-
     function init() {
-        console.log("Starting Clients View controller");
+        console.log("Starting Bills Historic controller");
         $scope.billTypeSelected = "Albarán";
         $scope.billType = 0;
         $scope.isPaid = 0;
-        $scope.billPaymentType = 0;
-        $scope.check = {};
-        $scope.check.fecha = today;
-        $scope.check.fecha_vencimiento = today;
-        $scope.client = {};
         $scope.bills = [];
         $scope.fecha = {
             inicio: '01/01/2018',
             fin: today
         };
-        let url = window.location.href;
-        $scope.clientId = url.substr(url.lastIndexOf("/") + 1, url.length);
-        console.log($scope.clientId);
-        getClient($scope.clientId);
-        getBills($scope.clientId);
+        getBills();
     }
 
     init();

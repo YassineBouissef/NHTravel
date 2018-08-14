@@ -27,6 +27,7 @@ app.use('/facturas/editar/:_id', express.static(path.join(__dirname + '/public/f
 app.use('/proveedores', express.static(path.join(__dirname + '/public/proveedores.html')));
 app.use('/almacen', express.static(path.join(__dirname + '/public/almacen.html')));
 app.use('/materiales', express.static(path.join(__dirname + '/public/materiales.html')));
+app.use('/historico', express.static(path.join(__dirname + '/public/historico.html')));
 
 
 /** ROUTERS **/
