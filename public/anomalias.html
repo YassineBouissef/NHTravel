@@ -45,78 +45,83 @@
     <li class="active"><a href="/anomalias">Anomalías</a></li>
 </ul>
 <div class="row">
-    <div class="container">
-        <div class="col s18"> <!--Cambiar -->
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title"><h5 class="center">Anomalías</h5></span>
-                </div>
-                <div class="card-content">
-                    <div class="row">
-                        <table class="highlight responsive-table">
-                            <thead>
-                            <tr>
-                                <th>Aviso</th>
-                                <th>Cliente</th>
-                                <th>Referencia</th>
-                                <th>Dirección</th>
-                                <th>Población</th>
-                                <th>Teléfono</th>
-                                <th>Fecha</th>
-                                <th>Hora</th>
-                                <th>Observaciones</th>
-                                <th>Hecho por</th>
-                                <th>Acciones</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <tr>
-                                <td class="input-field"><input id="aviso" ng-model="newAnomaly.aviso" type="text"
-                                                               class="validate" placeholder="Aviso"></td>
-                                <td class="input-field"><input id="cliente" ng-model="newAnomaly.cliente" type="text"
-                                                               class="validate" placeholder="Cliente"></td>
-                                <td class="input-field"><input id="referencia" ng-model="newAnomaly.referencia" type="text"
-                                                               class="validate" placeholder="Referencia"></td>
-                                <td class="input-field"><input id="direccion" ng-model="newAnomaly.direccion" type="text"
-                                                               class="validate" placeholder="Direccion"></td>
-                                <td class="input-field"><input id="poblacion" ng-model="newAnomaly.poblacion" type="text"
-                                                               class="validate" placeholder="Poblacion"></td>
-                                <td class="input-field"><input id="telefono" ng-model="newAnomaly.telefono" type="number" ng-bind="date | date:'MM/dd/yyyy'"
-                                                               class="validate" placeholder="Telefono"></td>
-                                <td class="input-field"><input id="fecha" ng-model="newAnomaly.fecha" type="date"
-                                                               class="validate" placeholder="Fecha"></td>
-                                <td class="input-field"><input id="hora" ng-model="newAnomaly.hora" type="date"
-                                                               class="validate" placeholder="Hora"></td>
-                                <td class="input-field"><input id="observaciones" ng-model="newAnomaly.observaciones" type="text"
-                                                               class="validate" placeholder="Observaciones"></td>
-                                <td class="input-field"><input id="hechopor" ng-model="newAnomaly.hechopor" type="text"
-                                                               class="validate" placeholder="Hechopor"></td>
-                                <td><a href="#!"><i class="small material-icons green-text"
-                                                    ng-click="saveAnomaly($index)"
-                                                    onclick="event.stopPropagation();">add_box</i>
-                                </a></td>
-                            </tr>
-                            <tr ng-repeat="anomaly in anomalies track by $index">
-                                <td>{{anomaly.aviso}}</td>
-                                <td>{{anomaly.cliente}}</td>
-                                <td>{{anomaly.referencia}}</td>
-                                <td>{{anomaly.direccion}}</td>
-                                <td>{{anomaly.poblacion}}</td>
-                                <td>{{anomaly.telefono}}</td>
-                                <td>{{anomaly.fecha}}</td>
-                                <td>{{anomaly.hora}}</td>
-                                <td>{{anomaly.observaciones}}</td>
-                                <td>{{anomaly.hechopor}}</td>
-
-                                <td><a href="#!"><i class="material-icons red-text"
-                                                    ng-click="removeAnomaly($index)"
-                                                    onclick="event.stopPropagation();">delete</i>
-                                </a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5 class="center">Anomalías</h5></span>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <table class="highlight responsive-table">
+                        <thead>
+                        <tr>
+                            <th>Aviso</th>
+                            <th>Cliente</th>
+                            <th>Referencia</th>
+                            <th>Dirección</th>
+                            <th>Población</th>
+                            <th>Teléfono</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Observaciones</th>
+                            <th>Hecho por</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="input-field"><input id="aviso" ng-model="newAnomaly.aviso" type="text"
+                                                           class="validate" placeholder="Aviso"></td>
+                            <td class="input-field"><input id="cliente" ng-model="newAnomaly.cliente" type="text"
+                                                           class="validate" placeholder="Cliente"></td>
+                            <td class="input-field"><input id="referencia" ng-model="newAnomaly.referencia" type="text"
+                                                           class="validate" placeholder="Referencia"></td>
+                            <td class="input-field"><input id="direccion" ng-model="newAnomaly.direccion" type="text"
+                                                           class="validate" placeholder="Direccion"></td>
+                            <td class="input-field"><input id="poblacion" ng-model="newAnomaly.poblacion" type="text"
+                                                           class="validate" placeholder="Poblacion"></td>
+                            <td class="input-field"><input id="telefono" ng-model="newAnomaly.telefono" type="number"
+                                                           class="validate" placeholder="Telefono"></td>
+                            <td class="input-field"><input id="fecha" ng-model="newAnomaly.fecha" type="text"
+                                                           class="validate datepicker" placeholder="01/01/2018"></td>
+                            <td class="input-field"><input id="hora" ng-model="newAnomaly.hora" type="text"
+                                                           class="validate timepicker" placeholder="12:00"></td>
+                            <td class="input-field"><input id="observaciones" ng-model="newAnomaly.observaciones"
+                                                           type="text"
+                                                           class="validate" placeholder="Observaciones"></td>
+                            <td class="input-field"><input id="hechopor" ng-model="newAnomaly.hechopor" type="text"
+                                                           class="validate" placeholder="Hecho por"></td>
+                            <td class="input-field"><input id="estado" type="text" class="validate"
+                                                           placeholder="No terminada" disabled></td>
+                            <td><a href="#!"><i class="small material-icons green-text"
+                                                ng-click="saveAnomaly($index)"
+                                                onclick="event.stopPropagation();">add_box</i>
+                            </a></td>
+                        </tr>
+                        <tr ng-repeat="anomaly in anomalies track by $index">
+                            <td>{{anomaly.aviso}}</td>
+                            <td>{{anomaly.cliente}}</td>
+                            <td>{{anomaly.referencia}}</td>
+                            <td>{{anomaly.direccion}}</td>
+                            <td>{{anomaly.poblacion}}</td>
+                            <td>{{anomaly.telefono}}</td>
+                            <td>{{anomaly.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{anomaly.hora}}</td>
+                            <td>{{anomaly.observaciones}}</td>
+                            <td>{{anomaly.hechopor}}</td>
+                            <td>{{anomaly.terminada ? 'Terminada' : 'No terminada'}}</td>
+                            <td><a href="#!">
+                                <i class="material-icons green-text"
+                                   ng-click="anomalyDone($index)"
+                                   onclick="event.stopPropagation();">done</i>
+                                <i class="material-icons red-text"
+                                   ng-click="removeAnomaly($index)"
+                                   onclick="event.stopPropagation();">delete</i>
+                            </a></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -127,6 +132,20 @@
     $(document).ready(function () {
         $('.sidenav').sidenav();
         $('.collapsible').collapsible();
+        $('.datepicker').datepicker({
+            firstDay: 1,
+            format: 'dd/mm/yyyy',
+            i18n: {
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"]
+            }
+        });
+        $('.timepicker').timepicker({
+            twelveHour: false
+        });
     });
 </script>
 </html>

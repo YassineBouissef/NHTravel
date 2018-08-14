@@ -1,13 +1,31 @@
 angular.module("MarmolistasElPilarApp").controller("AnomaliesCtrl", function ($scope, $http, $location, $q) {
 
-    let index = -1;
+    let d = new Date();
+    let today = ("0" + (d.getDate())).slice(-2) + '/' + ("0" + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+    let now = ("0" + (d.getHours())).slice(-2) + ':' + ("0" + (d.getMinutes())).slice(-2);
     $scope.anomalies = [];
 
     $scope.saveAnomaly = function () {
         console.log("Adding new anomaly", $scope.newAnomaly);
         postAnomaly($scope.newAnomaly);
-           refresh();
     };
+
+    $scope.anomalyDone = function (i) {
+        console.log("Marking anomaly as done", $scope.anomalies[i]);
+        $scope.anomalies[i].terminada = true;
+        updateAnomaly($scope.anomalies[i]);
+    };
+
+    function updateAnomaly(anomaly) {
+        $http.put("/api/v1/anomalies/" + anomaly._id, anomaly)
+            .then(function (response) {
+                console.log('Anomaly updated', response);
+                refresh();
+            }, function (error) {
+                console.log('Error updating anomaly', error);
+                alert("Ups! Ha ocurrido un error al marca la anomalía como lista, inténtalo de nuevo en unos minutos.");
+            });
+    }
 
     function clearForm() {
         $("input").each(function () {
@@ -63,6 +81,9 @@ angular.module("MarmolistasElPilarApp").controller("AnomaliesCtrl", function ($s
         getAnomalies();
         clearForm();
         $scope.newAnomaly = {};
+        $scope.newAnomaly.terminada = false;
+        $scope.newAnomaly.fecha = today;
+        $scope.newAnomaly.hora = now;
     }
 
     $scope.refresh = function () {
@@ -73,6 +94,9 @@ angular.module("MarmolistasElPilarApp").controller("AnomaliesCtrl", function ($s
         console.log("Starting Anomalies controller");
         getAnomalies();
         $scope.newAnomaly = {};
+        $scope.newAnomaly.terminada = false;
+        $scope.newAnomaly.fecha = today;
+        $scope.newAnomaly.hora = now;
     }
 
     init();

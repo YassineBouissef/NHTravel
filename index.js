@@ -53,7 +53,7 @@ const materialsService = require('./routes/materials-service');
 const materials = require('./routes/materials');
 
 const anomaliesService = require('./routes/anomalies-service');
-const anomalies = require('./routes/anomalies')
+const anomalies = require('./routes/anomalies');
 
 const billsService = require('./routes/bills-service');
 const bills = require('./routes/bills');
@@ -122,20 +122,20 @@ checksService.connectDb(function (err) {
                                     console.log("Could not connect with MongoDB - materialsService");
                                     process.exit(1);
                                 }
-                                     anomaliesService.connectDb(function (err) {
-                                         if (err) {
-                                             console.log("Could not connect with MongoDB - anomaliesService");
-                                             process.exit(1);
-                                         }
+                                anomaliesService.connectDb(function (err) {
+                                    if (err) {
+                                        console.log("Could not connect with MongoDB - anomaliesService");
+                                        process.exit(1);
+                                    }
 
-                                server.listen(PORT, function () {
-                                    console.log('Server with GUI up and running on localhost:' + PORT);
+                                    server.listen(PORT, function () {
+                                        console.log('Server with GUI up and running on localhost:' + PORT);
+                                    });
                                 });
                             });
                         });
                     });
                 });
-              });
             });
         });
     });
