@@ -1,0 +1,163 @@
+<html ng-app="MarmolistasElPilarApp">
+<head>
+    <title>
+        Marmolistas El Pilar - Proveedores
+    </title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <link href="/css/materialize.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="/bower_components/angular/angular.min.js" type="text/javascript"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
+    <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
+    <script src="/js/app.js" type="text/javascript"></script>
+    <script src="/js/providers-view-controller.js" type="text/javascript"></script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+</head>
+<body ng-controller="ProvidersViewCtrl">
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img class="logo" src="/img/logo.png"></a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/articulos">Artículos</a></li>
+                <li><a href="/grupos">Grupos</a></li>
+                <li><a href="/clientes">Clientes</a></li>
+                <li class="active"><a href="/proveedores">Proveedores</a></li>
+                <li><a href="/almacen">Almacén</a></li>
+                <li><a href="/materiales">Materiales</a></li>
+                <li><a href="/anomalias">Anomalías</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Inicio</a></li>
+    <li><a href="/articulos">Artículos</a></li>
+    <li><a href="/grupos">Grupos</a></li>
+    <li><a href="/clientes">Clientes</a></li>
+    <li class="active"><a href="/proveedores">Proveedores</a></li>
+    <li><a href="/almacen">Almacén</a></li>
+    <li><a href="/materiales">Materiales</a></li>
+    <li><a href="/anomalias">Anomalías</a></li>
+</ul>
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5 class="center">Anomalías</h5></span>
+                <div class="input-field col s2">
+                    <select ng-model="anomalyStatus" id="anomalyStatus">
+                        <option value="0" selected>Todas</option>
+                        <option value="1">Terminadas</option>
+                        <option value="2">No Terminadas</option>
+                    </select>
+                    <label>Filtrar anomalías</label>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <table class="highlight responsive-table">
+                        <thead>
+                        <tr>
+                            <th>Aviso</th>
+                            <th>Cliente</th>
+                            <th>Referencia</th>
+                            <th>Dirección</th>
+                            <th>Población</th>
+                            <th>Teléfono</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Observaciones</th>
+                            <th>Hecho por</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="input-field"><input id="aviso" ng-model="newAnomaly.aviso" type="text"
+                                                           class="validate" placeholder="Aviso"></td>
+                            <td class="input-field"><input id="cliente" ng-model="newAnomaly.cliente" type="text"
+                                                           class="validate" placeholder="Cliente"></td>
+                            <td class="input-field"><input id="referencia" ng-model="newAnomaly.referencia" type="text"
+                                                           class="validate" placeholder="Referencia"></td>
+                            <td class="input-field"><input id="direccion" ng-model="newAnomaly.direccion" type="text"
+                                                           class="validate" placeholder="Direccion"></td>
+                            <td class="input-field"><input id="poblacion" ng-model="newAnomaly.poblacion" type="text"
+                                                           class="validate" placeholder="Poblacion"></td>
+                            <td class="input-field"><input id="telefono" ng-model="newAnomaly.telefono" type="number"
+                                                           class="validate" placeholder="Telefono"></td>
+                            <td class="input-field"><input id="fecha" ng-model="newAnomaly.fecha" type="text"
+                                                           class="validate datepicker" placeholder="01/01/2018"></td>
+                            <td class="input-field"><input id="hora" ng-model="newAnomaly.hora" type="text"
+                                                           class="validate timepicker" placeholder="12:00"></td>
+                            <td class="input-field"><input id="observaciones" ng-model="newAnomaly.observaciones"
+                                                           type="text"
+                                                           class="validate" placeholder="Observaciones"></td>
+                            <td class="input-field"><input id="hechopor" ng-model="newAnomaly.hechopor" type="text"
+                                                           class="validate" placeholder="Hecho por"></td>
+                            <td class="input-field"><input id="estado" type="text" class="validate"
+                                                           placeholder="No terminada" disabled></td>
+                            <td><a href="#!"><i class="small material-icons green-text"
+                                                ng-click="saveAnomaly($index)"
+                                                onclick="event.stopPropagation();">add_box</i>
+                            </a></td>
+                        </tr>
+                        <tr ng-repeat="anomaly in anomalies | filter:myFilter track by $index">
+                            <td>{{anomaly.aviso}}</td>
+                            <td>{{anomaly.cliente}}</td>
+                            <td>{{anomaly.referencia}}</td>
+                            <td>{{anomaly.direccion}}</td>
+                            <td>{{anomaly.poblacion}}</td>
+                            <td>{{anomaly.telefono}}</td>
+                            <td>{{anomaly.fecha | date:'dd/MM/yyyy'}}</td>
+                            <td>{{anomaly.hora}}</td>
+                            <td>{{anomaly.observaciones}}</td>
+                            <td>{{anomaly.hechopor}}</td>
+                            <td>{{anomaly.terminada ? 'Terminada' : 'No terminada'}}</td>
+                            <td><a href="#!">
+                                <i ng-if="!anomaly.terminada" class="material-icons green-text"
+                                   ng-click="anomalyDone($index)"
+                                   onclick="event.stopPropagation();">done</i>
+                                <i class="material-icons red-text"
+                                   ng-click="removeAnomaly($index)"
+                                   onclick="event.stopPropagation();">delete</i>
+                                <i class="material-icons blue-text"
+                                   ng-click="generateWord(anomaly)"
+                                   onclick="event.stopPropagation();">assignment</i>
+                            </a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+        $('#anomalyStatus').find('option[value="0"]').prop('selected', true);
+        $('select').formSelect();
+        $('.datepicker').datepicker({
+            firstDay: 1,
+            format: 'dd/mm/yyyy',
+            i18n: {
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"]
+            }
+        });
+        $('.timepicker').timepicker({
+            twelveHour: false
+        });
+    });
+</script>
+</html>

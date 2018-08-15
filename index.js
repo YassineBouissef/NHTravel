@@ -25,6 +25,7 @@ app.use('/clientes/:id', express.static(path.join(__dirname + '/public/clientes-
 app.use('/facturas/crear/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
 app.use('/facturas/editar/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
 app.use('/proveedores', express.static(path.join(__dirname + '/public/proveedores.html')));
+app.use('/proveedores/:id', express.static(path.join(__dirname + '/public/proveedores-view.html')));
 app.use('/almacen', express.static(path.join(__dirname + '/public/almacen.html')));
 app.use('/materiales', express.static(path.join(__dirname + '/public/materiales.html')));
 app.use('/anomalias', express.static(path.join(__dirname + '/public/anomalias.html')));
