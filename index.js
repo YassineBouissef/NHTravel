@@ -25,6 +25,7 @@ app.use('/clientes/:id', express.static(path.join(__dirname + '/public/clientes-
 app.use('/facturas/crear/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
 app.use('/facturas/editar/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
 app.use('/proveedores', express.static(path.join(__dirname + '/public/proveedores.html')));
+app.use('/proveedores/:id', express.static(path.join(__dirname + '/public/proveedores-view.html')));
 app.use('/almacen', express.static(path.join(__dirname + '/public/almacen.html')));
 app.use('/materiales', express.static(path.join(__dirname + '/public/materiales.html')));
 app.use('/anomalias', express.static(path.join(__dirname + '/public/anomalias.html')));
@@ -53,7 +54,7 @@ const materialsService = require('./routes/materials-service');
 const materials = require('./routes/materials');
 
 const anomaliesService = require('./routes/anomalies-service');
-const anomalies = require('./routes/anomalies')
+const anomalies = require('./routes/anomalies');
 
 const billsService = require('./routes/bills-service');
 const bills = require('./routes/bills');
@@ -122,20 +123,20 @@ checksService.connectDb(function (err) {
                                     console.log("Could not connect with MongoDB - materialsService");
                                     process.exit(1);
                                 }
-                                     anomaliesService.connectDb(function (err) {
-                                         if (err) {
-                                             console.log("Could not connect with MongoDB - anomaliesService");
-                                             process.exit(1);
-                                         }
+                                anomaliesService.connectDb(function (err) {
+                                    if (err) {
+                                        console.log("Could not connect with MongoDB - anomaliesService");
+                                        process.exit(1);
+                                    }
 
-                                server.listen(PORT, function () {
-                                    console.log('Server with GUI up and running on localhost:' + PORT);
+                                    server.listen(PORT, function () {
+                                        console.log('Server with GUI up and running on localhost:' + PORT);
+                                    });
                                 });
                             });
                         });
                     });
                 });
-              });
             });
         });
     });

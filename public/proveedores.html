@@ -18,7 +18,7 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo"><img class="logo" src="img/logo.png"></a>
+            <a href="#" class="brand-logo"><img class="logo" src="/img/logo.png"></a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
@@ -161,9 +161,13 @@
                                         <b>{{proveedor.cif}} - {{proveedor.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
-                                        <a href="#!"><i class="material-icons orange-text"
-                                                        ng-click="editProvider($index)"
-                                                        onclick="event.stopPropagation();">edit</i>
+                                        <a href="#!">
+                                            <a href="/proveedores/{{proveedor._id}}" onclick="event.stopPropagation();">
+                                                <i class="material-icons blue-text">account_box</i>
+                                            </a>
+                                            <i class="material-icons orange-text"
+                                               ng-click="editProvider($index)"
+                                               onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
                                                ng-click="removeProvider($index)"
                                                onclick="event.stopPropagation();">delete</i></a>
