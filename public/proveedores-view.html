@@ -48,14 +48,14 @@
     <div class="col s12">
         <div class="card">
             <div class="card-content">
-                <span class="card-title"><h5 class="center">Anomalías</h5></span>
+                <span class="card-title"><h5 class="center">Facturas y albaranes</h5></span>
                 <div class="input-field col s2">
-                    <select ng-model="anomalyStatus" id="anomalyStatus">
+                    <select ng-model="providerStatus" id="providerStatus">
                         <option value="0" selected>Todas</option>
-                        <option value="1">Terminadas</option>
-                        <option value="2">No Terminadas</option>
+                        <option value="1">Facturas</option>
+                        <option value="2">Albaranes</option>
                     </select>
-                    <label>Filtrar anomalías</label>
+                    <label>Filtrar facturas y albaranes</label>
                 </div>
             </div>
             <div class="card-content">
@@ -63,71 +63,47 @@
                     <table class="highlight responsive-table">
                         <thead>
                         <tr>
-                            <th>Aviso</th>
-                            <th>Cliente</th>
-                            <th>Referencia</th>
-                            <th>Dirección</th>
-                            <th>Población</th>
-                            <th>Teléfono</th>
+                            <th>Factura/Albarán</th>
                             <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Observaciones</th>
-                            <th>Hecho por</th>
-                            <th>Estado</th>
+                            <th>Número albarán / factura</th>
+                            <th>Importe</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td class="input-field"><input id="aviso" ng-model="newAnomaly.aviso" type="text"
-                                                           class="validate" placeholder="Aviso"></td>
-                            <td class="input-field"><input id="cliente" ng-model="newAnomaly.cliente" type="text"
-                                                           class="validate" placeholder="Cliente"></td>
-                            <td class="input-field"><input id="referencia" ng-model="newAnomaly.referencia" type="text"
-                                                           class="validate" placeholder="Referencia"></td>
-                            <td class="input-field"><input id="direccion" ng-model="newAnomaly.direccion" type="text"
-                                                           class="validate" placeholder="Direccion"></td>
-                            <td class="input-field"><input id="poblacion" ng-model="newAnomaly.poblacion" type="text"
-                                                           class="validate" placeholder="Poblacion"></td>
-                            <td class="input-field"><input id="telefono" ng-model="newAnomaly.telefono" type="number"
-                                                           class="validate" placeholder="Telefono"></td>
-                            <td class="input-field"><input id="fecha" ng-model="newAnomaly.fecha" type="text"
-                                                           class="validate datepicker" placeholder="01/01/2018"></td>
-                            <td class="input-field"><input id="hora" ng-model="newAnomaly.hora" type="text"
-                                                           class="validate timepicker" placeholder="12:00"></td>
-                            <td class="input-field"><input id="observaciones" ng-model="newAnomaly.observaciones"
-                                                           type="text"
-                                                           class="validate" placeholder="Observaciones"></td>
-                            <td class="input-field"><input id="hechopor" ng-model="newAnomaly.hechopor" type="text"
-                                                           class="validate" placeholder="Hecho por"></td>
-                            <td class="input-field"><input id="estado" type="text" class="validate"
-                                                           placeholder="No terminada" disabled></td>
+                            <td class="input-field">
+                                <select ng-model="newBill.tipo" id="tipo">
+                                    <option value="0">Albaranes</option>
+                                    <option value="1">Facturas</option>
+                                </select><label>Selecciona un tipo</label>
+                            </td>
+                            <td class="input-field"><input id="fecha" ng-model="newBill.fecha" type="text"
+                                                           class="datepicker validate" placeholder="Fecha"></td>
+                            <td class="input-field"><input id="numero" ng-model="newBill.numero" type="number"
+                                                           class="validate" placeholder="Numero"></td>
+                            <td class="input-field"><input id="importe" ng-model="newBill.importe" type="number"
+                                                           class="validate" placeholder="Importe"></td>
+
                             <td><a href="#!"><i class="small material-icons green-text"
-                                                ng-click="saveAnomaly($index)"
+                                                ng-click="saveBill()"
                                                 onclick="event.stopPropagation();">add_box</i>
                             </a></td>
-                        </tr>
-                        <tr ng-repeat="anomaly in anomalies | filter:myFilter track by $index">
-                            <td>{{anomaly.aviso}}</td>
-                            <td>{{anomaly.cliente}}</td>
-                            <td>{{anomaly.referencia}}</td>
-                            <td>{{anomaly.direccion}}</td>
-                            <td>{{anomaly.poblacion}}</td>
-                            <td>{{anomaly.telefono}}</td>
-                            <td>{{anomaly.fecha | date:'dd/MM/yyyy'}}</td>
-                            <td>{{anomaly.hora}}</td>
-                            <td>{{anomaly.observaciones}}</td>
-                            <td>{{anomaly.hechopor}}</td>
-                            <td>{{anomaly.terminada ? 'Terminada' : 'No terminada'}}</td>
+                        </tr><!-- en sginular bill mejor-->
+                        <tr ng-repeat="bill in provider.bills track by $index">
+                            <td>{{bill.tipo === 0 ? 'Albarán' : 'Factura'}}</td>
+                            <td>{{bill.fecha}}</td>
+                            <td>{{bill.numero}}</td>
+                            <td>{{bill.importe}}</td>
                             <td><a href="#!">
-                                <i ng-if="!anomaly.terminada" class="material-icons green-text"
-                                   ng-click="anomalyDone($index)"
+                                <i ng-if="!provider.factura" class="material-icons green-text"
+                                   ng-click="providerDone($index)"
                                    onclick="event.stopPropagation();">done</i>
-                                <i class="material-icons red-text"
-                                   ng-click="removeAnomaly($index)"
-                                   onclick="event.stopPropagation();">delete</i>
+                                <i class="material-icons orange-text"
+                                   ng-click="editBill(bill)"
+                                   onclick="event.stopPropagation();">edit</i>
                                 <i class="material-icons blue-text"
-                                   ng-click="generateWord(anomaly)"
+                                   ng-click="generateWord(provider)"
                                    onclick="event.stopPropagation();">assignment</i>
                             </a></td>
                         </tr>
@@ -142,7 +118,7 @@
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
-        $('#anomalyStatus').find('option[value="0"]').prop('selected', true);
+        $('#tipo').find('option[value="0"]').prop('selected', true);
         $('select').formSelect();
         $('.datepicker').datepicker({
             firstDay: 1,
