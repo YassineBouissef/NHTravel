@@ -94,32 +94,9 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <label>
-                                    <input id="rec" type="checkbox" ng-model="newClient.rec" class="validate"/>
-                                    <span>Rec. Equivalencia</span>
-                                </label>
-                            </div>
-                            <div class="input-field col s6">
-                                <select ng-model="newClient.formadepago" id="formadepago">
-                                    <option ng-repeat="formadepago in formadepagos" ng-value="formadepago._id"
-                                            ng-selected="formadepago.selected == true">{{formadepago.nombre}}
-                                    </option>
-                                </select>
-                                <label>Forma de pago</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
                                 <input id="contacto" ng-model="newClient.contacto"
                                        type="text" class="validate">
                                 <label for="contacto">Contacto</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <select ng-model="newClient.tarifa" id="tarifa">
-                                    <option ng-repeat="tarifa in tarifas" ng-value="tarifa._id">{{tarifa.nombre}}
-                                    </option>
-                                </select>
-                                <label>Tarifas</label>
                             </div>
                         </div>
                         <div class="center">
@@ -237,18 +214,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>Forma de pago:</b> {{formadepagos[cliente.formadepago].nombre}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>Tarifa:</b> {{tarifas[cliente.tarifa].nombre}}
-                                            </div>
-                                            <div class="col s4">
                                                 <b>Contacto:</b> {{cliente.contacto}}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s4">
-                                                <b>Rec. Equivalencia:</b> {{cliente.rec ? 'Sí' : 'No'}}
                                             </div>
                                         </div>
                                     </div>

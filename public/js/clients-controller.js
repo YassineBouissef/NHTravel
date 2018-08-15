@@ -2,59 +2,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
 
     let index = -1;
     $scope.clients = [];
-    $scope.formadepagos = [
-        {
-            _id: 0,
-            nombre: "50/50",
-            selected: true
-        },
-        {
-            _id: 1,
-            nombre: "Tarjeta"
-        },
-        {
-            _id: 2,
-            nombre: "Efectivo"
-        },
-        {
-            _id: 3,
-            nombre: "Cheque"
-        },
-        {
-            _id: 4,
-            nombre: "30 días"
-        },
-        {
-            _id: 5,
-            nombre: "60 días"
-        },
-        {
-            _id: 6,
-            nombre: "Pagaré"
-        },
-        {
-            _id: 7,
-            nombre: "Confirming"
-        }];
 
-    $scope.tarifas = [
-        {
-            _id: 0,
-            nombre: "General",
-            selected: true
-        },
-        {
-            _id: 1,
-            nombre: "Encimeras (35%)"
-        },
-        {
-            _id: 2,
-            nombre: "Contratistas"
-        },
-        {
-            _id: 3,
-            nombre: "Público"
-        }];
 
     $scope.saveClient = function () {
         if ($scope.action === "Añadir") {

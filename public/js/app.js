@@ -1,1 +1,1 @@
-angular.module("MarmolistasElPilarApp", []);
+angular.module("NHTravelApp", []);
