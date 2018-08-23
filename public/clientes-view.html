@@ -1,7 +1,7 @@
-<html ng-app="MarmolistasElPilarApp">
+<html ng-app="NHTravelApp">
 <head>
     <title>
-        Marmolistas El Pilar - Cliente
+        NHTravel - Cliente
     </title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
@@ -22,15 +22,13 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo"><img class="logo" src="/img/logo.png"></a>
+            <a href="#" class="brand-logo"><img class="logo" src="/img/logo2.png"></a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
-                <li><a href="/articulos">Artículos</a></li>
+                <li><a href="/casas">Casas</a></li>
                 <li><a href="/grupos">Grupos</a></li>
                 <li class="active"><a href="/clientes">Clientes</a></li>
-                <li><a href="/proveedores">Proveedores</a></li>
-                <li><a href="/almacen">Almacén</a></li>
             </ul>
         </div>
     </nav>
@@ -38,11 +36,9 @@
 
 <ul class="sidenav" id="mobile-demo">
     <li><a href="/">Inicio</a></li>
-    <li><a href="/articulos">Artículos</a></li>
+    <li><a href="/casas">Casas</a></li>
     <li><a href="/grupos">Grupos</a></li>
     <li class="active"><a href="/clientes">Clientes</a></li>
-    <li><a href="/proveedores">Proveedores</a></li>
-    <li><a href="/almacen">Almacén</a></li>
 </ul>
 <div class="row">
     <div class="col s12">
@@ -59,9 +55,7 @@
                                 </th>
                                 <th><b>Email:</b> {{client.email}}</th>
                                 <th><b>Teléfono:</b> {{client.telefono}}</th>
-                                <th><b>Forma de Pago:</b> {{formadepagos[client.formadepago].nombre}}</th>
-                                <th><b>Tarifa:</b> {{tarifas[client.tarifa].nombre}}</th>
-                                <th><b>Rec. Equiv.:</b> {{client.rec ? 'Si' : 'No'}}</th>
+                                <th><b>Pagado:</b> {{client.pagado ? 'Si' : 'No'}}</th>
                                 <th><b>Contacto:</b> {{client.contacto}}</th>
                             </tr>
                         </div>
@@ -72,148 +66,6 @@
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="sol s12">
-                        <div class="input-field col s2">
-                            <select ng-change="updateBillTypeFilter()" ng-model="billType" id="billType">
-                                <option value="0" selected>Albarán</option>
-                                <option value="1">Presupuesto</option>
-                                <option value="2">Factura</option>
-                                <option value="3">Factura P.</option>
-                            </select>
-                            <label>Tipo de documento</label>
-                        </div>
-                        <div class="input-field col s2">
-                            <select ng-model="isPaid" id="isPaid">
-                                <option value="0" selected>Todos</option>
-                                <option value="1">Pagados</option>
-                                <option value="2">No Pagados</option>
-                            </select>
-                            <label>Filtrar por</label>
-                        </div>
-                        <div class="input-field col s2">
-                            <input id="fecha_inicio" type="text" class="datepicker" value="01/01/2018"
-                                   ng-model="fecha.inicio">
-                            <label for="fecha_inicio">Fecha Inicio</label>
-                        </div>
-                        <div class="input-field col s2">
-                            <input id="fecha_fin" type="text" class="datepicker" value="01/01/2018"
-                                   ng-model="fecha.fin">
-                            <label for="fecha_fin">Fecha Fin</label>
-                        </div>
-                        <div class="input-field col s2">
-                            <b><i class="small material-icons red-text">expand_more</i>{{getTotalUnpaid()}}€</b>
-                        </div>
-                    </div>
-                    <div class="col s12">
-                        <table class="responsive-table striped">
-                            <thead>
-                            <tr>
-                                <th>{{billTypeSelected}}</th>
-                                <th>Fecha</th>
-                                <th>Importe (Bruto)</th>
-                                <th>Pagado</th>
-                                <th>Método de pago</th>
-                                <th>Acciones</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <tr ng-repeat="bill in bills | filter:myFilter track by $index">
-                                <td>{{billTypeSelected}} nº {{bill.codigo}}</td>
-                                <td>{{bill.fecha | date:'dd/MM/yyyy'}}</td>
-                                <td>{{bill.total}}€</td>
-                                <td>{{bill.pagado ? 'Sí' : 'No'}}</td>
-                                <td>{{getPaymentType(bill)}}</td>
-                                <td><a href="#">
-                                    <i ng-if="!bill.pagado" class="material-icons green-text"
-                                       ng-click="payBill(bill)"
-                                       onclick="event.stopPropagation();">monetization_on</i>
-                                    <i ng-if="bill.pagado" class="material-icons grey-text"
-                                       ng-click="unpayBill(bill)"
-                                       onclick="event.stopPropagation();">monetization_on</i>
-                                    <i class="material-icons orange-text"
-                                       ng-click="editBill(bill)"
-                                       onclick="event.stopPropagation();">edit</i>
-                                    <i class="material-icons red-text"
-                                       ng-click="removeBill(bill)"
-                                       onclick="event.stopPropagation();">delete</i>
-                                    <i class="material-icons blue-text"
-                                       ng-click="generateBill(bill)"
-                                       onclick="event.stopPropagation();">assignment</i>
-                                </a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="payBill" class="modal">
-    <div class="modal-content">
-        <h4>Pagar {{billTypeSelected}} nº {{billToPay.codigo}}</h4>
-        <div class="row">
-            <div class="input-field col s12">
-                <select ng-model="billPaymentType" id="billPaymentType">
-                    <option value="0" selected>Efectivo</option>
-                    <option value="1">Transferencia</option>
-                    <option value="2">Cheque</option>
-                    <option value="3">Pagarés</option>
-                    <option value="4">Confirming</option>
-                </select>
-                <label>Método de pago</label>
-            </div>
-            <div class="row" ng-class="(billPaymentType !== '2' && billPaymentType !== '3') ? 'invisible' : ''">
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="codigo" ng-model="newCheck.codigo" type="text" placeholder="0" disabled>
-                        <label for="codigo">Código</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="importe" ng-model="newCheck.importe" type="number" placeholder="100">
-                        <label for="importe">Importe</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="nombre" ng-model="newCheck.nombre" type="text" placeholder="Unicaja">
-                        <label for="nombre">Nombre</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="fecha" type="text" class="datepicker" value="01/01/2018"
-                               ng-model="newCheck.fecha">
-                        <label for="fecha">Fecha</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="numeracion" ng-model="newCheck.numeracion" type="text" placeholder="1A28DBF10">
-                        <label for="numeracion">Numeración</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="fecha_vencimiento" type="text" class="datepicker" value="01/01/2018"
-                               ng-model="newCheck.fecha_vencimiento">
-                        <label for="fecha_vencimiento">Fecha Vencimiento</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="reusado" ng-model="newCheck.reusado" type="text" placeholder="Si">
-                        <label for="reusado">¿Usado para pagar?</label>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 center">
-                <button class="btn-large waves-effect waves-light green"
-                        ng-click="markBillAsPaid()">Marcar como pagado
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 <script>
     $(document).ready(function () {

@@ -21,6 +21,8 @@ app.use('/', express.static(__dirname + "/public/"));
 app.use('/casas', express.static(path.join(__dirname + '/public/casas.html')));
 app.use('/clientes', express.static(path.join(__dirname + '/public/clientes.html')));
 app.use('/clientes/:id', express.static(path.join(__dirname + '/public/clientes-view.html')));
+app.use('/facturas/crear/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
+app.use('/facturas/editar/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
 /** ROUTERS **/
 
 const housesService = require('./routes/houses-service');
@@ -28,6 +30,9 @@ const houses = require('./routes/houses');
 
 const clientsService = require('./routes/clients-service');
 const clients = require('./routes/clients');
+
+const billsService = require('./routes/bills-service');
+const bills = require('./routes/bills');
 
 const checksService = require('./routes/checks-service');
 const checks = require('./routes/checks');
@@ -38,6 +43,7 @@ const server = http.createServer(app);
 
 app.use(baseAPI + '/houses', houses);
 app.use(baseAPI + '/clients', clients);
+app.use(baseAPI + '/bills', bills);
 app.use(baseAPI + '/checks', checks);
 
 
@@ -58,9 +64,14 @@ checksService.connectDb(function (err) {
                             process.exit(1);
                         }
 
-                             server.listen(PORT, function () {
-                             console.log('Server with GUI up and running on localhost:' + PORT);
-
+                            billsService.connectDb(function (err) {
+                                if (err) {
+                                    console.log("Could not connect with MongoDB - billsService");
+                                    process.exit(1);
+                                }
+                                 server.listen(PORT, function () {
+                                 console.log('Server with GUI up and running on localhost:' + PORT);
+                  });
                });
            });
         });

@@ -94,6 +94,12 @@
                                        type="text" class="validate">
                                 <label for="contacto">Contacto</label>
                             </div>
+                            <div class="input-field col s6">
+                                <label>
+                                    <input id="pagado" type="checkbox" ng-model="newClient.pagado"/>
+                                    <span>Pagado</span>
+                                </label>
+                            </div>                            
                         </div>
                         <div class="center">
                             <button ng-class="class_button" type="submit" name="action">
@@ -213,6 +219,11 @@
                                                 <b>Contacto:</b> {{cliente.contacto}}
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Pagado:</b> {{cliente.pagado ? 'Sí' : 'No'}}
+                                            </div>
+                                        </div>                                        
                                     </div>
                                 </div>
                             </li>

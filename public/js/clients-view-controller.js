@@ -1,57 +1,5 @@
-angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function ($scope, $http, $location, $q) {
+angular.module("NHTravelApp").controller("ClientsViewCtrl", function ($scope, $http, $location, $q) {
 
-    $scope.formadepagos = [
-        {
-            _id: 0,
-            nombre: "50/50",
-            selected: true
-        },
-        {
-            _id: 1,
-            nombre: "Tarjeta"
-        },
-        {
-            _id: 2,
-            nombre: "Efectivo"
-        },
-        {
-            _id: 3,
-            nombre: "Cheque"
-        },
-        {
-            _id: 4,
-            nombre: "30 días"
-        },
-        {
-            _id: 5,
-            nombre: "60 días"
-        },
-        {
-            _id: 6,
-            nombre: "Pagaré"
-        },
-        {
-            _id: 7,
-            nombre: "Confirming"
-        }];
-    $scope.tarifas = [
-        {
-            id: 0,
-            nombre: 'Tarifa General'
-        },
-        {
-            id: 1,
-            nombre: 'Tarifa Encimera (35%)'
-        },
-        {
-            id: 2,
-            nombre: 'Tarifa Contratista'
-        },
-        {
-            id: 3,
-            nombre: 'Tarifa Público'
-        }
-    ];
     let d = new Date();
     let today = ("0" + (d.getDate())).slice(-2) + '/' + ("0" + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
 
@@ -74,64 +22,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
             return false;
     };
 
-    $scope.markBillAsPaid = function () {
-        console.log('Marking bill as paid');
-        console.log('Payment type: ', $scope.billPaymentType);
-        console.log('Bill: ', $scope.billToPay);
-        console.log('Cheque/Pagaré: ', $scope.newCheck);
-
-        $scope.billToPay.pagado = true;
-        $scope.billToPay.metododepago = +$scope.billPaymentType;
-        $scope.billToPay.cheque = $scope.newCheck;
-
-        if (+$scope.billPaymentType < 2 || +$scope.billPaymentType > 3) {
-            //Marcar como pagado simple
-            updateBill($scope.billToPay);
-        } else {
-            //Crear cheque/pagaré
-            $scope.newCheck.tipo = +$scope.billPaymentType - 2;
-            postCheck($scope.newCheck);
-        }
-    };
-
-    $scope.getPaymentType = function (bill) {
-        if (bill.pagado) {
-            switch (bill.metododepago) {
-                case 0:
-                    return 'Efectivo';
-                case 1:
-                    return 'Transferencia';
-                case 2:
-                    return 'Cheque nº' + bill.cheque.codigo;
-                case 3:
-                    return 'Pagarés nº' + bill.cheque.codigo;
-                case 4:
-                    return 'Confirming';
-            }
-        }
-        else {
-            return 'No pagado'
-        }
-    };
-
-    $scope.payBill = function (bill) {
-        console.log('Paying bill', bill);
-        $('#payBill').modal('open');
-        $scope.billToPay = bill;
-    };
-
-    $scope.unpayBill = function (bill) {
-        console.log("Unpaying bill", bill);
-        let r = confirm("¿Está seguro de marcar este " + $scope.billTypeSelected + " como no pagado?");
-        if (r) {
-            bill.pagado = false;
-            delete bill.metododepago;
-            bill.cheque = {};
-            updateBill(bill);
-        } else {
-            console.log("Bill not marked as unpaid");
-        }
-    };
+    
 
     $scope.getTotalUnpaid = function () {
         let total = 0;
@@ -222,22 +113,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
         window.location.href = '/facturas/editar/' + bill._id;
     };
 
-    $scope.updateBillTypeFilter = function () {
-        switch (+$scope.billType) {
-            case 0:
-                $scope.billTypeSelected = "Albarán";
-                break;
-            case 1:
-                $scope.billTypeSelected = "Presupuesto";
-                break;
-            case 2:
-                $scope.billTypeSelected = "Factura";
-                break;
-            case 3:
-                $scope.billTypeSelected = "Factura P.";
-                break;
-        }
-    };
+
 
     function postCheck(check) {
         $http.post("/api/v1/checks", check)
@@ -322,7 +198,6 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
 
     function refresh() {
         console.log("Refreshing");
-        $scope.billPaymentType = 0;
         $scope.newCheck = {};
         $scope.newCheck.fecha = today;
         $scope.newCheck.fecha_vencimiento = today;
@@ -336,10 +211,6 @@ angular.module("MarmolistasElPilarApp").controller("ClientsViewCtrl", function (
 
     function init() {
         console.log("Starting Clients View controller");
-        $scope.billTypeSelected = "Albarán";
-        $scope.billType = 0;
-        $scope.isPaid = 0;
-        $scope.billPaymentType = 0;
         $scope.newCheck = {};
         $scope.newCheck.fecha = today;
         $scope.newCheck.fecha_vencimiento = today;

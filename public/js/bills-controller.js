@@ -1,59 +1,5 @@
-angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope, $http, $location, $q) {
-
-    $scope.groups = [];
-    $scope.formadepagos = [
-        {
-            _id: 0,
-            nombre: "50/50",
-            selected: true
-        },
-        {
-            _id: 1,
-            nombre: "Tarjeta"
-        },
-        {
-            _id: 2,
-            nombre: "Efectivo"
-        },
-        {
-            _id: 3,
-            nombre: "Cheque"
-        },
-        {
-            _id: 4,
-            nombre: "30 días"
-        },
-        {
-            _id: 5,
-            nombre: "60 días"
-        },
-        {
-            _id: 6,
-            nombre: "Pagaré"
-        },
-        {
-            _id: 7,
-            nombre: "Confirming"
-        }];
-    $scope.tarifas = [
-        {
-            id: 0,
-            nombre: 'Tarifa General'
-        },
-        {
-            id: 1,
-            nombre: 'Tarifa Encimera (35%)'
-        },
-        {
-            id: 2,
-            nombre: 'Tarifa Contratista'
-        },
-        {
-            id: 3,
-            nombre: 'Tarifa Público'
-        }
-    ];
-
+angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $location, $q) {
+    
     $scope.round = function (amount) {
         return round(amount);
     };
@@ -120,14 +66,14 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         $('.modal').modal('open');
     };
 
-    function getArticles() {
-        $http.get("/api/v1/articles")
+    function getHouses() {
+        $http.get("/api/v1/houses")
             .then(function (response) {
-                console.log('Articles retrieved');
-                $scope.articles = response.data;
+                console.log('Houses retrieved');
+                $scope.houses = response.data;
             }, function (error) {
                 console.log('Error retrieving articles', error);
-                alert("Ups! Ha ocurrido un error al recuperar los artículos, inténtalo de nuevo en unos minutos.");
+                alert("Ups! Ha ocurrido un error al recuperar las casas, inténtalo de nuevo en unos minutos.");
             });
     }
 
@@ -135,16 +81,10 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
         let type = $scope.bill.tipo;
         switch (+type) {
             case 0:
-                $scope.tipoText = "Albarán";
-                break;
-            case 1:
                 $scope.tipoText = "Presupuesto";
                 break;
-            case 2:
+            case 1:
                 $scope.tipoText = "Factura";
-                break;
-            case 3:
-                $scope.tipoText = "Factura P.";
                 break;
         }
     }
@@ -305,12 +245,11 @@ angular.module("MarmolistasElPilarApp").controller("BillsCtrl", function ($scope
     function init() {
         console.log("Starting Bills controller");
         $scope.selectedItem = {};
-        $scope.articles = [];
+        $scope.houses = [];
         $scope.items = [];
         $scope.bill = {};
         $scope.newItem = {};
-        getArticles();
-        getGroups();
+        getHouses();
         let url = window.location.href;
         $scope.modo = (url.includes('crear') ? 'add' : 'edit');
         console.log('Modo: ', $scope.modo);
