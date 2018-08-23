@@ -53,7 +53,7 @@ body {
     background-color: #ee6e73 !important;
 }
 
-.logo{
+.logo2{
     margin-left: 50%;
 }
 
@@ -64,4 +64,8 @@ body {
 .invisible {
     visibility: hidden;
     height: 0px;
+}
+
+.nav-wrapper{
+    background-color: red;
 }

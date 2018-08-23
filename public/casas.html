@@ -18,11 +18,11 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo"><img class="logo" src="img/logo.png"></a>
+            <a href="#" class="brand-logo"><img class="logo" src="img/logo2.png"></a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
-                <li class="active"><a href="/articulos">Casas</a></li>
+                <li class="active"><a href="/casas">Casas</a></li>
                 <li><a href="/clientes">Clientes</a></li>
             </ul>
         </div>
@@ -31,7 +31,7 @@
 
 <ul class="sidenav" id="mobile-demo">
     <li><a href="/">Inicio</a></li>
-    <li class="active"><a href="/articulos">Casas</a></li>
+    <li class="active"><a href="/casas">Casas</a></li>
     <li><a href="/clientes">Clientes</a></li>
 </ul>
 <div class="row">
@@ -42,29 +42,24 @@
             </div>
             <div class="card-content">
                 <div class="row">
-                    <form name="addCasaForm" id="addCasaForm" class="col s12" ng-submit="saveCasa()">
+                    <form name="addCasaForm" id="addCasaForm" class="col s12" ng-submit="saveHome()">
                         <div class="row">
                             <div class="input-field col s3">
                                 <input id="codigo" ng-model="newHome.codigo" type="text" class="validate"
-                                       placeholder="0" disabled>
+                                       placeholder="065468" >
                                 <label for="codigo">Código</label>
                             </div>
                             <div class="input-field col s9">
                                 <input id="nombre" ng-model="newHome.nombre" type="text" class="validate"
-                                       placeholder="Encimera Silestone">
+                                       placeholder="Casa KFC">
                                 <label for="nombre">Nombre</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="precio" ng-model="newCasa.precio" type="number" class="validate"
-                                       placeholder="M2" required>
+                                <input id="precio" ng-model="newHome.precio" type="number" class="validate"
+                                       placeholder="800 DHS" required>
                                 <label for="precio">Precio</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input id="fecha" ng-model="newHome.fecha" type="date" class="validate"
-                                       placeholder="M2" required>
-                                <label for="fecha">Fecha</label>
                             </div>
                         </div>
                         <div class="center">
@@ -113,17 +108,17 @@
                     <div class="collapsible-header"><h5>Casas</h5></div>
                     <div class="collapsible-body">
                         <ul class="collapsible">
-                            <li ng-repeat="casa in houses | filter:filterHouse track by $index">
+                            <li ng-repeat="casa in houses | filter:filterHome track by $index">
                                 <div class="collapsible-header item row item">
                                     <div class="col s6 left-align">
-                                        <b>{{articulo.codigo}} - {{articulo.nombre}}</b>
+                                        <b>{{casa.codigo}} - {{casa.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
                                         <a href="#!"><i class="material-icons orange-text"
-                                                        ng-click="editHouse($index)"
+                                                        ng-click="editHome($index)"
                                                         onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
-                                               ng-click="removeHouse($index)" onclick="event.stopPropagation();">delete</i></a>
+                                               ng-click="removeHome($index)" onclick="event.stopPropagation();">delete</i></a>
                                     </div>
                                 </div>
                                 <div class="collapsible-body">
@@ -139,9 +134,6 @@
                                         <div class="row">
                                             <div class="col s4">
                                                 <b>Precio:</b> {{cacsa.precio}}
-                                            </div>
-                                            <div class="col s4">
-                                                <b>Fecha:</b> {{casa.fecha}}
                                             </div>
                                         </div>
                                     </div>

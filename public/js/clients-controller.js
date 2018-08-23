@@ -1,8 +1,7 @@
-angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($scope, $http, $location, $q) {
+angular.module("NHTravelApp").controller("ClientsCtrl", function ($scope, $http, $location, $q) {
 
     let index = -1;
     $scope.clients = [];
-
 
     $scope.saveClient = function () {
         if ($scope.action === "Añadir") {
@@ -54,10 +53,7 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         $scope.icon_action = "edit";
         $scope.class_button = "btn-large waves-effect waves-light orange";
         $scope.newClient = $scope.clients[i];
-        $('#formadepago').find('option[value="' + $scope.newClient.formadepago + '"]').prop('selected', true);
-        $("#formadepago").formSelect();
-        $('#tarifa').find('option[value="' + $scope.newClient.tarifa + '"]').prop('selected', true);
-        $("#tarifa").formSelect();
+
         console.log("Editing client", $scope.newClient);
         toggleForm();
     };
@@ -175,8 +171,6 @@ angular.module("MarmolistasElPilarApp").controller("ClientsCtrl", function ($sco
         console.log("Starting Clients controller");
         getClients();
         $scope.newClient = {};
-        $scope.newClient.formadepago = $scope.formadepagos[0]._id;
-        $scope.newClient.tarifa = $scope.tarifas[0]._id;
         $scope.action = "Añadir";
         $scope.icon_action = "add";
         $scope.class_button = "btn-large waves-effect waves-light green";

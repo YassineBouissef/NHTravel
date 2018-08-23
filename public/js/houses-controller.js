@@ -1,16 +1,14 @@
-angular.module("MarmolistasElPilarApp").controller("HomeCtrl", function ($scope, $http, $location, $q) {
+angular.module("NHTravelApp").controller("HomeCtrl", function ($scope, $http, $location, $q) {
 
     let index = -1;
-     $scope.houses = [];
-
+    $scope.houses = [];
 
     $scope.saveHome = function () {
-        //setTarifasName();
         if ($scope.action === "Añadir") {
-            console.log("Creating article", $scope.newHome);
+            console.log("Creating home", $scope.newHome);
             postHome($scope.newHome);
         } else if ($scope.action === "Editar") {
-            console.log("Updating article", $scope.newHome);
+            console.log("Updating home", $scope.newHome);
             updateHome($scope.newHome);
         }
         toggleForm();
@@ -18,7 +16,7 @@ angular.module("MarmolistasElPilarApp").controller("HomeCtrl", function ($scope,
 
 
     function toggleForm() {
-        $("form#addCasaForm :input").each(function () {
+        $("form#addCasaForm:input").each(function () {
             $(this).toggleClass('valid' || 'invalid');
         });
     }
@@ -86,7 +84,7 @@ angular.module("MarmolistasElPilarApp").controller("HomeCtrl", function ($scope,
             .then(function (response) {
                 console.log('Home retrieved');
                 $scope.houses = response.data;
-                $scope.newHOme.codigo = $scope.houses.length > 0 ? $scope.houses[$scope.houses.length - 1].codigo + 1 : 1;
+                //$scope.newHome.codigo = $scope.houses.length > 0 ? $scope.houses[$scope.houses.length - 1].codigo + 1 : 1;
             }, function (error) {
                 console.log('Error retrieving houses', error);
                 alert("Ups! Ha ocurrido un error al recuperar las casas, inténtalo de nuevo en unos minutos.");
@@ -94,7 +92,7 @@ angular.module("MarmolistasElPilarApp").controller("HomeCtrl", function ($scope,
     }
 
     function postHome(home) {
-        $http.post("/api/v1/houses", house)
+        $http.post("/api/v1/houses", home)
             .then(function (response) {
                 console.log('Home added', response);
                 refresh();
@@ -104,8 +102,8 @@ angular.module("MarmolistasElPilarApp").controller("HomeCtrl", function ($scope,
             });
     }
 
-    function updateHome(Home) {
-        $http.put("/api/v1/Homes/" + house._id, houses)
+    function updateHome(home) {
+        $http.put("/api/v1/houses/" + home._id, home)
             .then(function (response) {
                 console.log('Home updated', response);
                 refresh();
@@ -115,14 +113,14 @@ angular.module("MarmolistasElPilarApp").controller("HomeCtrl", function ($scope,
             });
     }
 
-    function deleteHome(house) {
-        $http.delete("/api/v1/house/" + house._id)
+    function deleteHome(home) {
+        $http.delete("/api/v1/houses/" + home._id)
             .then(function (response) {
                 console.log('Home deleted', response);
                 refresh();
             }, function (error) {
                 console.log('Error updating house', error);
-                alert("Ups! Ha ocurrido un error al eliminar el artículo, inténtalo de nuevo en unos minutos.");
+                alert("Ups! Ha ocurrido un error al eliminar la casa, inténtalo de nuevo en unos minutos.");
             });
     }
 
