@@ -25,18 +25,20 @@ app.use('/clientes/:id', express.static(path.join(__dirname + '/public/clientes-
 
 /** ROUTERS **/
 
-const articlesService = require('./routes/houses-service');
-const articles = require('./routes/houses');
+const housesService = require('./routes/houses-service');
+const houses = require('./routes/houses');
 
 const clientsService = require('./routes/clients-service');
 const clients = require('./routes/clients');
+
+const checksService = require('./routes/checks-service');
+const checks = require('./routes/checks');
 
 /*************/
 
 const server = http.createServer(app);
 
 app.use(baseAPI + '/houses', houses);
-app.use(baseAPI + '/groups', groups);
 app.use(baseAPI + '/clients', clients);
 
 
@@ -56,9 +58,6 @@ checksService.connectDb(function (err) {
                             console.log("Could not connect with MongoDB - housesService");
                             process.exit(1);
                         }
-
-
-
                                     server.listen(PORT, function () {
                                         console.log('Server with GUI up and running on localhost:' + PORT);
                       });
