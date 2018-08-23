@@ -12,7 +12,7 @@ Clients.prototype.connectDb = function (callback) {
             callback(err);
         }
 
-        db = database.db('marmolistaselpilar').collection('clients');
+        db = database.db('nhtravel').collection('clients');
 
         callback(err, database);
     });
