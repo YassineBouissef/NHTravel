@@ -12,7 +12,7 @@ Checks.prototype.connectDb = function (callback) {
             callback(err);
         }
 
-        db = database.db('marmolistaselpilar').collection('checks');
+        db = database.db('nhtravel').collection('checks');
 
         callback(err, database);
     });
