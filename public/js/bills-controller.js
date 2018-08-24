@@ -9,23 +9,8 @@ angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $
     }
 
     $scope.addItem = function () {
-        console.log("Adding article", $scope.newItem);
-        $scope.newItem.articulo = $scope.selectedItem;
-        if (!$scope.newItem.descuento)
-            $scope.newItem.descuento = 0;
-        if ($scope.selectedItem.unidad.toUpperCase() === 'M2') {
-            $scope.newItem.cantidad = ($scope.newItem.dimension.alto * $scope.newItem.dimension.ancho) / 10000;
-            $scope.newItem.cantidad = round($scope.newItem.cantidad);
-            $scope.newItem.total = ((($scope.newItem.dimension.alto * $scope.newItem.dimension.ancho) / 10000)
-                * $scope.newItem.tarifa)
-                * ((100 - $scope.newItem.descuento) / 100)
-                * $scope.newItem.unidades;
-            $scope.newItem.total = round($scope.newItem.total);
-        } else {
-            $scope.newItem.total = $scope.newItem.tarifa * $scope.newItem.unidades
-                * ((100 - $scope.newItem.descuento) / 100);
-            $scope.newItem.total = Math.round($scope.newItem.total * 100) / 100;
-        }
+        console.log("Adding casa", $scope.newItem);
+        $scope.newItem.casa = $scope.selectedItem;
         toggleForm();
         $scope.items.push($scope.newItem);
         $('.modal').modal('close');
@@ -50,19 +35,8 @@ angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $
     }
 
     $scope.setSelectedItem = function (i) {
-        console.log("Setting item", $scope.articles[i]);
-        $scope.selectedItem = $scope.articles[i];
-        setTimeout(function () {
-            $('select#tarifa').prop('selectedIndex', $scope.cliente.tarifa + 1);
-            $('#tarifa').formSelect();
-        }, 500);
-        $scope.newItem.tarifa = $scope.selectedItem.tarifas[$scope.cliente.tarifa].valor;
-        if ($scope.selectedItem.unidad.toUpperCase() === "M2") {
-            $scope.newItem.dimension = {
-                alto: $scope.selectedItem.dimension.alto,
-                ancho: $scope.selectedItem.dimension.ancho
-            };
-        }
+        console.log("Setting item", $scope.houses[i]);
+        $scope.selectedItem = $scope.houses[i];
         $('.modal').modal('open');
     };
 
@@ -72,7 +46,7 @@ angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $
                 console.log('Houses retrieved');
                 $scope.houses = response.data;
             }, function (error) {
-                console.log('Error retrieving articles', error);
+                console.log('Error retrieving houses', error);
                 alert("Ups! Ha ocurrido un error al recuperar las casas, inténtalo de nuevo en unos minutos.");
             });
     }
@@ -96,28 +70,6 @@ angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $
             $scope.items.splice(i, 1);
         } else {
             console.log("Item not deleted");
-        }
-    };
-
-    $scope.filterArticle = function (item) {
-        if (!$scope.filter_nombre && !$scope.filter_codigo) return true;
-        else if ($scope.filter_nombre && $scope.filter_codigo) {
-            // Filtrar por codigo y nombre
-            let text = item.nombre.toLowerCase();
-            let search = $scope.filter_nombre.toLowerCase();
-            let code = item.codigo.toString().toLowerCase();
-            let searchCode = $scope.filter_codigo.toString().toLowerCase();
-            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1;
-        } else if ($scope.filter_nombre) {
-            // Filtrar por nombre
-            let text = item.nombre.toLowerCase();
-            let search = $scope.filter_nombre.toLowerCase();
-            return text.indexOf(search) > -1;
-        } else if ($scope.filter_codigo) {
-            // Filtrar por código
-            let code = item.codigo.toString().toLowerCase();
-            let search = $scope.filter_codigo.toString().toLowerCase();
-            return code.indexOf(search) > -1;
         }
     };
 
@@ -204,7 +156,7 @@ angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $
                         $('select#formadepago').prop('selectedIndex', $scope.cliente.formadepago);
                         $('#formadepago').formSelect();
                     }, 500);
-                    $scope.bill.rec = !!$scope.cliente.rec;
+                    $scope.bill.pagado = !!$scope.cliente.pagado;
                     $scope.bill.cliente = $scope.cliente;
                 }
             }, function (error) {
@@ -231,16 +183,6 @@ angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $
             });
     }
 
-    function getGroups() {
-        $http.get("/api/v1/groups")
-            .then(function (response) {
-                console.log('Groups retrieved');
-                $scope.groups = response.data;
-            }, function (error) {
-                console.log('Error retrieving groups', error);
-                alert("Ups! Ha ocurrido un error al recuperar los grupos, inténtalo de nuevo en unos minutos.");
-            });
-    }
 
     function init() {
         console.log("Starting Bills controller");

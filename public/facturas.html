@@ -55,6 +55,34 @@
                                       ng-model="bill.observaciones_internas"
                                       placeholder="Observaciones que aparecerán solo aquí"></textarea>
                         </div>
+                <table class="responsive-table">
+                    <tbody>
+                    <tr ng-repeat="item in items track by $index">
+                        <td><p ng-if="item.casa.nombre">{{item.casa.nombre}}</p></td>
+
+                        <td ng-if="item.casa.codigo"><p>{{item.casa.codigo}}</p></td>
+                        <td><p ng-if="item.casa.precio">{{item.casa.preccio}} €</p></td>
+                        <td><a href="#!">
+                            <i class="material-icons red-text"
+                               ng-click="removeItem($index)" onclick="event.stopPropagation();">delete</i>
+                        </a></td>
+                    </tr>
+                    <tr>
+                        <td class="input-field"><input id="custom-casa" ng-model="newCustomItem.casa.nombre"
+                                                       type="text"
+                                                       placeholder="Nombre casa "></td>
+                        <td class="input-field"><input id="custom-codigo" ng-model="newCustomItem.casa.codigo"
+                                                       type="number"
+                                                       placeholder="Código"></td>
+                        <td class="input-field"><input id="custom-precio" ng-model="newCustomItem.casa.precio" type="number"
+                                                       placeholder="DHS/Día"></td>
+                        <td><a href="#!">
+                            <i class="material-icons green-text"
+                               ng-click="addCustomItem()" onclick="event.stopPropagation();">add</i>
+                        </a></td>
+                    </tr>
+                    </tbody>
+                </table>
                         <div class="row center">
                             <h5>
                                 <a class="waves-effect waves-light btn blue" ng-click="saveDocument(0)">P</a>
