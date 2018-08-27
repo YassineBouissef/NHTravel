@@ -18,12 +18,11 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo"><img class="logo" src="/img/logo2.png"></a>
+            <a href="/" class="brand-logo"><img class="logo" src="/img/logo2.png"></a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
                 <li><a href="/casas">Casas</a></li>
-                <li><a href="/grupos">Grupos</a></li>
                 <li class="active"><a href="/clientes">Clientes</a></li>
             </ul>
         </div>
@@ -33,17 +32,84 @@
 <ul class="sidenav" id="mobile-demo">
     <li><a href="/">Inicio</a></li>
     <li><a href="/casas">Casas</a></li>
-    <li><a href="/grupos">Grupos</a></li>
     <li class="active"><a href="/clientes">Clientes</a></li>
 </ul>
+
 <div class="row">
-    <div class="col s12">
+    <div class="col s7">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><h5>Lista de Casas <h6 ng-if="modo === 'edit'" class="red-text"><b>(Editando {{tipoText}})</b></h6></span>
+                <table class="responsive-table">
+                    <thead>
+                    <tr>
+                        <th>DESCRIPCIÓN</th>
+                        <th>CÓDIGO</th>
+                        <th>PRECIO</th>
+                        <th>DÍAS</th>
+                        <th>TOTAL</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in items track by $index">
+                        <td><p ng-if="item.casa.nombre">{{item.casa.nombre}}</p></td>
+                        <td ng-if="item.codigo"><p>{{item.casa.codigo}}</p></td>
+                        <td><p ng-if="item.precio">{{item.casa.precio}} €</p></td>
+                        <td><p ng-if="item.dias">{{item.dias}} %</p></td>
+                        <td><p ng-if="item.total">{{item.total}} €</p></td>
+                        <td><a href="#!">
+                            <i class="material-icons red-text"
+                               ng-click="removeItem($index)" onclick="event.stopPropagation();">delete</i>
+                        </a></td>
+                    </tr>
+                    <tr>
+                        <td class="input-field"><input id="custom-casa" ng-model="newCustomItem.casa.nombre"
+                                                       type="text"
+                                                       placeholder="Casa personalizado"></td>
+                        <td class="input-field"><input id="custom-codigo" ng-model="newCustomItem.codigo"
+                                                       type="number"
+                                                       placeholder="0876876X"></td>
+                        <td class="input-field"><input id="custom-precio" ng-model="newCustomItem.precio" type="number"
+                                                       placeholder="100 DHS"></td>
+                        <td class="input-field"><input id="custom-dias" ng-model="newCustomItem.dias"
+                                                       type="number"
+                                                       placeholder="5 días" ></td>
+                        <td class="input-field"><input id="custom-total" ng-model="newCustomItem.total" type="number"
+                                                       placeholder="100" setp="any"></td>
+                        <td><a href="#!">
+                            <i class="material-icons green-text"
+                               ng-click="addCustomItem()" onclick="event.stopPropagation();">add</i>
+                        </a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s3">
+                        <h6><b>A Pagar: </b>{{getTotalAmount()}}€</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="observaciones_publicas">Observaciones</label>
+                    <textarea id="observaciones_publicas" class="materialize-textarea"
+                              ng-model="bill.observaciones_publicas"
+                              placeholder="Observaciones que aparecerán en el documento"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s5">
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
                     <div class="row">
                         <div class="col s12">
                             <h5>Cliente: {{cliente.nombre}}</h5>
+                            <input id="fecha" type="text" class="datepicker" value="01/01/2018"
+                                   ng-model="bill.fecha">
+                            <label for="fecha">Fecha</label>
                             <h6>
                                 <label>
                                     <input type="checkbox" ng-model="bill.pagado" ng-init="cliente.pagado"/>
@@ -55,34 +121,6 @@
                                       ng-model="bill.observaciones_internas"
                                       placeholder="Observaciones que aparecerán solo aquí"></textarea>
                         </div>
-                <table class="responsive-table">
-                    <tbody>
-                    <tr ng-repeat="item in items track by $index">
-                        <td><p ng-if="item.casa.nombre">{{item.casa.nombre}}</p></td>
-
-                        <td ng-if="item.casa.codigo"><p>{{item.casa.codigo}}</p></td>
-                        <td><p ng-if="item.casa.precio">{{item.casa.preccio}} €</p></td>
-                        <td><a href="#!">
-                            <i class="material-icons red-text"
-                               ng-click="removeItem($index)" onclick="event.stopPropagation();">delete</i>
-                        </a></td>
-                    </tr>
-                    <tr>
-                        <td class="input-field"><input id="custom-casa" ng-model="newCustomItem.casa.nombre"
-                                                       type="text"
-                                                       placeholder="Nombre casa "></td>
-                        <td class="input-field"><input id="custom-codigo" ng-model="newCustomItem.casa.codigo"
-                                                       type="number"
-                                                       placeholder="Código"></td>
-                        <td class="input-field"><input id="custom-precio" ng-model="newCustomItem.casa.precio" type="number"
-                                                       placeholder="DHS/Día"></td>
-                        <td><a href="#!">
-                            <i class="material-icons green-text"
-                               ng-click="addCustomItem()" onclick="event.stopPropagation();">add</i>
-                        </a></td>
-                    </tr>
-                    </tbody>
-                </table>
                         <div class="row center">
                             <h5>
                                 <a class="waves-effect waves-light btn blue" ng-click="saveDocument(0)">P</a>
@@ -93,7 +131,59 @@
                 </div>
             </div>
         </div>
- 
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title"><h5>Agregar casas</h5></span>
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">filter_1</i>
+                                <input id="search_code" type="number" ng-model="filter_codigo">
+                                <label id="label_code" for="search_code">Código</label>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">font_download</i>
+                                <input id="search_name" type="text" ng-model="filter_nombre">
+                                <label id="label_name" for="search_name">Nombre</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="collapsible">
+                            <li ng-repeat="casa in houses | filter:filterHome">
+                                <div class="collapsible-header item row item">
+                                    <div class="col s10 left-align">
+                                        <b>{{casa.codigo}} - {{casa.nombre}}</b>
+                                    </div>
+                                    <div class="col s2 right-align">
+                                        <a href="#!">
+                                            <i class="material-icons green-text"
+                                               ng-click="setSelectedItem(home)"
+                                               onclick="event.stopPropagation();">add_box</i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <b>Código:</b> {{casa.codigo}}
+                                            </div>
+                                            <div class="col s10">
+                                                <b>Nombre:</b> {{casa.nombre}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

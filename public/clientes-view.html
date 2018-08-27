@@ -27,7 +27,6 @@
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
                 <li><a href="/casas">Casas</a></li>
-                <li><a href="/grupos">Grupos</a></li>
                 <li class="active"><a href="/clientes">Clientes</a></li>
             </ul>
         </div>
@@ -37,7 +36,6 @@
 <ul class="sidenav" id="mobile-demo">
     <li><a href="/">Inicio</a></li>
     <li><a href="/casas">Casas</a></li>
-    <li><a href="/grupos">Grupos</a></li>
     <li class="active"><a href="/clientes">Clientes</a></li>
 </ul>
 <div class="row">
@@ -57,6 +55,7 @@
                                 <th><b>Teléfono:</b> {{client.telefono}}</th>
                                 <th><b>Pagado:</b> {{client.pagado ? 'Si' : 'No'}}</th>
                                 <th><b>Contacto:</b> {{client.contacto}}</th>
+                                
                             </tr>
                         </div>
                         <div class="row">
@@ -73,9 +72,6 @@
         $('.modal').modal();
         $('.collapsible').collapsible();
         $('.tabs').tabs();
-        $('#billType').find('option[value="0"]').prop('selected', true);
-        $('#billPaymentType').find('option[value="0"]').prop('selected', true);
-        $('#isPaid').find('option[value="0"]').prop('selected', true);
         $('select').formSelect();
         $('.datepicker').datepicker({
             firstDay: 1,

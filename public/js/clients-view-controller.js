@@ -48,17 +48,12 @@ angular.module("NHTravelApp").controller("ClientsViewCtrl", function ($scope, $h
                 let bruto = 0;
                 bill.items.forEach(item => {
                     items.push({
-                        nombre: item.articulo.nombre || '',
-                        unidades: item.unidades || '',
-                        medidas: item.dimension && item.dimension.alto && item.dimension.ancho ?
-                            item.dimension.alto + ' * ' + item.dimension.ancho : '',
-                        cantidad: item.dimension && item.dimension.alto && item.dimension.ancho && item.unidades ?
-                            ((item.dimension.alto * item.dimension.ancho) / 10000) * item.unidades : '',
-                        precio: item.tarifa || '',
-                        descuento: item.descuento || item.descuento >= 0 ? item.descuento : '',
+                        nombre: item.casa.nombre || '',
+                        codigo: item.casa.codigo || '',
+                        precio: item.casa.precio || '',
+                        dias: item.casa.dias || '',
                         total: round(item.total || '')
                     });
-                    bruto += item.total ? item.total : 0;
                 });
                 doc.setData({
                     tipo: $scope.billTypeSelected,
@@ -71,12 +66,9 @@ angular.module("NHTravelApp").controller("ClientsViewCtrl", function ($scope, $h
                     provincia: bill.cliente.provincia || '',
                     cp: bill.cliente.cp || '',
                     observaciones: bill.observaciones_publicas || '',
-                    formadepago: $scope.formadepagos[bill.formadepago].nombre,
                     items: items,
-                    bruto: round(bruto),
-                    rec: round(bill.rec ? bruto * 1.21 * 0.052 : 0),
-                    descuento: 0,
-                    total: round(bill.rec && bill.iva ? bruto * 1.27292 : bill.iva ? bruto * 1.21 : bill.rec ? bruto * 1.052 : bruto)
+                    pagado: round(bill.pagado),
+                    total: round(bill.pagado)
                 });
 
                 try {

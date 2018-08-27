@@ -73,6 +73,28 @@ angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $
         }
     };
 
+    $scope.filterHome = function (item) {
+        if (!$scope.filter_nombre && !$scope.filter_codigo) return true;
+        else if ($scope.filter_nombre && $scope.filter_codigo) {
+            // Filtrar por codigo y nombre
+            let text = item.nombre.toLowerCase();
+            let search = $scope.filter_nombre.toLowerCase();
+            let code = item.codigo.toString().toLowerCase();
+            let searchCode = $scope.filter_codigo.toString().toLowerCase();
+            return text.indexOf(search) > -1 || code.indexOf(searchCode) > -1;
+        } else if ($scope.filter_nombre) {
+            // Filtrar por nombre
+            let text = item.nombre.toLowerCase();
+            let search = $scope.filter_nombre.toLowerCase();
+            return text.indexOf(search) > -1;
+        } else if ($scope.filter_codigo) {
+            // Filtrar por código
+            let code = item.codigo.toString().toLowerCase();
+            let search = $scope.filter_codigo.toString().toLowerCase();
+            return code.indexOf(search) > -1;
+        }
+    };
+
     $scope.getTotal = function (aux) {
         let total = 0;
         $scope.items.forEach((item) => {
@@ -83,13 +105,7 @@ angular.module("NHTravelApp").controller("BillsCtrl", function ($scope, $http, $
     };
 
     $scope.getTotalAmount = function () {
-        if ($scope.bill.iva && $scope.bill.rec)
-            return $scope.getTotal(1.27292);
-        else if ($scope.bill.iva)
-            return $scope.getTotal(1.21);
-        else if ($scope.bill.rec)
-            return $scope.getTotal(1.052);
-        else
+        if ($scope.bill.pagado)
             return $scope.getTotal(1);
     };
 

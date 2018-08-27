@@ -18,7 +18,7 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo"><img class="logo" src="img/logo2.png"></a>
+            <a href="/" class="brand-logo"><img class="logo" src="img/logo2.png"></a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
@@ -95,12 +95,19 @@
                                 <label for="contacto">Contacto</label>
                             </div>
                             <div class="input-field col s6">
+                                <input id="dias" ng-model="newClient.dias"
+                                       type="number" class="validate">
+                                <label for="dias">Días Reservación</label>
+                            </div>                            
+                        </div>
+                        <div class="row">                        
+                            <div class="input-field col s6">
                                 <label>
                                     <input id="pagado" type="checkbox" ng-model="newClient.pagado"/>
                                     <span>Pagado</span>
                                 </label>
                             </div>                            
-                        </div>
+                        </div>                        
                         <div class="center">
                             <button ng-class="class_button" type="submit" name="action">
                                 {{action}}
@@ -219,6 +226,11 @@
                                                 <b>Contacto:</b> {{cliente.contacto}}
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col s4">
+                                                <b>Días Reservación:</b> {{cliente.dias}}
+                                            </div>
+                                        </div>                                        
                                         <div class="row">
                                             <div class="col s4">
                                                 <b>Pagado:</b> {{cliente.pagado ? 'Sí' : 'No'}}

@@ -1,5 +1,6 @@
 body {
     /*background-color: #edf0f0;*/
+    /*background-image: url(/public/img/mapa.png);*/
 }
 
 .navbar {
@@ -67,5 +68,5 @@ body {
 }
 
 .nav-wrapper{
-    background-color: red;
+    background-color:#190710;
 }
