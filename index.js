@@ -23,6 +23,9 @@ app.use('/clientes', express.static(path.join(__dirname + '/public/clientes.html
 app.use('/clientes/:id', express.static(path.join(__dirname + '/public/clientes-view.html')));
 app.use('/facturas/crear/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
 app.use('/facturas/editar/:_id', express.static(path.join(__dirname + '/public/facturas.html')));
+app.use('/coches', express.static(path.join(__dirname + '/public/coches.html')));
+
+
 /** ROUTERS **/
 
 const housesService = require('./routes/houses-service');
@@ -37,6 +40,9 @@ const bills = require('./routes/bills');
 const checksService = require('./routes/checks-service');
 const checks = require('./routes/checks');
 
+const carsService = require('./routes/cars-service');
+const cars = require('./routes/cars');
+
 /*************/
 
 const server = http.createServer(app);
@@ -45,6 +51,8 @@ app.use(baseAPI + '/houses', houses);
 app.use(baseAPI + '/clients', clients);
 app.use(baseAPI + '/bills', bills);
 app.use(baseAPI + '/checks', checks);
+app.use(baseAPI + '/cars', cars);
+
 
 
 checksService.connectDb(function (err) {
@@ -69,8 +77,15 @@ checksService.connectDb(function (err) {
                                     console.log("Could not connect with MongoDB - billsService");
                                     process.exit(1);
                                 }
-                                 server.listen(PORT, function () {
-                                 console.log('Server with GUI up and running on localhost:' + PORT);
+
+                                    carsService.connectDb(function (err) {
+                                        if (err) {
+                                            console.log("Could not connect with MongoDB - carsService");
+                                            process.exit(1);
+                                        }                              
+                                           server.listen(PORT, function () {
+                                            console.log('Server with GUI up and running on localhost:' + PORT);
+                    });                          
                   });
                });
            });

@@ -42,7 +42,7 @@ angular.module("NHTravelApp").controller("HomeCtrl", function ($scope, $http, $l
         $scope.icon_action = "edit";
         $scope.class_button = "btn-large waves-effect waves-light orange";
         $scope.newHome = $scope.houses[i];
-        console.log("Editing Home", $scope.newHOme);
+        console.log("Editing Home", $scope.newHome);
         toggleForm();
     };
 

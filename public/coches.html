@@ -1,7 +1,7 @@
 <html ng-app="NHTravelApp">
 <head>
     <title>
-        NHTravel - Casas
+        NHTravel - Coches
     </title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
@@ -11,10 +11,10 @@
     <script src="/bower_components/angular-route/angular-route.min.js" type="text/javascript"></script>
     <script src="/materialize/js/bin/materialize.js" type="text/javascript"></script>
     <script src="/js/app.js" type="text/javascript"></script>
-    <script src="/js/houses-controller.js" type="text/javascript"></script>
+    <script src="/js/cars-controller.js" type="text/javascript"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
-<body ng-controller="HomeCtrl">
+<body ng-controller="CarCtrl">
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper">
@@ -22,7 +22,8 @@
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
-                <li class="active"><a href="/casas">Casas</a></li>
+                <li><a href="/">Casas</a></li>
+                <li class="active"><a href="/coches">Coches</a></li>                
                 <li><a href="/clientes">Clientes</a></li>
             </ul>
         </div>
@@ -31,38 +32,39 @@
 
 <ul class="sidenav" id="mobile-demo">
     <li><a href="/">Inicio</a></li>
-    <li class="active"><a href="/casas">Casas</a></li>
+    <li><a href="/">Casas</a></li>
+    <li class="active"><a href="/coches">Coches</a></li>                
     <li><a href="/clientes">Clientes</a></li>
 </ul>
 <div class="row">
     <div class="col s6">
         <div class="card">
             <div class="card-content">
-                <span class="card-title"><h5>{{action}} Casas</h5></span>
+                <span class="card-title"><h5>{{action}} Coches</h5></span>
             </div>
             <div class="card-content">
                 <div class="row">
-                    <form name="addCasaForm" id="addCasaForm" class="col s12" ng-submit="saveHome()">
+                    <form name="addCocheForm" id="addCocheForm" class="col s12" ng-submit="saveCar()">
                         <div class="row">
                             <div class="input-field col s3">
-                                <input id="codigo" ng-model="newHome.codigo" type="text" class="validate"
+                                <input id="matricula" ng-model="newCar.matricula" type="text" class="validate"
                                        placeholder="065468" >
-                                <label for="codigo">Código</label>
+                                <label for="matricula">Matrícula</label>
                             </div>
                             <div class="input-field col s9">
-                                <input id="nombre" ng-model="newHome.nombre" type="text" class="validate"
-                                       placeholder="Casa KFC">
+                                <input id="nombre" ng-model="newCar.nombre" type="text" class="validate"
+                                       placeholder="Dacia Logan">
                                 <label for="nombre">Nombre</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input id="piso" ng-model="newHome.piso" type="text" class="validate"
-                                       placeholder="Piso 4 - A1" required>
-                                <label for="precio">Piso</label>
+                                <input id="color" ng-model="newCar.color" type="text" class="validate"
+                                       placeholder="Negro" required>
+                                <label for="color">Color</label>
                             </div>                            
                             <div class="input-field col s6">
-                                <input id="precio" ng-model="newHome.precio" type="number" class="validate"
+                                <input id="precio" ng-model="newCar.precio" type="number" class="validate"
                                        placeholder="800 DHS" required>
                                 <label for="precio">Precio</label>
                             </div>
@@ -86,13 +88,13 @@
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title"><h5>Filtrar Casas</h5></span>
+                    <span class="card-title"><h5>Filtrar Coches</h5></span>
                     <div class="row">
                         <div class="col s6">
                             <div class="input-field">
                                 <i class="material-icons prefix">filter_1</i>
-                                <input id="search_code" type="text" class="validate" ng-model="filter_codigo">
-                                <label id="label_code" for="search_code">Código</label>
+                                <input id="search_code" type="text" class="validate" ng-model="filter_matricula">
+                                <label id="label_code" for="search_code">Matrícula</label>
                             </div>
                         </div>
                         <div class="col s6">
@@ -106,42 +108,42 @@
                 </div>
             </div>
         </div>
-        <!-- Houses-->
+        <!-- Cars-->
         <div class="col s12">
             <ul class="collapsible">
                 <li class="active">
-                    <div class="collapsible-header"><h5>Casas</h5></div>
+                    <div class="collapsible-header"><h5>Coches</h5></div>
                     <div class="collapsible-body">
                         <ul class="collapsible">
-                            <li ng-repeat="casa in houses | filter:filterHome track by $index">
+                            <li ng-repeat="coche in cars | filter:filterCar track by $index">
                                 <div class="collapsible-header item row item">
                                     <div class="col s6 left-align">
-                                        <b>{{casa.codigo}} - {{casa.nombre}}</b>
+                                        <b>{{coche.matricula}} - {{coche.nombre}}</b>
                                     </div>
                                     <div class="col s6 right-align">
                                         <a href="#!"><i class="material-icons orange-text"
-                                                        ng-click="editHome($index)"
+                                                        ng-click="editCar($index)"
                                                         onclick="event.stopPropagation();">edit</i>
                                             <i class="material-icons red-text"
-                                               ng-click="removeHome($index)" onclick="event.stopPropagation();">delete</i></a>
+                                               ng-click="removeCar($index)" onclick="event.stopPropagation();">delete</i></a>
                                     </div>
                                 </div>
                                 <div class="collapsible-body">
                                     <div class="row">
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>Código:</b> {{casa.codigo}}
+                                                <b>Matrícula:</b> {{coche.matricula}}
                                             </div>
                                             <div class="col s8">
-                                                <b>Nombre:</b> {{casa.nombre}}
+                                                <b>Nombre:</b> {{coche.nombre}}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s4">
-                                                <b>Precio:</b> {{casa.piso}}
+                                                <b>Precio:</b> {{coche.color}}
                                             </div>                                            
                                             <div class="col s4">
-                                                <b>Precio:</b> {{casa.precio}}
+                                                <b>Precio:</b> {{coche.precio}}
                                             </div>
                                         </div>
                                     </div>
