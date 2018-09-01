@@ -1,0 +1,6 @@
+export MONGODB_URL="mongodb://hossni:hossni123@ds125302.mlab.com:25302/nhtravel"
+
+export ENCRYPTION_KEY="G-KaPdSgUkXp2s5v8y/B?E(H+MbQeThW"
+
+
+export SECRET_KEY="m4rm0l1$t4$elp1l4r"
